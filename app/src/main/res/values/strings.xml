@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">PMP</string>
+    <string name="app_name">Mini-Sentry</string>
+    <string name="register_prompt">没有账号？<u>立即注册</u></string>
+    <string name="forget_prompt"><u>忘记密码</u></string>
 </resources>

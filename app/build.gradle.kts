@@ -48,5 +48,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    implementation("com.github.notice501:coolMenu:v1.2")
+    implementation("com.github.notice501:coolMenu:v1.2")                                            //卡片式ViewPager
+    implementation("com.github.dmytrodanylyk:circular-progress-button:1.4")                         //状态按钮
+    implementation("de.hdodenhof:circleimageview:3.1.0")                                            //圆形头像
 }

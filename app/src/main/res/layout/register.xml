@@ -37,7 +37,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textView">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/login_account_layout"
+                android:id="@+id/register_account_layout"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginTop="20dp"
@@ -52,7 +52,7 @@
                 app:boxCornerRadiusTopStart="30dp">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/login_account"
+                    android:id="@+id/register_account"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
@@ -61,7 +61,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/login_password_layout"
+                android:id="@+id/register_password_layout"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginTop="20dp"
@@ -69,14 +69,14 @@
                 android:layout_marginEnd="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/login_account_layout"
+                app:layout_constraintTop_toBottomOf="@+id/register_account_layout"
                 app:boxCornerRadiusBottomEnd="30dp"
                 app:boxCornerRadiusBottomStart="30dp"
                 app:boxCornerRadiusTopEnd="30dp"
                 app:boxCornerRadiusTopStart="30dp">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/login_password"
+                    android:id="@+id/register_password"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
@@ -85,11 +85,36 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/register_password_again_layout"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/register_password_layout"
+                app:boxCornerRadiusBottomEnd="30dp"
+                app:boxCornerRadiusBottomStart="30dp"
+                app:boxCornerRadiusTopEnd="30dp"
+                app:boxCornerRadiusTopStart="30dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/register_password_again"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:hint="再次输入密码"
+                    android:inputType="textPassword"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
             <com.dd.CircularProgressButton
                 android:id="@+id/LoginProgressButton"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:text="登录"
+                android:text="注册"
                 android:textColor="@android:color/white"
                 android:textSize="24sp"
                 android:layout_marginStart="20dp"
@@ -100,35 +125,12 @@
                 app:cpb_selectorComplete="@drawable/success_state_selector"
                 app:cpb_selectorError="@drawable/failed_state_selector"
                 app:cpb_selectorIdle="@drawable/init_state_selector"
-                app:cpb_textIdle="登录"
+                app:cpb_textIdle="注册"
                 app:cpb_cornerRadius="30dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/login_password_layout"/>
+                app:layout_constraintTop_toBottomOf="@id/register_password_again_layout"/>
 
-            <TextView
-                android:id="@+id/register_entrance"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/register_prompt"
-                android:textColor="@color/blue_deeper"
-                android:textSize="12sp"
-                android:layout_marginTop="40dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/LoginProgressButton" />
-
-            <TextView
-                android:id="@+id/forget_entrance"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/forget_prompt"
-                android:textColor="@color/blue_deeper"
-                android:textSize="12sp"
-                android:layout_marginTop="5dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/register_entrance"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
