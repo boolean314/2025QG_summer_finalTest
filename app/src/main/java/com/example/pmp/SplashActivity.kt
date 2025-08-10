@@ -9,13 +9,12 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
-import android.util.TypedValue
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.animation.doOnEnd
 import com.example.pmp.databinding.ActivitySplashBinding
-import kotlin.text.toFloat
+import com.example.pmp.ui.account.LoginUI
 
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
@@ -103,7 +102,7 @@ class SplashActivity : AppCompatActivity() {
         // --- 动画结束后延迟跳转 ---
         animatorSet.doOnEnd {
             binding.root.postDelayed({
-                startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+                startActivity(Intent(this@SplashActivity, LoginUI::class.java))
                 finish()
             }, postAnimationDelay)
         }
