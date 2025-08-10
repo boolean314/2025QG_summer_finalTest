@@ -39,7 +39,7 @@ android {
 }
 
 dependencies {
-
+    implementation("com.github.dmytrodanylyk:circular-progress-button:1.4")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
