@@ -86,12 +86,12 @@ class SplashActivity : AppCompatActivity() {
 
             addListener(object : AnimatorListenerAdapter() {
                 override fun onAnimationStart(animation: Animator) {
-                    // 动画开始前，必须将 alpha 设置为 1，否则裁剪不可见
+                    // 动画开始前，必须将alpha设置为1，否则裁剪不可见
                     binding.tvLogoText.alpha = 1f
                 }
             })
 
-            // 设置延迟启动，确保在 Logo 动画基本完成后再出现
+            //设置延迟启动，确保在 Logo 动画基本完成后再出现
             startDelay = (mLeftDuration - overlapDuration) + mDownDuration
         }
 

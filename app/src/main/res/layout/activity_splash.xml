@@ -7,7 +7,6 @@
     android:background="@android:color/white"
     tools:context=".SplashActivity">
 
-    <!-- 右半部分 "M"，初始不可见 -->
     <ImageView
         android:id="@+id/iv_m_down"
         android:layout_width="wrap_content"
@@ -20,7 +19,6 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:visibility="visible" />
 
-    <!-- 左半部分 "M"，初始不可见 -->
     <ImageView
         android:id="@+id/iv_m_left"
         android:layout_width="wrap_content"
@@ -33,7 +31,6 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:visibility="visible" />
 
-    <!-- 白色遮罩，用于实现 iv_m_left 的揭露动画 -->
     <View
         android:id="@+id/mask_view"
         android:layout_width="0dp"
@@ -44,14 +41,12 @@
         app:layout_constraintStart_toStartOf="@id/iv_m_left"
         app:layout_constraintTop_toTopOf="@id/iv_m_left" />
 
-    <!-- Logo 下方的文字，初始透明，放在最上层 -->
-    <!-- 关键改动：修改了 TextView 的顶部约束 -->
     <TextView
         android:id="@+id/tv_logo_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:alpha="0"
-        android:text="PMP Monitor"
+        android:text="Mini-Sentry"
         android:textColor="@android:color/black"
         android:textSize="50sp"
         android:fontFamily="@font/alibaba_sans_heavy_italic"
