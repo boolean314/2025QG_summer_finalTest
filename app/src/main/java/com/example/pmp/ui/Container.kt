@@ -1,9 +1,11 @@
 package com.example.pmp.ui
 
 import android.os.Bundle
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
+import androidx.viewpager.widget.ViewPager
 import com.dxtt.coolmenu.CoolMenuFrameLayout
 import com.example.pmp.R
 
@@ -12,10 +14,10 @@ class Container : AppCompatActivity(){
     private lateinit var coolMenuFrameLayout: CoolMenuFrameLayout
     private val fragments = listOf(
         PublicEventFragment(),
-        HomepageFragment(),
         AllEventFragment(),
+        HomepageFragment(),
     )
-    private val titles = listOf("公开项目", "个人主页", "所有项目")
+    private val titles = listOf("公开项目", "所有项目", "个人主页")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +32,8 @@ class Container : AppCompatActivity(){
             override fun getItem(position: Int): Fragment = fragments[position]
         }
         coolMenuFrameLayout.setAdapter(adapter)
+
+
     }
 
 }
