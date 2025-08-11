@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -27,20 +28,25 @@ class LoginUI : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
-        binding.LoginProgressButton.isIndeterminateProgressMode = true // 启用无限循环进度模式
+        binding.registerEntrance.setOnClickListener {
+            startActivity(Intent(this, RegisterUI::class.java))
+        }
+        binding.forgetEntrance.setOnClickListener {
+            Toast.makeText(this, "马上完成", Toast.LENGTH_SHORT).show()
+        }
+        binding.LoginProgressButton.isIndeterminateProgressMode = true
         binding.LoginProgressButton.setOnClickListener {
             when (binding.LoginProgressButton.progress) {
-                // 初始状态：点击后开始加载
+                //初始状态：点击后开始加载
                 CircularProgressButton.IDLE_STATE_PROGRESS -> {
                     binding.LoginProgressButton.progress = CircularProgressButton.INDETERMINATE_STATE_PROGRESS
                     simulateNetworkRequest()
                 }
-                // 成功状态：点击后重置
+                //成功状态：点击后重置
                 CircularProgressButton.SUCCESS_STATE_PROGRESS -> {
                     binding.LoginProgressButton.progress = CircularProgressButton.IDLE_STATE_PROGRESS
                 }
-                // 失败状态：点击后重置
+                //失败状态：点击后重置
                 CircularProgressButton.ERROR_STATE_PROGRESS -> {
                     binding.LoginProgressButton.progress = CircularProgressButton.IDLE_STATE_PROGRESS
                 }
@@ -50,24 +56,24 @@ class LoginUI : AppCompatActivity() {
 
     private fun simulateNetworkRequest() {
         Handler(Looper.getMainLooper()).postDelayed({
-            val isSuccess = (0..1).random() == 0 // 50%概率模拟成功/失败
+            val isSuccess = true
 
             if (isSuccess) {
-                // 成功状态：设置进度为100，延迟后跳转页面
+                //成功状态：设置进度为100，延迟后跳转页面
                 binding.LoginProgressButton.progress = CircularProgressButton.SUCCESS_STATE_PROGRESS
                 Handler(Looper.getMainLooper()).postDelayed({
-                    // 跳转到目标活动
+                    //跳转到目标活动
                     startActivity(Intent(this, Container::class.java))
-                    // 跳转后重置按钮状态（可选）
+                    //跳转后重置按钮状态（可选）
                 }, 1000) // 显示成功状态1秒后跳转
             } else {
-                // 失败状态：设置进度为-1（错误状态）
+                //失败状态：设置进度为-1（错误状态）
                 binding.LoginProgressButton.progress = CircularProgressButton.ERROR_STATE_PROGRESS
-                // 失败状态3秒后自动重置（可选）
+                //失败状态3秒后自动重置（可选）
                 Handler(Looper.getMainLooper()).postDelayed({
                     binding.LoginProgressButton.progress = CircularProgressButton.IDLE_STATE_PROGRESS
                 }, 2000)
             }
-        }, 2000) // 模拟2秒网络请求耗时
+        }, 2000) //模拟2秒网络请求耗时
     }
 }

@@ -53,4 +53,7 @@ dependencies {
     implementation("com.github.notice501:coolMenu:v1.2")                                            //卡片式ViewPager
     implementation("com.github.dmytrodanylyk:circular-progress-button:1.4")                         //状态按钮
     implementation("de.hdodenhof:circleimageview:3.1.0")                                            //圆形头像
+    implementation("com.github.wangjiegulu:rfab:2.0.0")                                             //悬浮菜单
+    implementation("com.android.support:appcompat-v7:28.0.0")                                       //兼容旧版
+    implementation("com.ramotion.foldingcell:folding-cell:1.2.3")                                   //折叠子项
 }
