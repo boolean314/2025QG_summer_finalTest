@@ -19,6 +19,9 @@
             android:name=".ui.account.LoginUI"
             android:exported="false" />
         <activity
+            android:name=".ui.account.RegisterUI"
+            android:exported="false" />
+        <activity
             android:name=".ui.Container"
             android:exported="false"
             android:windowSoftInputMode="adjustPan"/>

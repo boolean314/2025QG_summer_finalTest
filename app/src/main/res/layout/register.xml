@@ -56,7 +56,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:hint="账号" />
+                    android:hint="用户名" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -111,7 +111,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.dd.CircularProgressButton
-                android:id="@+id/LoginProgressButton"
+                android:id="@+id/RegisterProgressButton"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:text="注册"
@@ -130,7 +130,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/register_password_again_layout"/>
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

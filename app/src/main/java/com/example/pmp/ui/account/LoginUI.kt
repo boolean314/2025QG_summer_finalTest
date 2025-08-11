@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -27,7 +28,12 @@ class LoginUI : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
+        binding.registerEntrance.setOnClickListener {
+            startActivity(Intent(this, RegisterUI::class.java))
+        }
+        binding.forgetEntrance.setOnClickListener {
+            Toast.makeText(this, "马上完成", Toast.LENGTH_SHORT).show()
+        }
         binding.LoginProgressButton.isIndeterminateProgressMode = true
         binding.LoginProgressButton.setOnClickListener {
             when (binding.LoginProgressButton.progress) {

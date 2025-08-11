@@ -56,7 +56,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:hint="账号" />
+                    android:hint="用户名" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
