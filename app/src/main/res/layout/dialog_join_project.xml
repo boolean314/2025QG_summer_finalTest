@@ -47,7 +47,7 @@
         android:textSize="24sp"
         android:layout_marginLeft="60dp"
         android:layout_marginRight="60dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="50dp"
         app:cpb_iconComplete="@drawable/correct"
         app:cpb_iconError="@drawable/wrong"
         app:cpb_selectorComplete="@drawable/success_state_selector"

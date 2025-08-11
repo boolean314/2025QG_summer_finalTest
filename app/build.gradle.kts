@@ -35,10 +35,12 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        dataBinding = true
     }
 }
 
 dependencies {
+    implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
     implementation("com.github.dmytrodanylyk:circular-progress-button:1.4")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
