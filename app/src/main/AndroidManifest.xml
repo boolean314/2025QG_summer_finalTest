@@ -15,20 +15,18 @@
         <activity
             android:name=".ui.CreateProject"
             android:exported="false" />
-
-
         <activity
             android:name=".ui.account.LoginUI"
             android:exported="false" />
         <activity
             android:name=".ui.Container"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".SplashActivity"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:folding="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="30dp"
+    app:cardElevation="5dp"
+    app:cardBackgroundColor="@color/white"
+    android:layout_marginBottom="16dp">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/foldingCell">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/titleViewCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@color/white">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/titleLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:id="@+id/projectName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="FocusLife"
+                android:textSize="24sp"
+                android:fontFamily="@font/alibaba_sans_heavy_italic"
+                android:layout_marginStart="5dp"
+                folding:layout_constraintBottom_toBottomOf="parent"
+                folding:layout_constraintTop_toTopOf="parent"
+                folding:layout_constraintStart_toStartOf="parent"/>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/platformCard"
+                android:layout_width="80dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="5dp"
+                app:strokeWidth="3dp"
+                app:strokeColor="@color/qq_blue"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/statusCard">
+
+                <TextView
+                    android:id="@+id/platformText"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="移动"
+                    android:textSize="20sp"
+                    android:gravity="center_horizontal|center_vertical" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/statusCard"
+                android:layout_width="80dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="5dp"
+                app:strokeWidth="3dp"
+                app:strokeColor="@color/stroke_green"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <TextView
+                    android:id="@+id/statusText"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="公开"
+                    android:textSize="20sp"
+                    android:gravity="center_horizontal|center_vertical" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp">
+
+            <TextView
+                android:id="@+id/projectDescription"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="FocusLife是一款能和智能底座联动的手机APP，用户可以在手机上设置喝水目标、设置待办事项......"
+                android:textSize="14sp"
+                android:padding="5dp"/>
+
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/projectTagsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp">
+
+            <TextView
+                android:id="@+id/projectTagsTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="创建时间:"
+                android:textSize="18sp"
+                android:gravity="center_vertical"
+                android:layout_marginStart="5dp"
+                folding:layout_constraintStart_toStartOf="parent"
+                folding:layout_constraintBottom_toBottomOf="parent"
+                folding:layout_constraintTop_toTopOf="parent"/>
+
+            <TextView
+                android:id="@+id/projectCreatedDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2025-8-11 16:29:45"
+                android:layout_marginEnd="5dp"
+                android:textSize="18sp"
+                folding:layout_constraintBaseline_toBaselineOf="@+id/projectTagsTitle"
+                folding:layout_constraintTop_toTopOf="parent"
+                folding:layout_constraintEnd_toEndOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/contentViewCard"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@color/white">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/shareCodeCard"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginTop="5dp">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/shareCodeTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="邀请码:"
+                    android:textSize="18sp"
+                    android:layout_marginStart="10dp"
+                    android:layout_gravity="center_vertical"
+                    folding:layout_constraintStart_toStartOf="parent"/>
+
+                <TextView
+                    android:id="@+id/shareCodeText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="dho3c4cjsb8194"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="5dp"
+                    android:textSize="18sp"
+                    android:textStyle="bold"/>
+
+                <ImageButton
+                    android:id="@+id/shareCodeCopyButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_action_content_copy"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="10dp"
+                    android:background="#00ffffff"/>
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/botUrlCard"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginTop="5dp">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/botUrlTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="企业微信机器人URL:"
+                    android:textSize="18sp"
+                    android:layout_marginStart="10dp"
+                    android:layout_gravity="center_vertical"
+                    folding:layout_constraintStart_toStartOf="parent"/>
+
+                <TextView
+                    android:id="@+id/botUrlText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=7a7355c5-8509-46cc-9880-b47fb520ac1d"
+                    android:scrollbars="vertical"
+                    android:maxLines="10"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="5dp"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"/>
+
+                <ImageButton
+                    android:id="@+id/botUrlCopyButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_action_content_copy"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="5dp"
+                    android:background="#00ffffff"/>
+
+                <ImageButton
+                    android:id="@+id/botUrlEditButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_action_edit"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="10dp"
+                    android:background="#00ffffff"/>
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/closeBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/rounded_button"
+            android:text="进入详情页"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            app:backgroundTint="@null"/>
+
+    </LinearLayout>
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>
