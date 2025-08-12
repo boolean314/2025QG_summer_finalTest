@@ -1,11 +1,17 @@
 package com.example.pmp.data.apiService
 
 import com.example.pmp.data.model.ApiResponse
+import com.example.pmp.data.model.EncryptLogin
+import com.example.pmp.data.model.EncryptRegister
 import com.example.pmp.data.model.ErrorStat
 import com.example.pmp.data.model.ErrorTimes
+import com.example.pmp.data.model.ResultResponse
 import retrofit2.Call
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Query
+
 
 interface MyApiService {
 
@@ -17,5 +23,29 @@ fun getErrorTimes(@Query("projectId")projectId:String,@Query("startTime")startTi
 @GET("graph/getMobileErrorStats")
 fun getMobileErrorStats(@Query("projectId")projectId: String):Call<ApiResponse<List<List<ErrorStat>>>>
 
-}
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+    @POST("users/password")
+    suspend fun login(@Body userEncrypted: EncryptLogin): ResultResponse
+
+    @POST("users/register")
+    suspend fun register(@Body userRegister: EncryptRegister): ResultResponse
+
+    @GET("users/sendCodeByEmail")
+    suspend fun getVerifyCode(
+        @Query("encryptedData") encryptedData: String,
+        @Query("encryptedKey") encryptedKey: String
+    ): ResultResponse
+}

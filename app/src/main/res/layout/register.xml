@@ -1,136 +1,207 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="64dp"
-        android:src="@drawable/logo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.pmp.viewModel.account.RegisterVM" />
+    </data>
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/alibaba_sans_heavy_italic"
-        android:text="Mini-Sentry"
-        android:textSize="35sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="300dp"
-            android:layout_height="350dp"
-            android:layout_marginTop="20dp"
-            app:cardBackgroundColor="@color/white"
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="64dp"
+            android:src="@drawable/logo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView">
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/register_account_layout"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/alibaba_sans_heavy_italic"
+            android:text="Mini-Sentry"
+            android:textSize="35sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="300dp"
+                android:layout_height="390dp"
+                app:cardBackgroundColor="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:boxCornerRadiusBottomEnd="30dp"
-                app:boxCornerRadiusBottomStart="30dp"
-                app:boxCornerRadiusTopEnd="30dp"
-                app:boxCornerRadiusTopStart="30dp">
+                app:layout_constraintTop_toBottomOf="@+id/textView">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/register_account"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/register_account_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:hint="用户名" />
+                    android:layout_height="60dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:boxCornerRadiusBottomEnd="30dp"
+                    app:boxCornerRadiusBottomStart="30dp"
+                    app:boxCornerRadiusTopEnd="30dp"
+                    app:boxCornerRadiusTopStart="30dp">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/register_account"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:hint="邮箱"
+                        android:text="@={viewModel.email}"/>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/register_password_layout"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/register_account_layout"
-                app:boxCornerRadiusBottomEnd="30dp"
-                app:boxCornerRadiusBottomStart="30dp"
-                app:boxCornerRadiusTopEnd="30dp"
-                app:boxCornerRadiusTopStart="30dp">
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/register_password"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/register_phone_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:hint="密码"
-                    android:inputType="textPassword"/>
+                    android:layout_height="60dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/register_password_layout"
+                    app:boxCornerRadiusBottomEnd="30dp"
+                    app:boxCornerRadiusBottomStart="30dp"
+                    app:boxCornerRadiusTopEnd="30dp"
+                    app:boxCornerRadiusTopStart="30dp">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/register_phone"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:hint="电话号码"
+                        android:text="@={viewModel.phone}"/>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/register_password_again_layout"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/register_password_layout"
-                app:boxCornerRadiusBottomEnd="30dp"
-                app:boxCornerRadiusBottomStart="30dp"
-                app:boxCornerRadiusTopEnd="30dp"
-                app:boxCornerRadiusTopStart="30dp">
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/register_password_again"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/register_password_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:hint="再次输入密码"
-                    android:inputType="textPassword"/>
+                    android:layout_height="60dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/register_verify_code_layout"
+                    app:boxCornerRadiusBottomEnd="30dp"
+                    app:boxCornerRadiusBottomStart="30dp"
+                    app:boxCornerRadiusTopEnd="30dp"
+                    app:boxCornerRadiusTopStart="30dp">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/register_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:hint="密码"
+                        android:inputType="textPassword"
+                        android:text="@={viewModel.password}"/>
 
-            <com.dd.CircularProgressButton
-                android:id="@+id/RegisterProgressButton"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:text="注册"
-                android:textColor="@android:color/white"
-                android:textSize="24sp"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginTop="20dp"
-                app:cpb_iconComplete="@drawable/correct"
-                app:cpb_iconError="@drawable/wrong"
-                app:cpb_selectorComplete="@drawable/success_state_selector"
-                app:cpb_selectorError="@drawable/failed_state_selector"
-                app:cpb_selectorIdle="@drawable/init_state_selector"
-                app:cpb_textIdle="注册"
-                app:cpb_cornerRadius="30dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/register_password_again_layout"/>
+                </com.google.android.material.textfield.TextInputLayout>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:id="@+id/register_verify_code_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/register_account_layout">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="100dp"
+                        android:layout_height="match_parent"
+                        app:boxCornerRadiusBottomEnd="30dp"
+                        app:boxCornerRadiusBottomStart="30dp"
+                        app:boxCornerRadiusTopEnd="30dp"
+                        app:boxCornerRadiusTopStart="30dp">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/register_verify_code"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:hint="验证码"
+                            android:text="@={viewModel.verifyCode}"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/GetVerifyCodeButton"
+                        android:layout_width="0dp"
+                        android:layout_height="54dp"
+                        android:layout_weight="1"
+                        android:text="获取验证码"
+                        android:background="@drawable/rounded_button_register"
+                        android:textSize="18sp"
+                        android:layout_gravity="bottom"
+                        android:layout_marginStart="5dp"
+                        app:backgroundTint="@null"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/register_verify_code_layout"/>
+
+                </LinearLayout>
+
+                <com.dd.CircularProgressButton
+                    android:id="@+id/RegisterProgressButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:text="注册"
+                    android:textColor="@android:color/white"
+                    android:textSize="24sp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginTop="6dp"
+                    app:cpb_iconComplete="@drawable/correct"
+                    app:cpb_iconError="@drawable/wrong"
+                    app:cpb_selectorComplete="@drawable/success_state_selector"
+                    app:cpb_selectorError="@drawable/failed_state_selector"
+                    app:cpb_selectorIdle="@drawable/init_state_selector"
+                    app:cpb_textIdle="注册"
+                    app:cpb_cornerRadius="30dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/register_phone_layout"/>
+
+                <TextView
+                    android:id="@+id/login_entrance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/login_prompt"
+                    android:textColor="@color/blue_deeper"
+                    android:layout_marginTop="10dp"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/RegisterProgressButton"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

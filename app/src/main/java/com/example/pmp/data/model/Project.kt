@@ -1,6 +1,7 @@
 package com.example.pmp.data.model
 
 data class Project(
+    val projectId: String,
     val name: String,
     val platform: String,
     val status: String,

@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.pmp"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -58,4 +58,7 @@ dependencies {
     implementation("com.github.wangjiegulu:rfab:2.0.0")                                             //悬浮菜单
     implementation("com.android.support:appcompat-v7:28.0.0")                                       //兼容旧版
     implementation("com.ramotion.foldingcell:folding-cell:1.2.3")                                   //折叠子项
+    implementation("androidx.fragment:fragment-ktx:1.6.2")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")                                   //Retrofit
 }
