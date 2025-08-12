@@ -14,7 +14,7 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.animation.doOnEnd
 import com.example.pmp.databinding.ActivitySplashBinding
-import com.example.pmp.ui.account.LoginUI
+import com.example.pmp.ui.LR.LoginUI
 
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {

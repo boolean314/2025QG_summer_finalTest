@@ -1,30 +1,17 @@
-package com.example.pmp.ui
+package com.example.pmp.viewModel
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.pmp.R
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
 import com.example.pmp.data.model.Project
-import com.example.pmp.ui.adapter.ProjectItemAdapter
 
-class PublicEventFragment : Fragment() {
+class AllEventFragmentVM: ViewModel() {
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_public_event, container, false)
-    }
+    private val _projects = MutableLiveData<List<Project>>()
+    val projects: LiveData<List<Project>> = _projects
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        val testProjects = listOf(
+    fun loadProjects() {
+        _projects.value = listOf(
             Project(
                 projectId = "1",
                 name = "FocusLife",
@@ -37,12 +24,12 @@ class PublicEventFragment : Fragment() {
             ),
             Project(
                 projectId = "1",
-                name = "CS:GO",
+                name = "TaskMaster",
                 platform = "前端",
-                status = "公开",
-                description = "风靡全球的多人射击游戏，玩家可以在这里组队竞技。",
+                status = "私有",
+                description = "TaskMaster帮助团队高效管理任务，支持多平台同步。",
                 createdDate = "2025-07-21 10:15:30",
-                shareCode = "csgo7355608",
+                shareCode = "abc123xyz",
                 botUrl = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=yyyy"
             ),
             Project(
@@ -56,11 +43,5 @@ class PublicEventFragment : Fragment() {
                 botUrl = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=zzzz"
             )
         )
-
-        //设置 RecyclerView
-        val recyclerView = view.findViewById<RecyclerView>(R.id.public_recycler_view)
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        recyclerView.adapter = ProjectItemAdapter(testProjects)
     }
-
 }

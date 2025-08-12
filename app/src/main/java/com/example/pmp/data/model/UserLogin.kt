@@ -1,7 +1,6 @@
 package com.example.pmp.data.model
 
-data class User(
-    val id: Int,
-    val account: String,
+data class UserLogin(
+    val email: String,
     val password: String
 )
