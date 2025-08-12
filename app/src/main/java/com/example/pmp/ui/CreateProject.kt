@@ -19,7 +19,7 @@ class CreateProject : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        val items1 = arrayOf("前端", "后台", "移动")
+        val items1 = arrayOf("frontend", "backend", "mobile")
         val items2=arrayOf("公开","私有")
         val adapter1 = ArrayAdapter(
             this,

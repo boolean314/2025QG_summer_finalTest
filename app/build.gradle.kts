@@ -40,6 +40,8 @@ android {
 }
 
 dependencies {
+    implementation("com.squareup.retrofit2:retrofit:2.6.1")//自动下载了Retrofit，okHttp和Okio，Okio是OkHttp的通信基础
+    implementation("com.squareup.retrofit2:converter-gson:2.6.1")//自动下载了GSON转换库
     implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
     implementation("com.github.dmytrodanylyk:circular-progress-button:1.4")
     implementation(libs.androidx.core.ktx)

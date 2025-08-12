@@ -5,7 +5,11 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.pmp.viewModel.FrontendDetailVM" />
+    </data>
 <androidx.constraintlayout.widget.ConstraintLayout
     android:id="@+id/main"
     android:layout_width="match_parent"
@@ -19,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
 
-        android:text="项目名称"
+        android:text="@{viewModel.projectName}"
         android:textSize="24sp"
 
         app:layout_constraintLeft_toLeftOf="parent"
@@ -43,7 +47,7 @@
             android:id="@+id/frontend_detail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="前端"
+            android:text="frontend"
             android:textSize="20sp"
             android:paddingTop="4dp"
             android:paddingBottom="4dp"
@@ -64,14 +68,15 @@
         app:layout_constraintBottom_toBottomOf="@+id/frontend_detail_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/frontend_detail_name"
-
+        app:strokeColor="@{viewModel.projectPermission == &quot;公开&quot; ? @color/wx_green : @color/red}"
         >
 
         <TextView
             android:id="@+id/frontend_detail_permission"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="权限"
+            android:text="@{viewModel.projectPermission}"
+            android:textColor="@{viewModel.projectPermission == &quot;公开&quot; ? @color/wx_green : @color/red}"
             android:textSize="20sp"
             android:paddingTop="4dp"
             android:paddingBottom="4dp"
