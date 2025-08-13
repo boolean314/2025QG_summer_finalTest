@@ -57,7 +57,7 @@ class MobileDetail : AppCompatActivity() {
         TabLayoutMediator(tabLayout,viewPager){
             tab,position->tab.text=when(position){
 
-            0->"异常"
+            0->"错误"
             1->"性能"
             else->""
         }

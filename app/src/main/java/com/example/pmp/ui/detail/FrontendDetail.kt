@@ -54,7 +54,7 @@ class FrontendDetail : AppCompatActivity() {
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = when (position) {
                 0 -> "行为"
-                1 -> "异常"
+                1 -> "错误"
                 2 -> "性能"
                 else -> ""
             }
@@ -110,4 +110,5 @@ class FrontendDetail : AppCompatActivity() {
             }
         }
 }
+
 

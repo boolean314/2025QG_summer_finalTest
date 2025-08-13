@@ -1,5 +1,7 @@
+
 package com.example.pmp.ui.detail.fragment
 
+import android.app.ProgressDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -36,6 +38,9 @@ class MobileErrorFragment:Fragment(R.layout.fragment_mobile_error) {
     private lateinit var entries:MutableList<Entry>
     private lateinit var timeStrings: MutableList<String> // 存储原始时间字符串
     private val timeFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+    private var progressDialog: ProgressDialog? = null
+    private var errorTimesRequestFinished = false
+    private var errorStatsRequestFinished = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,6 +64,9 @@ class MobileErrorFragment:Fragment(R.layout.fragment_mobile_error) {
         entries=mutableListOf<Entry>()
         timeStrings = mutableListOf<String>() // 初始化时间字符串列表
 
+        // 显示加载框
+        showProgressDialog()
+
         // 检查projectId是否为空
         if (projectId.isNullOrEmpty()) {
             Log.w("MobileErrorFragment", "projectId is null or empty, using default value '1'")
@@ -67,7 +75,7 @@ class MobileErrorFragment:Fragment(R.layout.fragment_mobile_error) {
 
         // 计算时间参数
         val currentTime = System.currentTimeMillis()
-        val startTimeMillis = currentTime - 5*24 * 60 * 60 * 1000 // 5天前
+        val startTimeMillis = currentTime - 3*24 * 60 * 60 * 1000 // 3天前
         val startTimeStr = timeFormat.format(Date(startTimeMillis))
         val endTimeStr = timeFormat.format(Date(currentTime))
 
@@ -87,7 +95,7 @@ class MobileErrorFragment:Fragment(R.layout.fragment_mobile_error) {
                     val apiResponse = response.body()
                     Log.d("MobileErrorFragment", "API Response: $apiResponse")
 
-                    if (apiResponse != null && apiResponse.data != null) {
+                    if (apiResponse?.data != null) {
                         val errorTimes = apiResponse.data
                         Log.d("MobileErrorFragment", "Error times data: $errorTimes")
 
@@ -127,17 +135,25 @@ class MobileErrorFragment:Fragment(R.layout.fragment_mobile_error) {
                         Log.e("MobileErrorFragment", "Failed to read error body", e)
                     }
                 }
+
+                // 标记请求完成并检查是否可以关闭加载框
+                errorTimesRequestFinished = true
+                checkAndDismissProgressDialog()
             }
 
             // 修复onFailure方法签名，应该匹配Callback<ApiResponse<List<ErrorTimes>>>类型
             override fun onFailure(call: retrofit2.Call<ApiResponse<List<ErrorTimes>>>, t: Throwable) {
                 Log.e("MobileErrorFragment", "ErrorTimes_onFailure: ${t.message}", t)
+
+                // 标记请求完成并检查是否可以关闭加载框
+                errorTimesRequestFinished = true
+                checkAndDismissProgressDialog()
             }
         })
 
 
         // 发送网络请求获取错误类型统计数据
-        apiService.getMobileErrorStats(projectId!!).enqueue(object : retrofit2.Callback<ApiResponse<List<List<ErrorStat>>>>{
+        apiService.getMobileErrorStatsPro(projectId!!).enqueue(object : retrofit2.Callback<ApiResponse<List<List<ErrorStat>>>>{
             override fun onResponse(
                 call: retrofit2.Call<ApiResponse<List<List<ErrorStat>>>>,
                 response: retrofit2.Response<ApiResponse<List<List<ErrorStat>>>>
@@ -201,13 +217,41 @@ class MobileErrorFragment:Fragment(R.layout.fragment_mobile_error) {
                         Log.e("MobileErrorFragment", "Failed to read error stats body", e)
                     }
                 }
+
+                // 标记请求完成并检查是否可以关闭加载框
+                errorStatsRequestFinished = true
+                checkAndDismissProgressDialog()
             }
 
             override fun onFailure(call: retrofit2.Call<ApiResponse<List<List<ErrorStat>>>>, t: Throwable) {
                 Log.e("MobileErrorFragment", "ErrorStats_onFailure: ${t.message}", t)
+
+                // 标记请求完成并检查是否可以关闭加载框
+                errorStatsRequestFinished = true
+                checkAndDismissProgressDialog()
             }
         })
 
+    }
+
+    // 显示加载框
+    private fun showProgressDialog() {
+        if (progressDialog == null) {
+            progressDialog = ProgressDialog(requireContext())
+            progressDialog?.setMessage("数据加载中...")
+            progressDialog?.setCancelable(false)
+        }
+        progressDialog?.show()
+        // 重置请求状态
+        errorTimesRequestFinished = false
+        errorStatsRequestFinished = false
+    }
+
+    // 检查两个请求是否都已完成，如果完成则关闭加载框
+    private fun checkAndDismissProgressDialog() {
+        if (errorTimesRequestFinished && errorStatsRequestFinished) {
+            progressDialog?.dismiss()
+        }
     }
 
     // 设置组合图表显示错误类型统计数据
@@ -220,7 +264,25 @@ class MobileErrorFragment:Fragment(R.layout.fragment_mobile_error) {
             isDragEnabled = true
             setScaleEnabled(true)
             setPinchZoom(true)
+            // 设置额外的偏移量，确保X轴标签完整显示
+            setExtraOffsets(10f, 10f, 10f, 30f)
+            // 解决与ScrollView的滑动冲突
+            setOnTouchListener { _, event ->
+                when (event.action) {
+                    android.view.MotionEvent.ACTION_DOWN -> {
+                        // 请求父视图不要拦截触摸事件
+                        parent.requestDisallowInterceptTouchEvent(true)
+                    }
+                    android.view.MotionEvent.ACTION_UP, android.view.MotionEvent.ACTION_CANCEL -> {
+                        // 恢复父视图对触摸事件的拦截
+                        parent.requestDisallowInterceptTouchEvent(false)
+                    }
+                }
+                // 调用图表自身的onTouchEvent方法
+                onTouchEvent(event)
+            }
         }
+
 
         // 准备数据
         val barEntries = ArrayList<com.github.mikephil.charting.data.BarEntry>()
@@ -244,9 +306,9 @@ class MobileErrorFragment:Fragment(R.layout.fragment_mobile_error) {
             lineEntries.add(Entry(index.toFloat(), ratio.toFloat()))
 
             // 处理标签文本，避免过长
-            var label = errorStat.errorType
-            if (label.length > 10) {
-                label = label.substring(0, 10)
+            var label = errorStat.errorType ?: ""
+            if (label.length > 12) {
+                label = label.substring(0, 12) + "..."
             }
             xLabels.add(label)
         }
@@ -263,8 +325,7 @@ class MobileErrorFragment:Fragment(R.layout.fragment_mobile_error) {
             lineDataSet.lineWidth = 2f
             lineDataSet.circleRadius = 4f
             lineDataSet.setDrawCircleHole(false)
-            lineDataSet.axisDependency =
-                com.github.mikephil.charting.components.YAxis.AxisDependency.RIGHT
+            lineDataSet.axisDependency = com.github.mikephil.charting.components.YAxis.AxisDependency.RIGHT
 
             val barData = com.github.mikephil.charting.data.BarData(barDataSet)
             barData.barWidth = 0.4f
@@ -296,6 +357,7 @@ class MobileErrorFragment:Fragment(R.layout.fragment_mobile_error) {
                 }
                 granularity = 1f
                 labelRotationAngle = -45f
+                textSize = 10f
             }
 
             // 配置左侧Y轴（柱状图）
@@ -338,9 +400,6 @@ class MobileErrorFragment:Fragment(R.layout.fragment_mobile_error) {
     }
 
 
-
-
-
     //
     // 将时间字符串解析为时间戳
     private fun parseTimeString(timeString: String): Long {
@@ -381,6 +440,23 @@ class MobileErrorFragment:Fragment(R.layout.fragment_mobile_error) {
             isDragEnabled = true
             setScaleEnabled(true)
             setPinchZoom(true)
+            // 设置额外的偏移量，确保X轴标签完整显示
+            setExtraOffsets(10f, 10f, 10f, 30f)
+            // 解决与ScrollView的滑动冲突
+            setOnTouchListener { _, event ->
+                when (event.action) {
+                    android.view.MotionEvent.ACTION_DOWN -> {
+                        // 请求父视图不要拦截触摸事件
+                        parent.requestDisallowInterceptTouchEvent(true)
+                    }
+                    android.view.MotionEvent.ACTION_UP, android.view.MotionEvent.ACTION_CANCEL -> {
+                        // 恢复父视图对触摸事件的拦截
+                        parent.requestDisallowInterceptTouchEvent(false)
+                    }
+                }
+                // 调用图表自身的onTouchEvent方法
+                onTouchEvent(event)
+            }
         }
 
         // 配置X轴
@@ -401,6 +477,7 @@ class MobileErrorFragment:Fragment(R.layout.fragment_mobile_error) {
             }
             granularity = 1f // 确保每个点都显示
             labelRotationAngle = -45f // 旋转标签避免重叠
+            textSize = 10f
         }
 
         // 配置左侧Y轴
@@ -416,13 +493,14 @@ class MobileErrorFragment:Fragment(R.layout.fragment_mobile_error) {
         setData()
     }
 
+
     private fun setData() {
         if (entries.isEmpty()) {
             Log.w("MobileErrorFragment", "No data to display")
             return
         }
 
-        val dataSet = LineDataSet(entries, "异常次数统计")
+        val dataSet = LineDataSet(entries, "错误次数统计")
         dataSet.color = ContextCompat.getColor(requireContext(), R.color.orange)
         dataSet.setCircleColor(ContextCompat.getColor(requireContext(), R.color.orange))
         dataSet.lineWidth = 2f
@@ -434,13 +512,10 @@ class MobileErrorFragment:Fragment(R.layout.fragment_mobile_error) {
         lineChart.invalidate()
     }
 
-
-
-
-
-
-
-
-
-
+    override fun onDestroyView() {
+        super.onDestroyView()
+        // 清理 progressDialog 防止内存泄漏
+        progressDialog?.dismiss()
+        progressDialog = null
+    }
 }

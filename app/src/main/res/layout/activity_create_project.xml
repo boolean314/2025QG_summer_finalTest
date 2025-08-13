@@ -1,8 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+
+    <data>
+
+        <variable
+            name="createProjectVM"
+            type="com.example.pmp.viewModel.CreateProjectVM"
+            />
+    </data>
+<androidx.constraintlayout.widget.ConstraintLayout
+
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -40,7 +52,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:hint="输入项目名称" />
+            android:hint="输入项目名称"
+            android:text="@={createProjectVM.projectName}"
+            />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -68,6 +82,7 @@
             android:layout_height="wrap_content"
             android:inputType="none"
             android:gravity="center"
+            android:text="@={createProjectVM.projectType}"
             />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -92,6 +107,7 @@
             android:gravity="center"
             android:maxLines="2"
             android:hint="输入项目简介"
+            android:text="@={createProjectVM.projectSummary}"
             />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -119,6 +135,7 @@
             android:layout_height="wrap_content"
             android:inputType="none"
             android:gravity="center"
+            android:text="@={createProjectVM.projectPermission}"
             />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -141,6 +158,8 @@
         app:cpb_textIdle="创建完成"
         app:layout_constraintTop_toBottomOf="@id/project_permission_layout"
         app:cpb_cornerRadius="30dp"
+        android:onClick="@{()->createProjectVM.createProject()}"
         />
 
   </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
