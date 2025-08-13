@@ -88,6 +88,25 @@
 
     </com.google.android.material.card.MaterialCardView>
 
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/backend_detail_member_list_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/backend_detail_layout"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="20dp"
+        >
+        <TextView
+            android:id="@+id/backend_detail_member_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="成员列表"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:padding="8dp"
+
+            />
+    </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/backend_detail_tab"
@@ -95,8 +114,8 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/backend_detail_name"
-        android:layout_marginTop="15dp"
+        app:layout_constraintTop_toBottomOf="@+id/backend_detail_member_list_layout"
+
 
         >
     </com.google.android.material.tabs.TabLayout>
@@ -111,8 +130,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
