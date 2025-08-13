@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("kotlin-kapt")
 }
 
 android {
@@ -61,4 +62,8 @@ dependencies {
     implementation("androidx.fragment:fragment-ktx:1.6.2")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")                                   //Retrofit
+    implementation("com.squareup.okhttp3:okhttp:4.9.3")                                             //okhttp
+    implementation("com.github.bumptech.glide:glide:4.15.1")                                        //glide
+    implementation("androidx.databinding:databinding-runtime:7.2.0")
+    implementation("androidx.databinding:databinding-runtime:7.2.0")                                //kapt
 }

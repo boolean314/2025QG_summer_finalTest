@@ -2,15 +2,22 @@ package com.example.pmp.data.apiService
 
 import com.example.pmp.data.model.ApiResponse
 import com.example.pmp.data.model.EncryptLogin
+import com.example.pmp.data.model.EncryptModify
 import com.example.pmp.data.model.EncryptRegister
 import com.example.pmp.data.model.ErrorStat
 import com.example.pmp.data.model.ErrorTimes
 import com.example.pmp.data.model.ResultResponse
+import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.PUT
+import retrofit2.http.Part
 import retrofit2.http.Query
+import java.io.File
 
 
 interface MyApiService {
@@ -48,4 +55,26 @@ fun getMobileErrorStats(@Query("projectId")projectId: String):Call<ApiResponse<L
         @Query("encryptedData") encryptedData: String,
         @Query("encryptedKey") encryptedKey: String
     ): ResultResponse
+
+    @PUT("users/updateUser")
+    suspend fun modifyU(@Body userModify: EncryptModify): ResultResponse
+
+    @PUT("users/findPassword")
+    suspend fun modifyP(@Body userModify: EncryptModify): ResultResponse
+
+    @Multipart
+    @POST("users/updateAvatar")
+    suspend fun modifyAvatar(
+        @Query("userId") userId: Int,
+        @Part avatar: MultipartBody.Part
+    ): ResultResponse
+
+    @GET("projects/getPersonalProject")
+    suspend fun getPersonalProject(@Query("userId") userId: Long): ResultResponse
+
+    @GET("projects/getPublicProjectList")
+    suspend fun getPublicProject() : ResultResponse
+
+    @DELETE("projects")
+    suspend fun deleteProject(@Query("uuid") uuid: String): ResultResponse
 }

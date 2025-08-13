@@ -3,6 +3,8 @@ package com.example.pmp.ui
 import android.content.Intent
 import androidx.fragment.app.Fragment
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,10 +13,11 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pmp.R
-import com.example.pmp.data.model.Project
-import com.example.pmp.ui.adapter.ProjectItemAdapter
-import com.example.pmp.viewModel.AllEventFragmentVM
+import com.example.pmp.data.model.GlobalData
+import com.example.pmp.ui.adapter.PersonalProjectAdapter
+import com.example.pmp.viewModel.PersonalProjectVM
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.textfield.TextInputLayout
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionHelper
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionLayout
@@ -23,12 +26,12 @@ import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RapidFloating
 import com.wangjie.rapidfloatingactionbutton.util.RFABShape
 import com.wangjie.rapidfloatingactionbutton.util.RFABTextUtil
 
-class AllEventFragment : Fragment(), RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener<Int> {
+class PersonalProjectUI : Fragment(), RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener<Int> {
 
     private lateinit var rfaLayout: RapidFloatingActionLayout
     private lateinit var rfaButton: RapidFloatingActionButton
     private lateinit var rfabHelper: RapidFloatingActionHelper
-    private val viewModel: AllEventFragmentVM by viewModels()
+    private val viewModel: PersonalProjectVM by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,10 +49,38 @@ class AllEventFragment : Fragment(), RapidFloatingActionContentLabelList.OnRapid
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.all_recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        val userId = GlobalData.userInfo?.id?.toLong() ?: return
+        viewModel.loadProjects(userId)
         viewModel.projects.observe(viewLifecycleOwner) { projects ->
-            recyclerView.adapter = ProjectItemAdapter(projects)
+            val adapter = PersonalProjectAdapter(projects.toMutableList()) { uuid ->
+                viewModel.deleteProject(uuid) { success ->
+                    if (success) {
+                        Toast.makeText(context, "删除成功", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(context, "删除失败", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+            recyclerView.adapter = adapter
         }
-        viewModel.loadProjects()
+
+        val searchEditText = view.findViewById<TextInputLayout>(R.id.search_bar).editText
+        val searchButton = view.findViewById<android.widget.ImageButton>(R.id.search_button)
+
+        searchEditText?.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                if (s.isNullOrEmpty()) {
+                    viewModel.filterProjectsByName("")
+                }
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+
+        searchButton.setOnClickListener {
+            val query = searchEditText?.text?.toString() ?: ""
+            viewModel.filterProjectsByName(query)
+        }
     }
 
     private fun initRFAB() {

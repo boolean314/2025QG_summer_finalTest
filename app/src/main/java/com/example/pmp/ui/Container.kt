@@ -1,11 +1,9 @@
 package com.example.pmp.ui
 
 import android.os.Bundle
-import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
-import androidx.viewpager.widget.ViewPager
 import com.dxtt.coolmenu.CoolMenuFrameLayout
 import com.example.pmp.R
 
@@ -13,9 +11,9 @@ class Container : AppCompatActivity(){
 
     private lateinit var coolMenuFrameLayout: CoolMenuFrameLayout
     private val fragments = listOf(
-        PublicEventFragment(),
+        PublicEventUI(),
         HomepageFragment(),
-        AllEventFragment(),
+        PersonalProjectUI(),
 
 
     )

@@ -12,7 +12,7 @@ import com.example.pmp.R
 import com.example.pmp.databinding.RegisterBinding
 import com.example.pmp.viewModel.account.RegisterVM
 
-class RegisterUI : AppCompatActivity() {
+class Register : AppCompatActivity() {
 
     private lateinit var binding: RegisterBinding
     private val viewModel: RegisterVM by viewModels()
@@ -31,7 +31,7 @@ class RegisterUI : AppCompatActivity() {
             insets
         }
         binding.loginEntrance.setOnClickListener {
-            startActivity(Intent(this, LoginUI::class.java))
+            startActivity(Intent(this, Login::class.java))
         }
         binding.RegisterProgressButton.isIndeterminateProgressMode = true
         binding.GetVerifyCodeButton.setOnClickListener {

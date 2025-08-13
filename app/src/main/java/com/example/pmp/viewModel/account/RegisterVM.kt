@@ -10,11 +10,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dd.CircularProgressButton
-import com.example.pmp.data.model.EncryptLogin
 import com.example.pmp.data.model.EncryptRegister
-import com.example.pmp.data.model.EncryptVerifyCode
 import com.example.pmp.data.retrofit.RetrofitClient
-import com.example.pmp.ui.Container
+import com.example.pmp.ui.LR.Login
 import com.example.pmp.util.Encryption.RegisterEncryption
 import com.example.pmp.util.Encryption.VerifyCodeEncryption
 import kotlinx.coroutines.launch
@@ -53,6 +51,7 @@ class RegisterVM : ViewModel() {
             button.isEnabled = isEmailValid(email.value ?: "")
         }, 60000)
     }
+
     fun register(context: Context, button: CircularProgressButton) {
         button.progress = CircularProgressButton.INDETERMINATE_STATE_PROGRESS
         viewModelScope.launch {
@@ -69,8 +68,9 @@ class RegisterVM : ViewModel() {
                 Handler(Looper.getMainLooper()).postDelayed({
                     if (response.code == 201) {
                         button.progress = CircularProgressButton.SUCCESS_STATE_PROGRESS
+                        Toast.makeText(context, response.msg, Toast.LENGTH_SHORT).show()
                         Handler(Looper.getMainLooper()).postDelayed({
-                            context.startActivity(Intent(context, Container::class.java))
+                            context.startActivity(Intent(context, Login::class.java))
                         },1000)
                     } else {
                         button.progress = CircularProgressButton.ERROR_STATE_PROGRESS
@@ -83,7 +83,7 @@ class RegisterVM : ViewModel() {
             } catch (e: Exception) {
                 Handler(Looper.getMainLooper()).postDelayed({
                     button.progress = CircularProgressButton.ERROR_STATE_PROGRESS
-                    Toast.makeText(context, "Network error", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "网络开小差了，请重试", Toast.LENGTH_SHORT).show()
                     Handler(Looper.getMainLooper()).postDelayed({
                         button.progress = CircularProgressButton.IDLE_STATE_PROGRESS
                     },2000)

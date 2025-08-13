@@ -21,7 +21,7 @@ object VerifyCodeEncryption {
     private const val RSA_TRANSFORMATION = "RSA/ECB/OAEPWithSHA-256AndMGF1Padding"
 
     /**
-     * 加密包含两个字段的JSON数据
+     * 加密包含一个字段的JSON数据
      * @param email 邮箱
      * @param serverPublicKey 服务端提供的RSA公钥（Base64编码，支持PEM格式带头部）
      * @return Pair(encryptedData, encryptedKey) 对应服务端接口的两个字段

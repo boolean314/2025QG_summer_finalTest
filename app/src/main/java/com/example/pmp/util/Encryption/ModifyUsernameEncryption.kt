@@ -13,38 +13,34 @@ import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.OAEPParameterSpec
 import javax.crypto.spec.PSource
 
-object RegisterEncryption {
+object ModifyUsernameEncryption {
+
     private const val AES_TRANSFORMATION = "AES/CBC/PKCS5Padding"
     private const val AES_KEY_SIZE = 256 // 服务端指定的密钥长度
     private const val IV_LENGTH = 16 // AES-CBC固定16字节IV
     private const val RSA_TRANSFORMATION = "RSA/ECB/OAEPWithSHA-256AndMGF1Padding"
 
     /**
-     * 加密包含四个字段的JSON数据
-     * @param email 邮箱
+     * 加密包含三个字段的JSON数据
+     * @param id 用户ID
+     * @param username 用户名
      * @param password 密码
-     * @param verifyCode 验证码
-     * @param phone 手机号
      * @param serverPublicKey 服务端提供的RSA公钥（Base64编码，支持PEM格式带头部）
      * @return Pair(encryptedData, encryptedKey) 对应服务端接口的两个字段
      */
     fun encryptWithServerKey(
-        email: String,
-        password: String,
-        verifyCode: String,
-        phone: String,
+        id: Int,
+        username: String,
         serverPublicKey: String
     ): Pair<String, String> {
         try {
             // 1. 构造JSON
             val userObj = JSONObject().apply {
-                put("email", email)
-                put("password", password)
-                put("phone",phone)
+                put("id", id)
+                put("username", username)
             }
             val json = JSONObject().apply {
-                put("users", userObj)
-                put("code", verifyCode)
+                put("user", userObj)
             }.toString()
 
             // 2. 生成32字节AES密钥

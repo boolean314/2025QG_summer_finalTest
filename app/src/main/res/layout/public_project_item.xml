@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:folding="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="30dp"
+    app:cardElevation="5dp"
+    app:cardBackgroundColor="@color/white"
+    android:layout_marginBottom="16dp">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/foldingCell">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/titleViewCardPublic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@color/white">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/titleLayoutPublic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/projectNamePublic"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="FocusLife"
+                    android:textSize="24sp"
+                    android:fontFamily="@font/alibaba_sans_heavy_italic"
+                    android:layout_marginStart="5dp"
+                    folding:layout_constraintBottom_toBottomOf="parent"
+                    folding:layout_constraintTop_toTopOf="parent"
+                    folding:layout_constraintStart_toStartOf="parent"/>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/statusCardPublic"
+                    android:layout_width="80dp"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="5dp"
+                    app:strokeWidth="3dp"
+                    app:strokeColor="@color/stroke_green"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:cardBackgroundColor="@color/white">
+
+                    <TextView
+                        android:id="@+id/statusTextPublic"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="公开"
+                        android:textSize="20sp"
+                        android:gravity="center_horizontal|center_vertical" />
+
+                </com.google.android.material.card.MaterialCardView>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp">
+
+                <TextView
+                    android:id="@+id/projectDescriptionPublic"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="FocusLife是一款能和智能底座联动的手机APP，用户可以在手机上设置喝水目标、设置待办事项......"
+                    android:textSize="14sp"
+                    android:padding="5dp"/>
+
+            </LinearLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/projectTagsLayoutPublic"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp">
+
+                <TextView
+                    android:id="@+id/projectTagsTitlePublic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="创建时间:"
+                    android:textSize="18sp"
+                    android:gravity="center_vertical"
+                    android:layout_marginStart="5dp"
+                    folding:layout_constraintStart_toStartOf="parent"
+                    folding:layout_constraintBottom_toBottomOf="parent"
+                    folding:layout_constraintTop_toTopOf="parent"/>
+
+                <TextView
+                    android:id="@+id/projectCreatedDatePublic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2025-8-11 16:29:45"
+                    android:layout_marginEnd="5dp"
+                    android:textSize="18sp"
+                    folding:layout_constraintBaseline_toBaselineOf="@+id/projectTagsTitlePublic"
+                    folding:layout_constraintTop_toTopOf="parent"
+                    folding:layout_constraintEnd_toEndOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/contentViewCardPublic"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@color/white">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/enterBtnPublic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/rounded_button"
+                android:text="进入详情页"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                app:backgroundTint="@null"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

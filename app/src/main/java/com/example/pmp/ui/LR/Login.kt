@@ -10,10 +10,9 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.pmp.R
 import com.example.pmp.databinding.LoginBinding
-import com.example.pmp.ui.Container
 import com.example.pmp.viewModel.account.LoginVM
 
-class LoginUI : AppCompatActivity() {
+class Login : AppCompatActivity() {
 
     private lateinit var binding: LoginBinding
     private val viewModel: LoginVM by viewModels()
@@ -31,7 +30,7 @@ class LoginUI : AppCompatActivity() {
             insets
         }
         binding.registerEntrance.setOnClickListener {
-            startActivity(Intent(this, RegisterUI::class.java))
+            startActivity(Intent(this, Register::class.java))
         }
         binding.forgetEntrance.setOnClickListener {
             Toast.makeText(this, "马上完成", Toast.LENGTH_SHORT).show()
@@ -49,7 +48,6 @@ class LoginUI : AppCompatActivity() {
                     viewModel.login(this, binding.LoginProgressButton)
                 }
             }
-
         }
     }
 }

@@ -14,7 +14,7 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.animation.doOnEnd
 import com.example.pmp.databinding.ActivitySplashBinding
-import com.example.pmp.ui.LR.LoginUI
+import com.example.pmp.ui.LR.Login
 
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
@@ -102,7 +102,7 @@ class SplashActivity : AppCompatActivity() {
         // --- 动画结束后延迟跳转 ---
         animatorSet.doOnEnd {
             binding.root.postDelayed({
-                startActivity(Intent(this@SplashActivity, LoginUI::class.java))
+                startActivity(Intent(this@SplashActivity, Login::class.java))
                 finish()
             }, postAnimationDelay)
         }

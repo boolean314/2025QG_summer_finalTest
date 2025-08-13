@@ -39,10 +39,10 @@
             android:name=".ui.CreateProject"
             android:exported="false" />
         <activity
-            android:name=".ui.LR.LoginUI"
+            android:name=".ui.LR.Login"
             android:exported="false" />
         <activity
-            android:name=".ui.LR.RegisterUI"
+            android:name=".ui.LR.Register"
             android:exported="false" />
         <activity
             android:name=".ui.Container"
