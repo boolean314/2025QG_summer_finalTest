@@ -30,20 +30,14 @@ class CreateProject : AppCompatActivity() {
         binding.lifecycleOwner=this
         val items1 = arrayOf("frontend", "backend", "mobile")
         val items2=arrayOf("公开","私有")
-        val adapter1 = ArrayAdapter(
-            this,
-            R.layout.create_project_dropdown_item,
-            items1
-        )
+
         val adapter2= ArrayAdapter(
             this,
             R.layout.create_project_dropdown_item,
             items2
         )
 
-        val dropdown1 = findViewById<AutoCompleteTextView>(R.id.create_project_type)
         val dropdown2 = findViewById<AutoCompleteTextView>(R.id.create_project_permission)
-        dropdown1.setAdapter(adapter1)
         dropdown2.setAdapter(adapter2)
     }
 }

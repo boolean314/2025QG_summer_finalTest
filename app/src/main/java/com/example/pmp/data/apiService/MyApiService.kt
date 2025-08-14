@@ -2,6 +2,7 @@ package com.example.pmp.data.apiService
 
 import com.example.pmp.data.model.ApiResponse
 import com.example.pmp.data.model.AverageTimeResponse
+import com.example.pmp.data.model.CreateProjectData
 import com.example.pmp.data.model.EncryptLogin
 import com.example.pmp.data.model.EncryptModify
 import com.example.pmp.data.model.EncryptRegister
@@ -27,7 +28,7 @@ interface MyApiService {
 
     //创建项目时发送项目信息
     @POST("projects")
-    fun createProject(@Body uuid:String,name:String,description:String,isPublic:Boolean,id:Int,userId:Int,power:Int,userRole: Int): Call<ApiResponse<Body>>
+    fun createProject(@Body createProjectData: CreateProjectData): Call<ApiResponse<Body>>
 
 
     //获取三端错误量

@@ -32,7 +32,6 @@ class PersonalProjectUI : Fragment(), RapidFloatingActionContentLabelList.OnRapi
     private lateinit var rfaButton: RapidFloatingActionButton
     private lateinit var rfabHelper: RapidFloatingActionHelper
     private val viewModel: PersonalProjectVM by viewModels()
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
