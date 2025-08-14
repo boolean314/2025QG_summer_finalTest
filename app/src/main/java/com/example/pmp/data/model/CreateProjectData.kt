@@ -5,6 +5,4 @@ data class CreateProjectData(
     val description: String,
     val isPublic: Boolean,
     val userId: Int,
-    val power: Int,
-    val userRole: Int
 )

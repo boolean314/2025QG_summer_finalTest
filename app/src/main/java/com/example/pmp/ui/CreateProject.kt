@@ -3,6 +3,7 @@ package com.example.pmp.ui
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -28,6 +29,16 @@ class CreateProject : AppCompatActivity() {
         createProjectVM=ViewModelProvider(this).get(CreateProjectVM::class.java)
         binding.createProjectVM=createProjectVM
         binding.lifecycleOwner=this
+
+        // 观察项目创建结果
+        createProjectVM.projectCreated.observe(this) { success ->
+            if (success) {
+                // 项目创建成功，结束当前 Activity
+
+                Toast.makeText(this, "项目创建成功", Toast.LENGTH_SHORT).show()
+                finish()
+            }
+        }
         val items1 = arrayOf("frontend", "backend", "mobile")
         val items2=arrayOf("公开","私有")
 

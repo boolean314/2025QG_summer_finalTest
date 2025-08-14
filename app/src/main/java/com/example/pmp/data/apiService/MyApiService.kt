@@ -28,7 +28,7 @@ interface MyApiService {
 
     //创建项目时发送项目信息
     @POST("projects")
-    fun createProject(@Body createProjectData: CreateProjectData): Call<ApiResponse<Body>>
+    fun createProject(@Body createProjectData: CreateProjectData): Call<ApiResponse<Any>>
 
 
     //获取三端错误量
