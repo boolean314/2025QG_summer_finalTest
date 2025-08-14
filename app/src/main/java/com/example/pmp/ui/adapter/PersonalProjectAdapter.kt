@@ -2,17 +2,23 @@ package com.example.pmp.ui.adapter
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pmp.R
+import com.example.pmp.data.model.GlobalData
 import com.example.pmp.data.model.PersonalProject
+import com.example.pmp.ui.detail.FrontendDetail
 import com.google.android.material.card.MaterialCardView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.time.format.DateTimeFormatter
 
 class PersonalProjectAdapter(private val dataList: MutableList<PersonalProject>, private val onDelete: (String) -> Unit) :
@@ -84,6 +90,28 @@ class PersonalProjectAdapter(private val dataList: MutableList<PersonalProject>,
             }
         }
 
+        holder.enterBtn.setOnClickListener {
+            val dialogView = LayoutInflater.from(holder.itemView.context).inflate(R.layout.dialog_transfer, null)
+            val frontendBtn = dialogView.findViewById<Button>(R.id.frontend_button)
+            val mobileBtn = dialogView.findViewById<Button>(R.id.mobile_button)
+            val backendBtn = dialogView.findViewById<Button>(R.id.backend_button)
+            val dialog = MaterialAlertDialogBuilder(holder.itemView.context).setView(dialogView).create()
+
+            frontendBtn.setOnClickListener {
+                val uuid = project.uuid
+                val userId = GlobalData.userInfo?.id
+                val userRole = project.userRole
+                val intent = Intent(holder.itemView.context, FrontendDetail::class.java)
+                intent.putExtra("extra_uuid",uuid)
+                intent.putExtra("extra_userId",userId)
+//                intent.putExtra()
+            }
+
+//            adaptUI(dialog)
+
+            dialog.show()
+        }
+
     }
 
     override fun getItemCount(): Int = dataList.size
@@ -95,4 +123,14 @@ class PersonalProjectAdapter(private val dataList: MutableList<PersonalProject>,
             notifyItemRemoved(index)
         }
     }
+
+//    fun adaptUI(dialog : androidx.appcompat.app.AlertDialog){  //Dialog适配器
+//        val displayMetrics = resources.displayMetrics
+//        val screenWidth = displayMetrics.widthPixels
+//        val window = dialog.window
+//        window?.setLayout(
+//            (screenWidth * 0.888888).toInt(),
+//            WindowManager.LayoutParams.WRAP_CONTENT
+//        )
+//    }
 }

@@ -25,6 +25,7 @@ import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RFACLabelItem
 import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RapidFloatingActionContentLabelList
 import com.wangjie.rapidfloatingactionbutton.util.RFABShape
 import com.wangjie.rapidfloatingactionbutton.util.RFABTextUtil
+import kotlin.text.toLong
 
 class PersonalProjectUI : Fragment(), RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener<Int> {
 
@@ -38,6 +39,12 @@ class PersonalProjectUI : Fragment(), RapidFloatingActionContentLabelList.OnRapi
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_all_event, container, false)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val userId = GlobalData.userInfo?.id?.toLong() ?: return
+        viewModel.loadProjects(userId)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -143,6 +143,18 @@
                 app:backgroundTint="@null"/>
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/exitBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/rounded_button_exit"
+                android:text="退出项目"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                app:backgroundTint="@null"/>
+
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/deleteBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
