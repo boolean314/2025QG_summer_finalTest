@@ -90,4 +90,10 @@ fun getMobileErrorStatsPro(@Query("projectId")projectId: String):Call<ApiRespons
 
     @DELETE("projects")
     suspend fun deleteProject(@Query("uuid") uuid: String): ResultResponse
+
+    @GET("roles/getRole")
+    suspend fun authentication(
+        @Query("userId") userId: Int,
+        @Query("projectId") projectId: String
+    ): ResultResponse
 }
