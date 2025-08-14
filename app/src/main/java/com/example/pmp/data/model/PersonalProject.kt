@@ -6,7 +6,7 @@ data class PersonalProject(
     val uuid: String,
     val name: String,
     val description: String,
-    val createTime: LocalDateTime,
+    val createTime: String,
     val isPublic: Boolean,
     val id: Long,
     val userId: Long,

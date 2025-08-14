@@ -29,7 +29,7 @@ object ModifyUsernameEncryption {
      * @return Pair(encryptedData, encryptedKey) 对应服务端接口的两个字段
      */
     fun encryptWithServerKey(
-        id: Int,
+        id: Long,
         username: String,
         serverPublicKey: String
     ): Pair<String, String> {

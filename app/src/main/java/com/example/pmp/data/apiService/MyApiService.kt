@@ -11,7 +11,6 @@ import com.example.pmp.data.model.ErrorTimes
 import com.example.pmp.data.model.ManualTrackingStats
 import com.example.pmp.data.model.ResultResponse
 import okhttp3.MultipartBody
-import okhttp3.internal.platform.Platform
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -21,7 +20,6 @@ import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Part
 import retrofit2.http.Query
-import java.io.File
 
 
 interface MyApiService {
@@ -79,7 +77,7 @@ fun getMobileErrorStatsPro(@Query("projectId")projectId: String):Call<ApiRespons
     @Multipart
     @POST("users/updateAvatar")
     suspend fun modifyAvatar(
-        @Query("userId") userId: Int,
+        @Query("userId") userId: Long,
         @Part avatar: MultipartBody.Part
     ): ResultResponse
 
@@ -94,7 +92,7 @@ fun getMobileErrorStatsPro(@Query("projectId")projectId: String):Call<ApiRespons
 
     @GET("roles/getRole")
     suspend fun authentication(
-        @Query("userId") userId: Int,
+        @Query("userId") userId: Long,
         @Query("projectId") projectId: String
     ): ResultResponse
 }

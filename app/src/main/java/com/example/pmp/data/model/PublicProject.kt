@@ -6,7 +6,7 @@ data class PublicProject(
     val uuid: String,
     val name: String,
     val description: String,
-    val createTime: LocalDateTime,
+    val createdTime: String,
     val isPublic: Boolean,
     val webhook: String,
     val invitedCode: String,
