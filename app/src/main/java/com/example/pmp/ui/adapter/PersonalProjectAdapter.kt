@@ -10,24 +10,34 @@ import android.view.WindowManager
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.compose.ui.graphics.BlurEffect
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pmp.R
 import com.example.pmp.data.model.GlobalData
 import com.example.pmp.data.model.PersonalProject
+import com.example.pmp.ui.PersonalProjectUI
 import com.example.pmp.ui.detail.BackendDetail
 import com.example.pmp.ui.detail.FrontendDetail
 import com.example.pmp.ui.detail.MobileDetail
+import com.example.pmp.viewModel.PersonalProjectVM
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.DelicateCoroutinesApi
 import java.time.format.DateTimeFormatter
+import kotlinx.coroutines.launch
+import java.time.LocalDateTime
 
-class PersonalProjectAdapter(private val dataList: MutableList<PersonalProject>, private val onDelete: (String) -> Unit) :
+class PersonalProjectAdapter(
+    private val dataList: MutableList<PersonalProject>,
+    private val onDelete: (String) -> Unit,
+    private val viewModel: PersonalProjectVM,
+    private val onAuthenticate: suspend (Long, String, (Boolean) -> Unit) -> Unit
+) :
     RecyclerView.Adapter<PersonalProjectAdapter.ProjectViewHolder>() {
 
     private val expandedIndexes = HashSet<Int>()
-
 
     class ProjectViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -48,6 +58,7 @@ class PersonalProjectAdapter(private val dataList: MutableList<PersonalProject>,
         return ProjectViewHolder(view)
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     @SuppressLint("ClickableViewAccessibility")
     override fun onBindViewHolder(holder: ProjectViewHolder, position: Int) {
         val project = dataList[position]
@@ -58,12 +69,24 @@ class PersonalProjectAdapter(private val dataList: MutableList<PersonalProject>,
         holder.statusCard.strokeColor = ContextCompat.getColor(holder.itemView.context, color)
         holder.projectDescription.text = project.description
 
-        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-        val formattedDate = project.createTime.format(formatter)
-        holder.projectCreatedTime.text = formattedDate
+//        val formattedDate = convertDateFormat(project.createTime)
+        holder.projectCreatedTime.text = project.createTime
 
 
         holder.detailLayout.visibility = if (expandedIndexes.contains(position)) View.VISIBLE else View.GONE
+
+        holder.deleteBtn.isEnabled = false
+        if(expandedIndexes.contains(position)) {
+            val userId = GlobalData.userInfo?.id ?: return
+            val projectId = project.uuid
+            kotlinx.coroutines.GlobalScope.launch {
+                onAuthenticate(userId, projectId) { canDelete ->
+                    holder.deleteBtn.post {
+                        holder.deleteBtn.isEnabled = canDelete
+                    }
+                }
+            }
+        }
 
         holder.titleLayout.setOnClickListener {
             if (expandedIndexes.contains(position)) {
@@ -72,10 +95,9 @@ class PersonalProjectAdapter(private val dataList: MutableList<PersonalProject>,
                 expandedIndexes.add(position)
             }
             notifyItemChanged(position)
-        }
+            //鉴权,如果是管理员或者老板，就将删除项目按钮设为可用
+            //弹出删除对话框，确认删除就删掉项目
 
-        holder.enterBtn.setOnClickListener {
-            Toast.makeText(holder.itemView.context, "进入 ${project.name} 项目", Toast.LENGTH_SHORT).show()
         }
 
         holder.deleteBtn.setOnClickListener {
@@ -92,13 +114,18 @@ class PersonalProjectAdapter(private val dataList: MutableList<PersonalProject>,
             }
         }
 
-
         holder.enterBtn.setOnClickListener {
             val dialogView = LayoutInflater.from(holder.itemView.context).inflate(R.layout.dialog_transfer, null)
             val frontendBtn = dialogView.findViewById<Button>(R.id.frontend_button)
             val mobileBtn = dialogView.findViewById<Button>(R.id.mobile_button)
             val backendBtn = dialogView.findViewById<Button>(R.id.backend_button)
             val dialog = MaterialAlertDialogBuilder(holder.itemView.context).setView(dialogView).create()
+
+            val window = dialog.window
+            window?.let {
+                it.setDimAmount(0.7f)  // 设置背景虚化的透明度，值越小背景越模糊
+                it.setFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND, WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+            }
 
             //进入前端
             frontendBtn.setOnClickListener {
@@ -161,5 +188,16 @@ class PersonalProjectAdapter(private val dataList: MutableList<PersonalProject>,
             (screenWidth * 0.888888).toInt(),
             WindowManager.LayoutParams.WRAP_CONTENT
         )
+    }
+
+    fun convertDateFormat(dateString: String): String {
+        return try {
+            val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss[.SSSSSS][.SSSSS][.SSS]")
+            val outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+            val date = LocalDateTime.parse(dateString, inputFormatter)
+            date.format(outputFormatter)
+        } catch (e: Exception) {
+            dateString // 解析失败时直接返回原字符串，防止闪退
+        }
     }
 }

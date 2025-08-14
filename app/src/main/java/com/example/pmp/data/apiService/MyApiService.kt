@@ -123,7 +123,7 @@ fun getMobileErrorStatsPro(@Query("projectId")projectId: String):Call<ApiRespons
 
     @GET("roles/getRole")
     suspend fun authentication(
-        @Query("userId") userId: Int,
+        @Query("userId") userId: Long,
         @Query("projectId") projectId: String
     ): ResultResponse
 }

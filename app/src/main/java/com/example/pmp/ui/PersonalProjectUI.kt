@@ -1,6 +1,8 @@
 package com.example.pmp.ui
 
-import android.app.Activity
+import android.annotation.SuppressLint
+
+
 import android.content.Intent
 import androidx.fragment.app.Fragment
 import android.os.Bundle
@@ -11,7 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
+
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
@@ -36,10 +38,15 @@ import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RFACLabelItem
 import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RapidFloatingActionContentLabelList
 import com.wangjie.rapidfloatingactionbutton.util.RFABShape
 import com.wangjie.rapidfloatingactionbutton.util.RFABTextUtil
+
+import androidx.lifecycle.lifecycleScope
+import com.example.pmp.ui.adapter.PublicProjectAdapter
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Response
-import kotlin.text.toLong
-
 class PersonalProjectUI : Fragment(), RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener<Int> {
 
     private lateinit var rfaLayout: RapidFloatingActionLayout
@@ -58,7 +65,7 @@ class PersonalProjectUI : Fragment(), RapidFloatingActionContentLabelList.OnRapi
 
     override fun onResume() {
         super.onResume()
-        val userId = GlobalData.userInfo?.id?.toLong() ?: return
+        val userId = GlobalData.userInfo?.id ?: return
         viewModel.loadProjects(userId)
     }
 
@@ -67,30 +74,43 @@ class PersonalProjectUI : Fragment(), RapidFloatingActionContentLabelList.OnRapi
         rfaLayout = view.findViewById(R.id.rfaLayout)
         rfaButton = view.findViewById(R.id.rfaBtn)
         initRFAB()
-
         val recyclerView = view.findViewById<RecyclerView>(R.id.all_recycler_view)
+        val swipeRefresh = view.findViewById<androidx.swiperefreshlayout.widget.SwipeRefreshLayout>(R.id.swipeRefresh)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-//绑定对话框的布局给按钮设置点击事件
+
+        //绑定对话框的布局给按钮设置点击事件
         binding=DialogJoinProjectBinding.inflate(layoutInflater)
-binding.joinProjectButton.setOnClickListener{
-    val invitedCode=binding.joinProjectId.text.toString()
-    val userId=GlobalData.userInfo?.id?.toLong()
-    Log.d("PersonalProjectUI", "invitedCode: $invitedCode")
-    Log.d("PersonalProjectUI", "userId: $userId")
+        binding.joinProjectButton.setOnClickListener{
+            val invitedCode=binding.joinProjectId.text.toString()
+            val userId=GlobalData.userInfo?.id?.toLong()
+            Log.d("PersonalProjectUI", "invitedCode: $invitedCode")
+            Log.d("PersonalProjectUI", "userId: $userId")
 
-}
+        }
 
-
-        val userId = GlobalData.userInfo?.id?.toLong() ?: return
+        val userId = GlobalData.userInfo?.id ?: return
         viewModel.loadProjects(userId)
+        swipeRefresh.setColorSchemeResources(R.color.qq_blue)
+        swipeRefresh.setOnRefreshListener {
+            refreshProject(recyclerView.adapter as PersonalProjectAdapter, swipeRefresh)
+        }
         viewModel.projects.observe(viewLifecycleOwner) { projects ->
-            val adapter = PersonalProjectAdapter(projects.toMutableList()) { uuid ->
-                viewModel.deleteProject(uuid) { success ->
-                    if (success) {
-                        Toast.makeText(context, "删除成功", Toast.LENGTH_SHORT).show()
-                    } else {
-                        Toast.makeText(context, "删除失败", Toast.LENGTH_SHORT).show()
+            val adapter = PersonalProjectAdapter(
+                projects.toMutableList(),
+                { uuid ->
+                    viewModel.deleteProject(uuid) { success ->
+                        if (success) {
+                            Toast.makeText(context, "删除成功", Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(context, "删除失败", Toast.LENGTH_SHORT).show()
+                        }
                     }
+                },
+                viewModel
+            ){ userId, projectId, callback ->
+                viewLifecycleOwner.lifecycleScope.launch {
+                    val canDelete = viewModel.authenticate(userId, projectId)
+                    callback(canDelete)
                 }
             }
             recyclerView.adapter = adapter
@@ -237,4 +257,16 @@ binding.joinProjectButton.setOnClickListener{
 }
 
 
+    @SuppressLint("NotifyDataSetChanged")
+    fun refreshProject(adapter: PersonalProjectAdapter, swipeRefresh: androidx.swiperefreshlayout.widget.SwipeRefreshLayout) {
+        CoroutineScope(Dispatchers.IO).launch {
+            delay(2000)
+            val userId = GlobalData.userInfo?.id ?: return@launch
+            viewModel.loadProjects(userId)
+            requireActivity().runOnUiThread{
+                adapter.notifyDataSetChanged()
+                swipeRefresh.isRefreshing = false
+            }
+        }
+    }
 }

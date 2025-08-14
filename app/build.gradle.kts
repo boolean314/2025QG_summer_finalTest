@@ -50,6 +50,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.ui.graphics.android)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -66,4 +67,5 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.15.1")                                        //glide
     implementation("androidx.databinding:databinding-runtime:7.2.0")
     implementation("androidx.databinding:databinding-runtime:7.2.0")                                //kapt
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 }

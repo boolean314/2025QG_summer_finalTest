@@ -7,12 +7,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pmp.data.model.PersonalProject
+import com.example.pmp.data.model.UserAuthentication
 import com.example.pmp.data.retrofit.RetrofitClient
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import kotlin.code
-import kotlin.text.get
 
 class PersonalProjectVM: ViewModel() {
 
@@ -26,28 +25,11 @@ class PersonalProjectVM: ViewModel() {
             if (response.code == 200) {
                 val data = response.data as? List<Map<String, Any>>
                 allProjects = data?.map { map ->
-                    val createTimeString = (map["created_time"] ?: map["createTime"])?.toString() ?: ""
-                    Log.d("PersonalProjectVM", "createTimeString: $createTimeString") // 打印时间字符串
-
-                    val createTime = if (createTimeString.isNotEmpty()) {
-                        try {
-                            // 使用适合包含毫秒部分的格式
-                            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS")
-                            LocalDateTime.parse(createTimeString, formatter)
-                        } catch (e: Exception) {
-                            Log.e("PersonalProjectVM", "Error parsing date: $e")
-                            LocalDateTime.now() // 默认时间
-                        }
-                    } else {
-                        Log.e("PersonalProjectVM", "createTimeString is empty, using default time")
-                        LocalDateTime.now() // 没有时间数据时使用当前时间
-                    }
-
                     PersonalProject(
                         uuid = map["uuid"] as? String ?: "",
                         name = map["name"] as? String ?: "",
                         description = map["description"] as? String ?: "",
-                        createTime = createTime,
+                        createTime = map["createTime"] as? String ?: "接不到啊哥们 ",
                         isPublic = map["isPublic"] as? Boolean ?: false,
                         id = (map["id"] as? Number)?.toLong() ?: 0L,
                         userId = (map["userId"] as? Number)?.toLong() ?: 0L,
@@ -80,5 +62,28 @@ class PersonalProjectVM: ViewModel() {
                 onResult(false)
             }
         }
+    }
+
+    suspend fun authenticate(userId: Long, projectId: String) : Boolean{
+            return try {
+                val response = RetrofitClient.instance.authentication(userId, projectId)
+                if(response.code == 200) {
+                    val data = response.data as? Map<String, Any>
+                    val auth = data?.let { map ->
+                        UserAuthentication(
+                            userId = (map["userId"] as? Number) ?.toLong() ?: 0L,
+                            projectId = (map["projectId"] as? Number) ?.toLong() ?: 0L,
+                            power = (map["power"] as? Number)?.toInt() ?: 0,
+                            userRole = (map["userRole"] as? Number)?.toInt() ?: 0
+                        )
+                    }
+                    Log.d("PersonalProjectVM", "Authentication result: ${auth?.userRole}")
+                    auth?.userRole == 0 || auth?.userRole == 1
+                } else {
+                    false
+                }
+            } catch (e: Exception) {
+                false
+            }
     }
 }

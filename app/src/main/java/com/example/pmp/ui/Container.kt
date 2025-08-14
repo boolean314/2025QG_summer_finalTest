@@ -27,12 +27,10 @@ class Container : AppCompatActivity(){
         enableEdgeToEdge()
         setContentView(R.layout.container)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-        val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-        v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-        insets
-    }
-
-
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
         coolMenuFrameLayout = findViewById(R.id.rl_container)
         coolMenuFrameLayout.setTitles(titles) // 设置标题
         // 可选：设置菜单图标

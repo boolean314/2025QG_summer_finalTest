@@ -13,7 +13,9 @@ import com.example.pmp.R
 import com.example.pmp.data.model.PersonalProject
 import com.example.pmp.data.model.PublicProject
 import com.google.android.material.card.MaterialCardView
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import kotlin.text.format
 
 class PublicProjectAdapter(private val dataList: List<PublicProject>) :
     RecyclerView.Adapter<PublicProjectAdapter.ProjectViewHolder>() {
@@ -48,8 +50,7 @@ class PublicProjectAdapter(private val dataList: List<PublicProject>) :
         holder.statusCard.strokeColor = ContextCompat.getColor(holder.itemView.context, color)
         holder.projectDescription.text = project.description
 
-        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-        val formattedDate = project.createTime.format(formatter)
+        val formattedDate = convertDateFormat(project.createdTime)
         holder.projectCreatedTime.text = formattedDate
 
 
@@ -70,4 +71,15 @@ class PublicProjectAdapter(private val dataList: List<PublicProject>) :
     }
 
     override fun getItemCount(): Int = dataList.size
+
+    fun convertDateFormat(dateString: String): String {
+        return try {
+            val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss[.SSSSSS][.SSSSS][.SSS]")
+            val outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+            val date = LocalDateTime.parse(dateString, inputFormatter)
+            date.format(outputFormatter)
+        } catch (e: Exception) {
+            dateString // 解析失败时直接返回原字符串，防止闪退
+        }
+    }
 }

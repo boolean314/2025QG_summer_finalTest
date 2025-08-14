@@ -57,7 +57,7 @@ class LoginVM : ViewModel() {
                         val decryptedJson = Decryption.decrypt(encryptedData,encryptedKey,serverPrivateKey)
                         val decryptedObj = org.json.JSONObject(decryptedJson)
                         val userObj = decryptedObj.getJSONObject("user")
-                        val id = userObj.optInt("id")
+                        val id = userObj.optLong("id")
                         val username = userObj.optString("username")
                         val avatar = userObj.optString("avatar")
                         val createdTime = userObj.optString("createdTime")
