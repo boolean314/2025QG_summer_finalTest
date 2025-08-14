@@ -16,7 +16,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.pmp.R
 import com.example.pmp.data.model.GlobalData
 import com.example.pmp.data.model.PersonalProject
+import com.example.pmp.ui.detail.BackendDetail
 import com.example.pmp.ui.detail.FrontendDetail
+import com.example.pmp.ui.detail.MobileDetail
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.time.format.DateTimeFormatter
@@ -90,6 +92,7 @@ class PersonalProjectAdapter(private val dataList: MutableList<PersonalProject>,
             }
         }
 
+
         holder.enterBtn.setOnClickListener {
             val dialogView = LayoutInflater.from(holder.itemView.context).inflate(R.layout.dialog_transfer, null)
             val frontendBtn = dialogView.findViewById<Button>(R.id.frontend_button)
@@ -97,6 +100,7 @@ class PersonalProjectAdapter(private val dataList: MutableList<PersonalProject>,
             val backendBtn = dialogView.findViewById<Button>(R.id.backend_button)
             val dialog = MaterialAlertDialogBuilder(holder.itemView.context).setView(dialogView).create()
 
+            //进入前端
             frontendBtn.setOnClickListener {
                 val uuid = project.uuid
                 val userId = GlobalData.userInfo?.id
@@ -104,10 +108,35 @@ class PersonalProjectAdapter(private val dataList: MutableList<PersonalProject>,
                 val intent = Intent(holder.itemView.context, FrontendDetail::class.java)
                 intent.putExtra("extra_uuid",uuid)
                 intent.putExtra("extra_userId",userId)
-//                intent.putExtra()
+                intent.putExtra("extra_userRole",userRole)
+                holder.itemView.context.startActivity(intent)
             }
 
-//            adaptUI(dialog)
+            //进入移动端
+            mobileBtn.setOnClickListener {
+                val uuid = project.uuid
+                val userId = GlobalData.userInfo?.id
+                val userRole = project.userRole
+                val intent = Intent(holder.itemView.context, MobileDetail::class.java)
+                intent.putExtra("extra_uuid",uuid)
+                intent.putExtra("extra_userId",userId)
+                intent.putExtra("extra_userRole",userRole)
+                holder.itemView.context.startActivity(intent)
+            }
+
+            //进入后端
+            backendBtn.setOnClickListener {
+                val uuid = project.uuid
+                val userId = GlobalData.userInfo?.id
+                val userRole = project.userRole
+                val intent = Intent(holder.itemView.context, BackendDetail::class.java)
+                intent.putExtra("extra_uuid",uuid)
+                intent.putExtra("extra_userId",userId)
+                intent.putExtra("extra_userRole",userRole)
+                holder.itemView.context.startActivity(intent)
+            }
+
+            adaptUI(dialog)
 
             dialog.show()
         }
@@ -124,13 +153,13 @@ class PersonalProjectAdapter(private val dataList: MutableList<PersonalProject>,
         }
     }
 
-//    fun adaptUI(dialog : androidx.appcompat.app.AlertDialog){  //Dialog适配器
-//        val displayMetrics = resources.displayMetrics
-//        val screenWidth = displayMetrics.widthPixels
-//        val window = dialog.window
-//        window?.setLayout(
-//            (screenWidth * 0.888888).toInt(),
-//            WindowManager.LayoutParams.WRAP_CONTENT
-//        )
-//    }
+    fun adaptUI(dialog : androidx.appcompat.app.AlertDialog){  //Dialog适配器
+        val displayMetrics = dialog.context.resources.displayMetrics
+        val screenWidth = displayMetrics.widthPixels
+        val window = dialog.window
+        window?.setLayout(
+            (screenWidth * 0.888888).toInt(),
+            WindowManager.LayoutParams.WRAP_CONTENT
+        )
+    }
 }
