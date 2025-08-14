@@ -8,10 +8,11 @@ import com.example.pmp.data.model.EncryptModify
 import com.example.pmp.data.model.EncryptRegister
 import com.example.pmp.data.model.ErrorStat
 import com.example.pmp.data.model.ErrorTimes
+import com.example.pmp.data.model.JoinProjectData
 import com.example.pmp.data.model.ManualTrackingStats
+import com.example.pmp.data.model.ProjectDetail
 import com.example.pmp.data.model.ResultResponse
 import okhttp3.MultipartBody
-import okhttp3.internal.platform.Platform
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -21,7 +22,6 @@ import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Part
 import retrofit2.http.Query
-import java.io.File
 
 
 interface MyApiService {
@@ -30,6 +30,18 @@ interface MyApiService {
     @POST("projects")
     fun createProject(@Body createProjectData: CreateProjectData): Call<ApiResponse<Any>>
 
+    //加入项目
+    @POST("projects/join")
+    fun joinProject(@Body joinProjectData: JoinProjectData): Call<ApiResponse<Any>>
+
+
+    //获取项目详情
+    @GET("projects/getProject")
+    fun getProjectDetail(@Query("uuid")uuid: String): Call<ApiResponse<ProjectDetail>>
+
+    //获取项目邀请码
+    @GET("projects/getInviteCode")
+    fun getInviteCode(@Query("projectId")uuid: String): Call<ApiResponse<String>>
 
     //获取三端错误量
     @GET("graph/getErrorTrend")
@@ -58,6 +70,23 @@ fun getMobileErrorStatsPro(@Query("projectId")projectId: String):Call<ApiRespons
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     @POST("users/password")
     suspend fun login(@Body userEncrypted: EncryptLogin): ResultResponse
 
@@ -79,7 +108,7 @@ fun getMobileErrorStatsPro(@Query("projectId")projectId: String):Call<ApiRespons
     @Multipart
     @POST("users/updateAvatar")
     suspend fun modifyAvatar(
-        @Query("userId") userId: Int,
+        @Query("userId") userId: Long,
         @Part avatar: MultipartBody.Part
     ): ResultResponse
 

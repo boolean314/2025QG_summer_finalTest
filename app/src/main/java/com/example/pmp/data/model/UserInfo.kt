@@ -1,7 +1,7 @@
 package com.example.pmp.data.model
 
 data class UserInfo(
-    val id: Int,
+    val id: Long,
     val username: String,
     val password: String,
     val avatar: String,

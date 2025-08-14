@@ -36,7 +36,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/project_name_layout"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
         app:boxCornerRadiusBottomEnd="15dp"
         app:boxCornerRadiusBottomStart="15dp"
         app:boxCornerRadiusTopEnd="15dp"
@@ -50,10 +50,13 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/create_project_name"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:hint="输入项目名称"
             android:text="@={createProjectVM.name}"
+            android:minHeight="56dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
             />
 
     </com.google.android.material.textfield.TextInputLayout>

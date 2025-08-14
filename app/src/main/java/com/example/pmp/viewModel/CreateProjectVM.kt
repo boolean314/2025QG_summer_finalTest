@@ -21,7 +21,7 @@ class CreateProjectVM: ViewModel() {
  val name= MutableLiveData<String>()
  val description=MutableLiveData<String>()
  val projectPermission=MutableLiveData<String>()
-private  var userId: Int= GlobalData.userInfo?.id?:27
+private  var userId:Long= GlobalData.userInfo?.id?:27
 //0：老板，1：管理员，2：成员
 
     // 添加这个 LiveData 来通知 Activity 请求完成

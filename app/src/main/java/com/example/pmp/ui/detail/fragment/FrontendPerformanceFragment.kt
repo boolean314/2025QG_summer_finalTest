@@ -27,6 +27,11 @@ class FrontendPerformanceFragment:Fragment(R.layout.fragment_frontend_performanc
         super.onCreate(savedInstanceState)
         projectId = arguments?.getString("projectId")
         Log.d("FrontendPerformanceFragment", "Project ID: $projectId")
+        // 检查projectId是否为空
+        if (projectId.isNullOrEmpty()) {
+            Log.w("FrontendPerformanceFragment", "projectId is null or empty, using default value 'pro-52038057'")
+            projectId = "pro-52038057"
+        }
     }
 
     override fun onCreateView(
@@ -46,7 +51,7 @@ class FrontendPerformanceFragment:Fragment(R.layout.fragment_frontend_performanc
         binding.clickHandler=viewModel
         binding.lifecycleOwner=this
 
-        viewModel.sendRequest(barChart,"1","frontend","day",requireContext(),progressBar)
+        viewModel.sendRequest(barChart,projectId!!,"frontend","day",requireContext(),progressBar)
     }
 
 

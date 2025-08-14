@@ -3,7 +3,6 @@ package com.example.pmp.viewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bumptech.glide.Glide
 import com.example.pmp.data.model.GlobalData
 import com.example.pmp.data.retrofit.RetrofitClient
 import kotlinx.coroutines.launch
@@ -11,7 +10,6 @@ import okhttp3.MultipartBody
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
-import kotlin.code
 
 class HomepageVM : ViewModel() {
     val userAvatar = MutableLiveData<String>()

@@ -68,7 +68,7 @@ class FrontendErrorFragment:Fragment(R.layout.fragment_frontend_error) {  privat
         // 检查projectId是否为空
         if (projectId.isNullOrEmpty()) {
             Log.w("FrontendErrorFragment", "projectId is null or empty, using default value '1'")
-            projectId = "1"
+            projectId = "pro-52038057"
         }
 
         // 计算时间参数

@@ -36,6 +36,7 @@ class CreateProject : AppCompatActivity() {
                 // 项目创建成功，结束当前 Activity
 
                 Toast.makeText(this, "项目创建成功", Toast.LENGTH_SHORT).show()
+
                 finish()
             }
         }

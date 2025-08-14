@@ -63,7 +63,7 @@ class LoginVM : ViewModel() {
                         val createdTime = userObj.optString("createdTime")
                         val phone = userObj.optString("phone")
                         val userInfo = UserInfo(
-                            id = id,
+                            id = id.toLong(),
                             username = username,
                             password = password.value ?: "",
                             avatar = avatar,

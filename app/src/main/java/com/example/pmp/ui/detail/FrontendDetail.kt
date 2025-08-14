@@ -2,38 +2,49 @@ package com.example.pmp.ui.detail
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.EditText
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.databinding.DataBindingUtil
+import androidx.databinding.adapters.TextViewBindingAdapter.setText
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.pmp.R
 import com.example.pmp.databinding.ActivityFrontendDetailBinding
+import com.example.pmp.databinding.DialogEditWebhookBinding
+import com.example.pmp.databinding.DialogJoinProjectBinding
 import com.example.pmp.ui.detail.fragment.FrontendBehaviorFragment
 import com.example.pmp.ui.detail.fragment.FrontendErrorFragment
 import com.example.pmp.ui.detail.fragment.FrontendPerformanceFragment
 import com.example.pmp.ui.detail.fragment.MobileErrorFragment
 import com.example.pmp.ui.detail.fragment.MobilePerformanceFragment
+import com.example.pmp.viewModel.DetailVM
 import com.example.pmp.viewModel.FrontendDetailVM
 import com.example.pmp.viewModel.MobileDetailVM
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayoutMediator
 
 class FrontendDetail : AppCompatActivity() {
-    private val PROJECTID:String="111"
-    private val PROJECTNAME:String="111"
-    private val PROJECTPERMISSION:String="111"
+    private val PROJECTID:String="extra_uuid"
+    private val USERID:String="extra_userId"
+    private val USERROLE:String="extra_userRole"
     private var projectId:String?=null
-    private var projectName:String?=null
-    private var projectPermission:String?=null
-    private lateinit var viewModel: FrontendDetailVM
+    private var userId:Long=0
+    private var userRole:Int=0
+    private lateinit var viewModel: DetailVM
+    private lateinit var webhook:String
+    private lateinit var bigBinding: ActivityFrontendDetailBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        val binding = DataBindingUtil.setContentView<ActivityFrontendDetailBinding>(
+         bigBinding = DataBindingUtil.setContentView<ActivityFrontendDetailBinding>(
             this,
             R.layout.activity_frontend_detail
         )
@@ -43,12 +54,16 @@ class FrontendDetail : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        viewModel = ViewModelProvider(this)[FrontendDetailVM::class.java]
-        val tabLayout = binding.frontendDetailTab
-        val viewPager = binding.frontendDetailViewpager
+        viewModel = ViewModelProvider(this)[DetailVM::class.java]
+        val tabLayout = bigBinding.frontendDetailTab
+        val viewPager = bigBinding.frontendDetailViewpager
+        webhook=bigBinding.frontendDetailWebhookCode.text.toString()
 
-        //获取外面传进来的projectId等信息并且传递给fragment
-        //receiveProjectData(PROJECTID,PROJECTNAME,PROJECTPERMISSION)
+
+        // 将ViewModel设置到binding中
+        bigBinding.viewModel = viewModel
+        bigBinding.lifecycleOwner = this // 确保LiveData能够正确更新UI
+        receiveProjectData(PROJECTID,USERID,USERROLE)
 
         viewPager.adapter = FrontendViewPagerAdapter(this, projectId)
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
@@ -60,20 +75,54 @@ class FrontendDetail : AppCompatActivity() {
             }
         }.attach()
 
+        // 添加编辑webhook图标点击监听
+        bigBinding.frontendDetailEditWebhook.setOnClickListener {
+showEditWebhookDialog()
+        }
 
-        // 将ViewModel设置到binding中
-        binding.viewModel = viewModel
-        binding.lifecycleOwner = this // 确保LiveData能够正确更新UI
+    }
+
+    //弹出对话框
+    private fun showEditWebhookDialog() {
+
+            // 使用 DataBinding 创建视图
+            val binding: DialogEditWebhookBinding = DataBindingUtil.inflate(
+                layoutInflater,
+                R.layout.dialog_edit_webhook,
+                null,
+                false
+            )
+
+            val dialog = MaterialAlertDialogBuilder(this)
+                .setView(binding.root)  // 使用 binding.root 作为对话框视图
+                .create()
+            dialog.show()
+        binding.editWebhookButton.setOnClickListener {
+            val newWebhook = binding.editWebhook.text.toString()
+            updateWebhookInViewModel(newWebhook)
+            dialog.dismiss()
+        }
+    }
+
+
+
+
+
+    //更新webhook并且发送网络请求
+    private fun updateWebhookInViewModel(newWebhook: String) {
+        viewModel.webhook.value = newWebhook
+        Log.d("FrontendDetail","newWebhook:$newWebhook")
 
 
     }
+
         //接收project数据
         fun receiveProjectData(key1:String,key2:String,key3:String){
             projectId=intent.getStringExtra(key1)
-            projectName=intent.getStringExtra(key2)
-            projectPermission=intent.getStringExtra(key3)
-            Log.d("MobileDetail","projectId:$projectId,projectName:$projectName，projectPermission:$projectPermission")
-            viewModel.setProjectData(projectId!!,projectName!!,projectPermission!!)
+            userId=intent.getLongExtra(key2,0)
+            userRole=intent.getIntExtra(key3,0)
+            Log.d("FrontendDetail","projectId:$projectId,userId:$userId,userRole:$userRole")
+            viewModel.setData(projectId!!, userId,userRole)
         }
 
 

@@ -4,5 +4,5 @@ data class CreateProjectData(
     val name: String,
     val description: String,
     val isPublic: Boolean,
-    val userId: Int,
+    val userId: Long
 )

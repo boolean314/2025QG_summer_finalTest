@@ -43,8 +43,10 @@
             android:exported="false" />
         <activity
             android:name=".ui.Container"
-            android:exported="false"
-            android:windowSoftInputMode="adjustPan"/>
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan">
+
+    </activity>
         <activity
             android:name=".SplashActivity"
             android:exported="true">

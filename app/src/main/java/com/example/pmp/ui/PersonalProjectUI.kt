@@ -1,20 +1,31 @@
 package com.example.pmp.ui
 
+import android.app.Activity
 import android.content.Intent
 import androidx.fragment.app.Fragment
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pmp.R
+import com.example.pmp.data.apiService.MyApiService
+import com.example.pmp.data.apiService.ServiceCreator
+import com.example.pmp.data.model.ApiResponse
 import com.example.pmp.data.model.GlobalData
+import com.example.pmp.data.model.JoinProjectData
+import com.example.pmp.databinding.DialogJoinProjectBinding
 import com.example.pmp.ui.adapter.PersonalProjectAdapter
+import com.example.pmp.viewModel.JoinProjectVM
 import com.example.pmp.viewModel.PersonalProjectVM
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
@@ -25,6 +36,8 @@ import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RFACLabelItem
 import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RapidFloatingActionContentLabelList
 import com.wangjie.rapidfloatingactionbutton.util.RFABShape
 import com.wangjie.rapidfloatingactionbutton.util.RFABTextUtil
+import retrofit2.Call
+import retrofit2.Response
 import kotlin.text.toLong
 
 class PersonalProjectUI : Fragment(), RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener<Int> {
@@ -33,6 +46,8 @@ class PersonalProjectUI : Fragment(), RapidFloatingActionContentLabelList.OnRapi
     private lateinit var rfaButton: RapidFloatingActionButton
     private lateinit var rfabHelper: RapidFloatingActionHelper
     private val viewModel: PersonalProjectVM by viewModels()
+    private lateinit var binding:DialogJoinProjectBinding
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -55,6 +70,17 @@ class PersonalProjectUI : Fragment(), RapidFloatingActionContentLabelList.OnRapi
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.all_recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
+//绑定对话框的布局给按钮设置点击事件
+        binding=DialogJoinProjectBinding.inflate(layoutInflater)
+binding.joinProjectButton.setOnClickListener{
+    val invitedCode=binding.joinProjectId.text.toString()
+    val userId=GlobalData.userInfo?.id?.toLong()
+    Log.d("PersonalProjectUI", "invitedCode: $invitedCode")
+    Log.d("PersonalProjectUI", "userId: $userId")
+
+}
+
+
         val userId = GlobalData.userInfo?.id?.toLong() ?: return
         viewModel.loadProjects(userId)
         viewModel.projects.observe(viewLifecycleOwner) { projects ->
@@ -138,13 +164,7 @@ class PersonalProjectUI : Fragment(), RapidFloatingActionContentLabelList.OnRapi
             0 -> {
                 startActivity(Intent(context, CreateProject::class.java))
             }
-            1 -> {
-                val joinDialog = layoutInflater.inflate(R.layout.dialog_join_project, null)
-                MaterialAlertDialogBuilder(this.requireContext())
-                    .setView(joinDialog)
-                    .create()
-                    .show()
-            }
+            1 ->  showJoinProjectDialog()
         }
         rfabHelper.collapseContent()
     }
@@ -154,15 +174,67 @@ class PersonalProjectUI : Fragment(), RapidFloatingActionContentLabelList.OnRapi
             0 -> {
                 startActivity(Intent(context, CreateProject::class.java))
             }
-            1 -> {
-                val joinDialog = layoutInflater.inflate(R.layout.dialog_join_project, null)
-                MaterialAlertDialogBuilder(this.requireContext())
-                    .setView(joinDialog)
-                    .create()
-                    .show()
-            }
+            1 ->  showJoinProjectDialog()
         }
         rfabHelper.collapseContent()
     }
+    private fun showJoinProjectDialog() {
+        // 使用 DataBinding 创建视图
+        val binding: DialogJoinProjectBinding = DataBindingUtil.inflate(
+            layoutInflater,
+            R.layout.dialog_join_project,
+            null,
+            false
+        )
+
+        val dialog = MaterialAlertDialogBuilder(requireContext())
+            .setView(binding.root)  // 使用 binding.root 作为对话框视图
+            .create()
+
+
+
+
+        //加入项目未测试
+        // 在这里设置点击监听器
+        binding.joinProjectButton.setOnClickListener {
+            val invitedCode = binding.joinProjectId.text.toString()
+            val userId =  GlobalData.userInfo?.id?.toLong()
+            Log.d("PersonalProjectUI", "invitedCode: $invitedCode")
+            Log.d("PersonalProjectUI", "userId: $userId")
+
+            // 在这里添加加入项目的逻辑
+            if (invitedCode.isNotEmpty() && userId != null) {
+                val apiService=ServiceCreator.create(MyApiService::class.java)
+                val joinProjectData= JoinProjectData(userId,invitedCode)
+                apiService.joinProject(joinProjectData).enqueue(object:retrofit2.Callback<ApiResponse<Any>>{
+                    override fun onResponse(
+                        call: Call<ApiResponse<Any>>,
+                        response: Response<ApiResponse<Any>>
+                    ) {
+                        Log.d("PersonalProjectUI", "response: $response")
+                        Log.d("PersonalProjectUI", "responseBody: ${response.body()}")
+                        if(response.isSuccessful){
+                            Toast.makeText(context, "加入项目成功", Toast.LENGTH_SHORT).show()
+                            dialog.dismiss() // 根据需要关闭对话框
+                        }
+                    }
+
+                    override fun onFailure(call: Call<ApiResponse<Any>>, t: Throwable) {
+                        Log.d("PersonalProjectUI", "onFailure: $t")
+                        Toast.makeText(context, "加入项目失败", Toast.LENGTH_SHORT).show()
+                    }
+
+                })
+            }else{
+                Toast.makeText(context, "请输入项目邀请码", Toast.LENGTH_SHORT).show()
+            }
+
+
+        }
+
+        dialog.show()
+
+}
+
 
 }
