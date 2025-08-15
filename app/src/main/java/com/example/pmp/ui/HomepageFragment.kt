@@ -56,7 +56,7 @@ class HomepageFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         viewModel.userAvatar.value = GlobalData.userInfo?.avatar
         viewModel.userAvatar.value = GlobalData.userInfo?.avatar
-        Glide.with(this).load(GlobalData.userInfo?.avatar).into(binding.iconImage)
+        Glide.with(this).load(GlobalData.userInfo?.avatar).placeholder(R.drawable.coach).error(R.drawable.coach).into(binding.iconImage)
         val rawUsername = GlobalData.userInfo?.username?: "未知用户"
         val displayUsername = rawUsername.removePrefix("用户：")
         viewModel.username.value = displayUsername

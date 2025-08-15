@@ -32,6 +32,7 @@ import java.time.LocalDateTime
 class PersonalProjectAdapter(
     private val dataList: MutableList<PersonalProject>,
     private val onDelete: (String) -> Unit,
+    private val onExit: (String, Long) -> Unit,
     private val viewModel: PersonalProjectVM,
     private val onAuthenticate: suspend (Long, String, (Boolean) -> Unit) -> Unit
 ) :
@@ -50,6 +51,7 @@ class PersonalProjectAdapter(
         val statusCard: MaterialCardView = itemView.findViewById(R.id.statusCard)
         val enterBtn: Button = itemView.findViewById(R.id.enterBtn)
         val deleteBtn: Button = itemView.findViewById(R.id.deleteBtn)
+        val exitBtn: Button = itemView.findViewById(R.id.exitBtn)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProjectViewHolder {
@@ -69,24 +71,14 @@ class PersonalProjectAdapter(
         holder.statusCard.strokeColor = ContextCompat.getColor(holder.itemView.context, color)
         holder.projectDescription.text = project.description
 
-//        val formattedDate = convertDateFormat(project.createTime)
-        holder.projectCreatedTime.text = project.createTime
+        val formattedDate = convertDateFormat(project.createdTime)
+        holder.projectCreatedTime.text = formattedDate
 
 
         holder.detailLayout.visibility = if (expandedIndexes.contains(position)) View.VISIBLE else View.GONE
 
-        holder.deleteBtn.isEnabled = false
-        if(expandedIndexes.contains(position)) {
-            val userId = GlobalData.userInfo?.id ?: return
-            val projectId = project.uuid
-            kotlinx.coroutines.GlobalScope.launch {
-                onAuthenticate(userId, projectId) { canDelete ->
-                    holder.deleteBtn.post {
-                        holder.deleteBtn.isEnabled = canDelete
-                    }
-                }
-            }
-        }
+        holder.deleteBtn.visibility = View.GONE
+        holder.exitBtn.visibility = View.GONE
 
         holder.titleLayout.setOnClickListener {
             if (expandedIndexes.contains(position)) {
@@ -95,11 +87,50 @@ class PersonalProjectAdapter(
                 expandedIndexes.add(position)
             }
             notifyItemChanged(position)
-            //鉴权,如果是管理员或者老板，就将删除项目按钮设为可用
-            //弹出删除对话框，确认删除就删掉项目
-
         }
 
+        if(expandedIndexes.contains(position)) {
+            val userId = GlobalData.userInfo?.id ?: return
+            val projectId = project.uuid
+            kotlinx.coroutines.GlobalScope.launch {
+                onAuthenticate(userId, projectId) { canDelete ->
+                    if (canDelete) {
+                        holder.deleteBtn.post {
+                            holder.deleteBtn.visibility = View.VISIBLE
+                        }
+                    }
+                }
+            }
+        }
+
+        if (expandedIndexes.contains(position)) {
+            val userId = GlobalData.userInfo?.id ?: return
+            val projectId = project.uuid
+            kotlinx.coroutines.GlobalScope.launch {
+                val result = viewModel.authenticateBoss(projectId)
+                onAuthenticate(userId, projectId) { canExit ->
+                    if(result && !canExit) {
+                        holder.exitBtn.post {
+                            holder.exitBtn.visibility = View.VISIBLE
+                        }
+                    } else if (!result && !canExit) {
+                        holder.exitBtn.post {
+                            holder.exitBtn.visibility = View.VISIBLE
+                        }
+                    } else if (result) {
+                        holder.exitBtn.post {
+                            holder.exitBtn.visibility = View.VISIBLE
+                        }
+                    } else {
+                        holder.exitBtn.post {
+                            holder.exitBtn.visibility = View.GONE
+                        }
+                    }
+                }
+            }
+        }
+
+        //弹出删除对话框，确认删除就删掉项目
         holder.deleteBtn.setOnClickListener {
             androidx.appcompat.app.AlertDialog.Builder(holder.itemView.context).apply {
                 setTitle("删除项目")
@@ -166,6 +197,20 @@ class PersonalProjectAdapter(
             adaptUI(dialog)
 
             dialog.show()
+        }
+
+        holder.exitBtn.setOnClickListener {
+            androidx.appcompat.app.AlertDialog.Builder(holder.itemView.context).apply {
+                setTitle("退出项目")
+                setMessage("确定要退出项目吗?\n此操作一旦进行将无法撤销!")
+                setCancelable(false)
+                setPositiveButton("确定") { dialog, which ->
+                    onExit(project.uuid, GlobalData.userInfo?.id!!)
+                }
+                setNegativeButton("取消") {dialog, which ->
+                }
+                show()
+            }
         }
 
     }

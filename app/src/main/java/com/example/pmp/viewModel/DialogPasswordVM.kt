@@ -43,7 +43,7 @@ class DialogPasswordVM : ViewModel() {
                 RetrofitClient.instance.getVerifyCode(encryptedData, encryptedKey)
             } catch (e: Exception) {}
         }
-        Toast.makeText(context, "验证码已发送，请注意查收", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(context, "验证码已发送，请注意查收", Toast.LENGTH_SHORT).show()
         Handler(Looper.getMainLooper()).postDelayed({
             canSendCode = true
             button.isEnabled = isEmailValid(email.value ?: "")

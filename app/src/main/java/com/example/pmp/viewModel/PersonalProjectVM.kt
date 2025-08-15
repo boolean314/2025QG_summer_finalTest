@@ -2,10 +2,12 @@ package com.example.pmp.viewModel
 
 
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.pmp.data.model.BossAuthentication
 import com.example.pmp.data.model.PersonalProject
 import com.example.pmp.data.model.UserAuthentication
 import com.example.pmp.data.retrofit.RetrofitClient
@@ -29,7 +31,7 @@ class PersonalProjectVM: ViewModel() {
                         uuid = map["uuid"] as? String ?: "",
                         name = map["name"] as? String ?: "",
                         description = map["description"] as? String ?: "",
-                        createTime = map["createTime"] as? String ?: "接不到啊哥们 ",
+                        createdTime = map["createdTime"] as? String ?: "接不到啊哥们 ",
                         isPublic = map["isPublic"] as? Boolean ?: false,
                         id = (map["id"] as? Number)?.toLong() ?: 0L,
                         userId = (map["userId"] as? Number)?.toLong() ?: 0L,
@@ -54,12 +56,26 @@ class PersonalProjectVM: ViewModel() {
         viewModelScope.launch {
             val response = RetrofitClient.instance.deleteProject(uuid)
             if (response.code == 200) {
-                // Remove from allProjects and update LiveData
                 allProjects = allProjects.filter { it.uuid != uuid }
                 _projects.value = allProjects
                 onResult(true)
             } else {
                 onResult(false)
+                Log.e("PersonalProjectVM", "Failed to delete project: ${response.msg}")
+            }
+        }
+    }
+
+    fun exitProject(projectId: String, userId: Long, onResult: (Boolean) -> Unit) {
+        viewModelScope.launch {
+            val response = RetrofitClient.instance.exitProject(projectId, userId)
+            if (response.code == 200) {
+                allProjects = allProjects.filter { it.uuid != projectId }
+                _projects.value = allProjects
+                onResult(true)
+            } else {
+                onResult(false)
+                Log.e("PersonalProjectVM", "Failed to exit project: ${response.msg}")
             }
         }
     }
@@ -85,5 +101,20 @@ class PersonalProjectVM: ViewModel() {
             } catch (e: Exception) {
                 false
             }
+    }
+
+    suspend fun authenticateBoss(projectId: String) : Boolean {
+        return try {
+            val response = RetrofitClient.instance.authenticationBossCount(projectId)
+            if( response.code == 200) {
+                val data = response.data
+                Log.d("PersonalProjectVM", "Boss count result: $data")
+                data != 1.0
+            } else {
+                false
+            }
+        } catch (e: Exception) {
+            false
+        }
     }
 }

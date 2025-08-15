@@ -6,5 +6,6 @@ data class UserInfo(
     val password: String,
     val avatar: String,
     val createdTime: String,
-    val phone: String
+    val phone: String,
+    val token: String
 )
