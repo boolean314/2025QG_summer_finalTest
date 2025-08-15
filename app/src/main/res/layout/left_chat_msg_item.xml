@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.pmp.viewModel.AIChatVM" />
+    </data>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/ai_icon_image"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/ai"/>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_gravity="center_vertical"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="30dp"
+            app:cardElevation="8dp">
+
+            <TextView
+                android:id="@+id/receiveMsg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginStart="10dp"
+                android:text=""/>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="#00ffffff"/>
+
+    </LinearLayout>
+
+</layout>

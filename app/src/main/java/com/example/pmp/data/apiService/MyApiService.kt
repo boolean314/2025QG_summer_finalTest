@@ -12,11 +12,13 @@ import com.example.pmp.data.model.JoinProjectData
 import com.example.pmp.data.model.ManualTrackingStats
 import com.example.pmp.data.model.ProjectDetail
 import com.example.pmp.data.model.ResultResponse
+import com.example.pmp.data.model.chatItem
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.PUT
@@ -31,7 +33,7 @@ interface MyApiService {
     fun createProject(@Body createProjectData: CreateProjectData): Call<ApiResponse<Any>>
 
     //加入项目
-    @POST("projects/join")
+    @POST("projects/joinProject")
     fun joinProject(@Body joinProjectData: JoinProjectData): Call<ApiResponse<Any>>
 
 
@@ -125,5 +127,23 @@ fun getMobileErrorStatsPro(@Query("projectId")projectId: String):Call<ApiRespons
     suspend fun authentication(
         @Query("userId") userId: Long,
         @Query("projectId") projectId: String
+    ): ResultResponse
+
+    @GET("roles/getBossCountByProjectId")
+    suspend fun authenticationBossCount(
+        @Query("projectId") projectId: String
+    ): ResultResponse
+
+    @DELETE("roles")
+    suspend fun exitProject(
+        @Query("projectId") projectId: String,
+        @Query("userId") userId: Long
+    ): ResultResponse
+
+    @POST("messages/chat")
+    suspend fun chat(
+        @Header("Authorization") token: String?,
+        @Header("RSAKey") rsaKey: String,
+        @Body chatItem: chatItem
     ): ResultResponse
 }

@@ -8,14 +8,14 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.time.LocalDateTime
 
-object RetrofitClient {
+object AIRetrofitClient {
     val instance: MyApiService by lazy {
         val gson: Gson = GsonBuilder()
             .registerTypeAdapter(LocalDateTime::class.java, LocalDataTimeDeserializer()) // 注册自定义解析器
             .create()
 
         Retrofit.Builder()
-            .baseUrl("http://47.113.224.195:32406/")    //lrt：http://47.113.224.195:32406
+            .baseUrl("http://192.168.1.254/")    //lrt：http://47.113.224.195:32406
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(MyApiService::class.java)

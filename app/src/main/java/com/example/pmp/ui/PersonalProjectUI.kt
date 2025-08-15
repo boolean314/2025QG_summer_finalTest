@@ -78,7 +78,6 @@ class PersonalProjectUI : Fragment(), RapidFloatingActionContentLabelList.OnRapi
         val swipeRefresh = view.findViewById<androidx.swiperefreshlayout.widget.SwipeRefreshLayout>(R.id.swipeRefresh)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        //绑定对话框的布局给按钮设置点击事件
         binding=DialogJoinProjectBinding.inflate(layoutInflater)
         binding.joinProjectButton.setOnClickListener{
             val invitedCode=binding.joinProjectId.text.toString()
@@ -103,6 +102,15 @@ class PersonalProjectUI : Fragment(), RapidFloatingActionContentLabelList.OnRapi
                             Toast.makeText(context, "删除成功", Toast.LENGTH_SHORT).show()
                         } else {
                             Toast.makeText(context, "删除失败", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                },
+                { projectId, userId ->
+                    viewModel.exitProject(projectId, userId) { success ->
+                        if (success) {
+                            Toast.makeText(context, "退出成功", Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(context, "退出失败", Toast.LENGTH_SHORT).show()
                         }
                     }
                 },

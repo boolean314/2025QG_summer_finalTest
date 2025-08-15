@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dd.CircularProgressButton
 import com.example.pmp.data.model.EncryptLogin
+import com.example.pmp.data.model.EncryptedToken
 import com.example.pmp.data.model.GlobalData
 import com.example.pmp.data.model.UserInfo
 import com.example.pmp.ui.Container
@@ -18,6 +19,7 @@ import kotlinx.coroutines.launch
 import com.example.pmp.data.retrofit.RetrofitClient
 import com.example.pmp.util.Decryption.Decryption
 import com.example.pmp.util.Encryption.LoginEncryption
+import com.example.pmp.util.Encryption.TokenEncryption
 
 class LoginVM : ViewModel() {
     val account = MutableLiveData<String>()
@@ -62,16 +64,25 @@ class LoginVM : ViewModel() {
                         val avatar = userObj.optString("avatar")
                         val createdTime = userObj.optString("createdTime")
                         val phone = userObj.optString("phone")
+                        val token = decryptedObj.optString("token")
                         val userInfo = UserInfo(
-                            id = id.toLong(),
+                            id = id,
                             username = username,
                             password = password.value ?: "",
                             avatar = avatar,
                             createdTime = createdTime,
-                            phone = phone
+                            phone = phone,
+                            token = token
                         )
                         GlobalData.userInfo = userInfo
                         Log.d("LoginVM", "userInfo: ${GlobalData.userInfo}")
+                        val (encryptedDataT, encryptedKeyT) = TokenEncryption.encryptWithServerKey(
+                            GlobalData.userInfo?.token,
+                            serverPublicKey
+                        )
+                        val tokenData = EncryptedToken(encryptedDataT, encryptedKeyT)
+                        GlobalData.token = tokenData
+                        Log.d("LoginVM", "Token encryptedData: ${GlobalData.token?.encryptedData}")
                     } else {
                         button.progress = CircularProgressButton.ERROR_STATE_PROGRESS
                         Toast.makeText(context, response.msg, Toast.LENGTH_SHORT).show()
