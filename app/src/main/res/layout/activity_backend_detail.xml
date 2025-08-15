@@ -2,137 +2,273 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="viewModel"
+            type="com.example.pmp.viewModel.DetailVM" />
+    </data>
 
-
-        <data>
-            <variable
-                name="viewModel"
-            type="com.example.pmp.viewModel.BackendDetailVM"
-                />
-
-</data>
-
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:id="@+id/main"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.detail.BackendDetail">
-
-
-    <TextView
-        android:id="@+id/backend_detail_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:text="@{viewModel.projectName}"
-        android:textSize="24sp"
-
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/backend_detail_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="4dp"
-        app:strokeWidth="1dp"
-        app:strokeColor="@color/purple"
-        app:layout_constraintStart_toEndOf="@+id/backend_detail_name"
-        app:layout_constraintBottom_toBottomOf="@+id/backend_detail_name"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/backend_detail_name"
-
-        >
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.detail.BackendDetail">
 
         <TextView
-            android:id="@+id/backend_detail"
+            android:id="@+id/backend_detail_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="backend"
-            android:textSize="20sp"
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp"
-            android:paddingEnd="10dp"
-            android:paddingStart="10dp"
-            android:textColor="@color/purple"
-            />
-
-    </com.google.android.material.card.MaterialCardView>
-
-
-    <com.google.android.material.card.MaterialCardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="4dp"
-        app:strokeWidth="1dp"
-        app:layout_constraintStart_toEndOf="@+id/backend_detail_layout"
-        app:layout_constraintBottom_toBottomOf="@+id/backend_detail_name"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/backend_detail_name"
-        app:strokeColor="@{viewModel.projectPermission==&quot;公开&quot;?@color/wx_green:@color/red}"
-
-        >
-
-        <TextView
-            android:id="@+id/backend_detail_permission"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{viewModel.projectPermission}"
-            android:textColor="@{viewModel.projectPermission==&quot;公开&quot;?@color/wx_green:@color/red}"
-            android:textSize="20sp"
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp"
-            android:paddingEnd="10dp"
-            android:paddingStart="10dp"
-            />
-
-    </com.google.android.material.card.MaterialCardView>
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/backend_detail_member_list_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/backend_detail_layout"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_margin="20dp"
-        >
-        <TextView
-            android:id="@+id/backend_detail_member_list"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="成员列表"
-            android:textSize="20sp"
+            android:layout_margin="20dp"
             android:textStyle="bold"
-            android:padding="8dp"
+            android:text="@{viewModel.name}"
+            android:textSize="24sp"
+            android:maxEms="7"
+            android:maxLines="1"
+            android:ellipsize="end"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            />
-    </com.google.android.material.card.MaterialCardView>
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/backend_detail_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="4dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="@color/purple"
+            app:layout_constraintStart_toEndOf="@+id/backend_detail_name"
+            app:layout_constraintBottom_toBottomOf="@+id/backend_detail_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/backend_detail_name">
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/backend_detail_tab"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/backend_detail_member_list_layout"
+            <TextView
+                android:id="@+id/backend_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="backend"
+                android:textSize="20sp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:paddingEnd="10dp"
+                android:paddingStart="10dp"
+                android:textColor="@color/purple" />
 
+        </com.google.android.material.card.MaterialCardView>
 
-        >
-    </com.google.android.material.tabs.TabLayout>
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="4dp"
+            app:strokeWidth="1dp"
+            app:layout_constraintStart_toEndOf="@+id/backend_detail_layout"
+            app:layout_constraintBottom_toBottomOf="@+id/backend_detail_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/backend_detail_name"
+            app:strokeColor="@{viewModel.isPublic==true?@color/wx_green:@color/red}">
 
+            <TextView
+                android:id="@+id/backend_detail_permission"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{viewModel.isPublic == true ? &quot;公开&quot; : &quot;私有&quot;}"
+                android:textColor="@{viewModel.isPublic == true ? @color/wx_green : @color/red}"
+                android:textSize="20sp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:paddingEnd="10dp"
+                android:paddingStart="10dp" />
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/backend_detail_viewpager"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        app:layout_constraintTop_toBottomOf="@id/backend_detail_tab"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        />
+        </com.google.android.material.card.MaterialCardView>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/backend_detail_frame"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/backend_detail_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            android:visibility="@{viewModel.userRole &lt;=1 ? View.VISIBLE : View.GONE}">
+
+            <TextView
+                android:id="@+id/backend_detail_proj"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="projectId: "
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="15dp" />
+
+            <ImageView
+                android:id="@+id/backend_detail_copy_projId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/copy1"
+                app:layout_constraintTop_toTopOf="@+id/backend_detail_proj"
+                app:layout_constraintEnd_toStartOf="@+id/backend_detail_member_list_layout"
+                android:clickable="true"
+                android:onClick="@{()->viewModel.copyProjId(context)}" />
+
+            <TextView
+                android:id="@+id/backend_detail_projId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{viewModel.uuid}"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/backend_detail_proj"
+                app:layout_constraintTop_toTopOf="@+id/backend_detail_proj" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/backend_detail_member_list_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/backend_detail_refresh_layout"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginRight="20dp">
+
+                <TextView
+                    android:id="@+id/backend_detail_member_list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="成员列表"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:padding="8dp"
+                    android:clickable="true"
+                    android:onClick="@{()->viewModel.showMemberList(context)}" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:id="@+id/backend_detail_invite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@+id/backend_detail_refresh_layout"
+                app:layout_constraintStart_toStartOf="parent"
+                android:text="邀请码: "
+                android:textSize="15sp"
+                android:layout_marginLeft="20dp" />
+
+            <TextView
+                android:id="@+id/backend_detail_inviteCode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@+id/backend_detail_refresh_layout"
+                app:layout_constraintStart_toEndOf="@+id/backend_detail_invite"
+                android:text="@{viewModel.inviteCode}"
+                android:textSize="15sp"
+                android:maxEms="6"
+                android:maxLines="1"
+                android:ellipsize="end" />
+
+            <ImageView
+                android:id="@+id/backend_detail_copy_inviteCode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/copy1"
+                app:layout_constraintTop_toTopOf="@+id/backend_detail_refresh_layout"
+                app:layout_constraintEnd_toStartOf="@+id/backend_detail_member_list_layout"
+                android:clickable="true"
+                android:onClick="@{()->viewModel.copyInviteCode(context)}" />
+
+            <TextView
+                android:id="@+id/backend_detail_warning"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/backend_detail_invite"
+                app:layout_constraintStart_toEndOf="@+id/backend_detail_invite"
+                android:text="(十分钟内有效)"
+                android:textSize="10sp" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/backend_detail_refresh_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/backend_detail_proj"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/backend_detail_refresh"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="刷新"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:padding="8dp"
+                    android:clickable="true"
+                    android:onClick="@{()->viewModel.getNewInviteCode()}" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:id="@+id/backend_detail_webhook"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/backend_detail_warning"
+                app:layout_constraintStart_toStartOf="parent"
+                android:text="webhook: "
+                android:textSize="15sp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="15dp" />
+
+            <TextView
+                android:id="@+id/backend_detail_webhookCode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/backend_detail_warning"
+                app:layout_constraintStart_toEndOf="@+id/backend_detail_webhook"
+                android:text="@{viewModel.webhook}"
+                android:textSize="15sp"
+                android:layout_marginTop="15dp"
+                android:maxEms="6"
+                android:maxLines="1"
+                android:ellipsize="end" />
+
+            <ImageView
+                android:id="@+id/backend_detail_edit_webhook"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/edit1"
+                android:layout_marginTop="15dp"
+                app:layout_constraintTop_toBottomOf="@id/backend_detail_warning"
+                app:layout_constraintEnd_toStartOf="@+id/backend_detail_member_list_layout" />
+
+            <ImageView
+                android:id="@+id/backend_detail_copy_webhook"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/copy1"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="15dp"
+                app:layout_constraintTop_toBottomOf="@id/backend_detail_warning"
+                app:layout_constraintEnd_toStartOf="@+id/backend_detail_edit_webhook"
+                android:clickable="true"
+                android:onClick="@{()->viewModel.copyWebhook(context)}" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/backend_detail_tab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/backend_detail_frame">
+
+        </com.google.android.material.tabs.TabLayout>
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/backend_detail_viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            app:layout_constraintTop_toBottomOf="@id/backend_detail_tab"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

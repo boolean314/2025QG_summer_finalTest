@@ -47,7 +47,7 @@ class BackendPerformanceFragment: Fragment(R.layout.fragment_backend_performance
         binding.clickHandler=viewModel
         binding.lifecycleOwner=this
 
-        viewModel.sendRequest(barChart,"1","backend","day",requireContext(),progressBar)
+        viewModel.sendRequest(barChart,projectId!!,"backend","day",requireContext(),progressBar)
     }
 
 

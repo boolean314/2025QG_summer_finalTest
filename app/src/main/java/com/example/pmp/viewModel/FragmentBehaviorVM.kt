@@ -7,6 +7,7 @@ import android.os.Build
 import android.util.Log
 import android.widget.DatePicker
 import android.widget.TimePicker
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -86,6 +87,10 @@ fun chooseEndTime(){
     }
 
     fun sendRequest(){
+        if (projectId==null||startTime.value==null||endTime.value==null){
+            Toast.makeText(context, "请选择时间", Toast.LENGTH_SHORT).show()
+            return
+        }
         Log.d("FragmentBehaviorVM", "sendRequest: $projectId ${startTime.value} ${endTime.value}")
         apiService.getManualTrackingStats(projectId!!,startTime.value!!,endTime.value!!).enqueue(object:retrofit2.Callback<ApiResponse<List<ManualTrackingStats>>>{
             override fun onResponse(
@@ -179,6 +184,9 @@ fun chooseEndTime(){
         val leftAxis = barChart.axisLeft
         leftAxis.apply {
             textSize = 10f
+            spaceBottom = 0f
+            spaceTop = 0f
+            axisMinimum = 0f // 确保Y轴从0开始
         }
 
         // 隐藏右侧Y轴

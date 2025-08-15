@@ -81,7 +81,8 @@ class LoginVM : ViewModel() {
                     }
                 },2000)
                 val userMsg = response.data
-            } catch (e: Exception) {
+            }  catch (e: Exception) {
+                Log.e("LoginVM", "登录异常", e) // 添加这行查看具体异常
                 Handler(Looper.getMainLooper()).postDelayed({
                     button.progress = CircularProgressButton.ERROR_STATE_PROGRESS
                     Toast.makeText(context, "网络开小差了，请重试", Toast.LENGTH_SHORT).show()

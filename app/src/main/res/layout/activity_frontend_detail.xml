@@ -24,7 +24,9 @@
         android:textStyle="bold"
         android:text="@{viewModel.name}"
         android:textSize="24sp"
-
+        android:maxEms="7"
+        android:maxLines="1"
+        android:ellipsize="end"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -106,6 +108,17 @@
             android:layout_marginLeft="20dp"
             android:layout_marginTop="15dp"
             />
+        <ImageView
+            android:id="@+id/frontend_detail_copy_projId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/copy1"
+
+            app:layout_constraintTop_toTopOf="@+id/frontend_detail_proj"
+            app:layout_constraintEnd_toStartOf="@+id/frontend_detail_member_list_layout"
+            android:clickable="true"
+            android:onClick="@{()->viewModel.copyProjId(context)}"
+            />
         <TextView
             android:id="@+id/frontend_detail_projId"
             android:layout_width="wrap_content"
@@ -134,7 +147,8 @@
             android:textSize="20sp"
             android:textStyle="bold"
             android:padding="8dp"
-
+            android:clickable="true"
+            android:onClick="@{()->viewModel.showMemberList(context)}"
             />
     </com.google.android.material.card.MaterialCardView>
 

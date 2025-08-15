@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.example.pmp.R
 import com.example.pmp.data.apiService.MyApiService
 import com.example.pmp.data.apiService.ServiceCreator
@@ -17,6 +18,8 @@ import com.example.pmp.data.model.ErrorStat
 import com.example.pmp.data.model.ErrorTimes
 import com.example.pmp.databinding.FragmentBackendErrorBinding
 import com.example.pmp.databinding.FragmentMobileErrorBinding
+import com.example.pmp.viewModel.FragmentErrorVM
+import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.charts.CombinedChart
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis
@@ -38,6 +41,8 @@ class BackendErrorFragment:Fragment(R.layout.fragment_backend_error) {  private 
     private var progressDialog: ProgressDialog? = null
     private var errorTimesRequestFinished = false
     private var errorStatsRequestFinished = false
+    private lateinit var viewModel: FragmentErrorVM
+    private lateinit var barChart: BarChart
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,15 +65,19 @@ class BackendErrorFragment:Fragment(R.layout.fragment_backend_error) {  private 
         combinedChart=binding.backendError2CombinedChart
         entries=mutableListOf<Entry>()
         timeStrings = mutableListOf<String>() // 初始化时间字符串列表
-
+        barChart=binding.backendError3BarChart
         // 显示加载框
         showProgressDialog()
-
+        viewModel= ViewModelProvider(this).get(FragmentErrorVM::class.java)
+        binding.viewModel=viewModel
+        binding.lifecycleOwner=this
         // 检查projectId是否为空
         if (projectId.isNullOrEmpty()) {
-            Log.w("BackendErrorFragment", "projectId is null or empty, using default value '1'")
-            projectId = "1"
+            Log.w("BackendErrorFragment", "projectId is null or empty, using default value 'pro-52038057'")
+            projectId = "pro-52038057"
         }
+        viewModel.setData(projectId!!,requireContext(),barChart)
+
 
         // 计算时间参数
         val currentTime = System.currentTimeMillis()
@@ -304,8 +313,8 @@ class BackendErrorFragment:Fragment(R.layout.fragment_backend_error) {  private 
 
             // 处理标签文本，避免过长
             var label = errorStat.errorType ?: ""
-            if (label.length > 12) {
-                label = label.substring(0, 12) + "..."
+            if (label.length > 20) {
+                label = label.substring(0, 20) + "..."
             }
             xLabels.add(label)
         }

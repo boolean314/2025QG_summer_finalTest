@@ -53,7 +53,7 @@ class FragmentPerformanceVM : ViewModel() {
                         if (apiResponse != null && apiResponse.data != null) {
                             // 安全地将 Map<String, Double> 转换为 List<AverageTime> 用于显示
                             val averageTimes = apiResponse.data.map { entry ->
-                                AverageTime(entry.key, entry.value)
+                                AverageTime(entry.key, entry.value.toLong())
                             }
                             Log.d("FragmentPerformanceVM", "Received ${averageTimes.size} data points")
                             displayDataOnChart(averageTimes)
@@ -137,6 +137,16 @@ class FragmentPerformanceVM : ViewModel() {
             granularity = 1f
             labelRotationAngle = -45f
             textSize = 8f
+            // 关键修改：处理标签过多的情况
+            if (apiLabels.size >15) {  // 调整标签显示密度
+                granularity = (apiLabels.size / 15f).toFloat() // 控制标签密度
+                setLabelCount(minOf(8, apiLabels.size), false) // 最多显示8个标签
+            } else {
+                granularity = 1f
+            }
+
+            labelRotationAngle = -70f  // 增加倾斜角度到-70度
+            textSize = 7f  // 减小字体大小
         }
 
         // 配置左侧Y轴
@@ -148,10 +158,16 @@ class FragmentPerformanceVM : ViewModel() {
                 }
             }
             textSize = 10f
+            spaceBottom = 0f
+            spaceTop = 0f
+            axisMinimum = 0f // 确保Y轴从0开始
         }
 
         // 隐藏右侧Y轴
         barChart.axisRight.isEnabled = false
+        if (entries.size > 15) {
+            barChart.setVisibleXRangeMaximum(15f) // 初始只显示8个数据点
+        }
 
         // 刷新图表
         barChart.invalidate()

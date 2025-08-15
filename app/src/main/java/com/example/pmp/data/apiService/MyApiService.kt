@@ -8,10 +8,13 @@ import com.example.pmp.data.model.EncryptModify
 import com.example.pmp.data.model.EncryptRegister
 import com.example.pmp.data.model.ErrorStat
 import com.example.pmp.data.model.ErrorTimes
+import com.example.pmp.data.model.IpInterceptionCount
 import com.example.pmp.data.model.JoinProjectData
 import com.example.pmp.data.model.ManualTrackingStats
+import com.example.pmp.data.model.MemberListData
 import com.example.pmp.data.model.ProjectDetail
 import com.example.pmp.data.model.ResultResponse
+import com.example.pmp.data.model.updateRoles
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.Body
@@ -31,7 +34,7 @@ interface MyApiService {
     fun createProject(@Body createProjectData: CreateProjectData): Call<ApiResponse<Any>>
 
     //加入项目
-    @POST("projects/join")
+    @POST("projects/joinProject")
     fun joinProject(@Body joinProjectData: JoinProjectData): Call<ApiResponse<Any>>
 
 
@@ -42,6 +45,24 @@ interface MyApiService {
     //获取项目邀请码
     @GET("projects/getInviteCode")
     fun getInviteCode(@Query("projectId")uuid: String): Call<ApiResponse<String>>
+
+    //更新项目信息
+    @PUT("projects/update")
+    fun updateProject(@Body projectDetail: ProjectDetail): Call<ApiResponse<Any>>
+
+    //获取成员列表
+    @GET("roles/getMemberList")
+    fun getMemberList(@Query("projectId")projectId: String): Call<ApiResponse<List<MemberListData>>>
+
+    //修改权限userRole
+    @PUT("roles")
+    fun updateRoles(@Body updateRoles: updateRoles): Call<ApiResponse<Any>>
+
+    //移除成员
+    @DELETE("roles")
+    fun deleteMember(@Query("projectId")projectId: String,@Query("userId")userId: Long): Call<ApiResponse<Any>>
+
+
 
     //获取三端错误量
     @GET("graph/getErrorTrend")
@@ -67,7 +88,9 @@ fun getMobileErrorStatsPro(@Query("projectId")projectId: String):Call<ApiRespons
  @GET("graph/getManualTrackingStats")
     fun getManualTrackingStats(@Query("projectId")projectId: String,@Query("startTime")startTime: String,@Query("endTime")endTime: String):Call<ApiResponse<List<ManualTrackingStats>>>
 
-
+//获取后端非法攻击统计
+    @GET("graph/getIpInterceptionCount")
+    fun getIpInterceptionCount(@Query("projectId")projectId: String,@Query("startTime")startTime: String,@Query("endTime")endTime: String):Call<ApiResponse<List<IpInterceptionCount>>>
 
 
 

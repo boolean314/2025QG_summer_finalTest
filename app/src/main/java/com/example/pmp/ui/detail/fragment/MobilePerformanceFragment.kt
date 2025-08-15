@@ -47,6 +47,6 @@ class MobilePerformanceFragment: Fragment(R.layout.fragment_mobile_performance) 
         binding.clickHandler=viewModel
         binding.lifecycleOwner=this
 
-        viewModel.sendRequest(barChart,"1","mobile","day",requireContext(),progressBar)
+        viewModel.sendRequest(barChart,projectId!!,"mobile","day",requireContext(),progressBar)
     }
 }

@@ -9,5 +9,5 @@ data class AverageTimeResponse(
 // 用于表示单个API平均时间的数据类（用于图表展示）
 data class AverageTime(
     val api: String,
-    val averageTime: Double
+    val averageTime: Long
 )

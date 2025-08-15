@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/member_list_image"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        />
+    <TextView
+        android:id="@+id/member_list_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="张三"
+        android:textSize="22sp"
+        android:maxEms="5"
+        android:ellipsize="end"
+        android:maxLines="1"
+        app:layout_constraintLeft_toRightOf="@+id/member_list_image"
+        app:layout_constraintTop_toTopOf="@id/member_list_image"
+        app:layout_constraintBottom_toBottomOf="@id/member_list_image"
+        android:layout_marginLeft="20dp"
+        />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/member_role_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="4dp"
+        app:strokeWidth="1dp"
+        app:layout_constraintBottom_toBottomOf="@+id/member_list_name"
+        app:layout_constraintEnd_toStartOf="@+id/member_list_more"
+        app:layout_constraintTop_toTopOf="@+id/member_list_name"
+        android:layout_marginRight="10dp"
+        >
+
+        <TextView
+            android:id="@+id/member_role"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="老板"
+            android:textSize="15sp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:paddingEnd="10dp"
+            android:paddingStart="10dp"
+            android:textColor="@color/purple"
+
+            />
+
+    </com.google.android.material.card.MaterialCardView>
+    <ImageView
+        android:id="@+id/member_list_more"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/more_vert"
+        app:layout_constraintTop_toTopOf="@+id/member_list_name"
+android:layout_marginRight="20dp"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#E0E0E0"
+        app:layout_constraintStart_toStartOf="@id/member_list_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/member_list_image"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>
+    </layout>

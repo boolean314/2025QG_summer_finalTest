@@ -3,6 +3,7 @@ package com.example.pmp.viewModel
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
@@ -12,84 +13,90 @@ import com.example.pmp.data.apiService.ServiceCreator
 import com.example.pmp.data.model.ApiResponse
 import com.example.pmp.data.model.GlobalData
 import com.example.pmp.data.model.ProjectDetail
+import com.example.pmp.ui.detail.MemberListDetail
 import retrofit2.Call
 import retrofit2.Response
-import java.util.UUID
 
 class DetailVM: ViewModel() {
 
-    private var userId:Long=GlobalData.userInfo?.id?:0
+    private var userId: Long = GlobalData.userInfo?.id ?: 0
 
-private val apiService=ServiceCreator.create(MyApiService::class.java)
-     var uuid=MutableLiveData< String>()
-    var userRole=MutableLiveData<Int>()
-    var name=MutableLiveData<String>()
-    var isPublic=MutableLiveData<Boolean>()
-    var webhook=MutableLiveData<String>()
-    var inviteCode=MutableLiveData<String?>()
+    private val apiService = ServiceCreator.create(MyApiService::class.java)
+    var uuid = MutableLiveData<String>()
+    var userRole = MutableLiveData<Int>()
+    var name = MutableLiveData<String>()
+    var isPublic = MutableLiveData<Boolean>()
+    var webhook = MutableLiveData<String>()
+    var inviteCode = MutableLiveData<String?>()
 
 
-    fun setData(uuid:String,userId:Long,userRole:Int){
-        this.uuid.value=uuid
-        this.userId=userId
-        this.userRole.value=userRole
+    fun setData(uuid: String, userId: Long, userRole: Int) {
+        this.uuid.value = uuid
+        this.userId = userId
+        this.userRole.value = userRole
         getProjectDetail()
     }
 
 
     //发送网络请求获取详细信息
-    fun getProjectDetail(){
-        apiService.getProjectDetail(uuid.value!!).enqueue(object : retrofit2.Callback<ApiResponse<ProjectDetail>>{
-            override fun onResponse(
-                call: Call<ApiResponse<ProjectDetail>>,
-                response: Response<ApiResponse<ProjectDetail>>
-            ) {
-                Log.d("DetailVM", "onResponse: $response")
-                Log.d("DetailVM", "onResponse: ${response.body()}")
-                if (response.isSuccessful) {
-                    val projectDetail = response.body()?.data
-                    name.value=projectDetail?.name
-                    isPublic.value=projectDetail?.isPublic
-                    webhook.value=projectDetail?.webhook
-                    inviteCode.value=projectDetail?.inviteCode
+    fun getProjectDetail() {
+        apiService.getProjectDetail(uuid.value!!)
+            .enqueue(object : retrofit2.Callback<ApiResponse<ProjectDetail>> {
+                override fun onResponse(
+                    call: Call<ApiResponse<ProjectDetail>>,
+                    response: Response<ApiResponse<ProjectDetail>>
+                ) {
+                    Log.d("DetailVM", "onResponse: $response")
+                    Log.d("DetailVM", "onResponse: ${response.body()}")
+                    if (response.isSuccessful) {
+                        val projectDetail = response.body()?.data
+                        name.value = projectDetail?.name ?: ""
+                        isPublic.value = projectDetail?.isPublic ?: false
+                        webhook.value = projectDetail?.webhook ?: ""
+                        inviteCode.value = projectDetail?.inviteCode
 
-                    Log.d("DetailVM", "onResponse1: ${projectDetail?.name}")
-                    Log.d("DetailVM", "onResponse1: ${projectDetail?.isPublic}")
-                    Log.d("DetailVM", "onResponse1: ${projectDetail?.webhook}")
-                    Log.d("DetailVM", "onResponse1: ${projectDetail?.inviteCode}")
+                        Log.d("DetailVM", "onResponse_getProjectDetail: ${projectDetail?.name}")
+                        Log.d("DetailVM", "onResponse_getProjectDetail: ${projectDetail?.isPublic}")
+                        Log.d("DetailVM", "onResponse_getProjectDetail: ${projectDetail?.webhook}")
+                        Log.d(
+                            "DetailVM",
+                            "onResponse_getProjectDetail: ${projectDetail?.inviteCode}"
+                        )
+                    }
                 }
-            }
 
-            override fun onFailure(call: Call<ApiResponse<ProjectDetail>>, t: Throwable) {
-                Log.d("DetailVM", "onFailure: $t")
-            }
-        })
+                override fun onFailure(call: Call<ApiResponse<ProjectDetail>>, t: Throwable) {
+                    Log.d("DetailVM", "onFailure_getProjectDetail: $t")
+                }
+            })
         getNewInviteCode()
 
     }
 
 
     //刷新获得最新邀请码
-    fun getNewInviteCode(){
-        apiService.getInviteCode(uuid.value!!).enqueue(object : retrofit2.Callback<ApiResponse<String>>{
-            override fun onResponse(
-                call: Call<ApiResponse<String>>,
-                response: Response<ApiResponse<String>>
-            ) {
-                Log.d("DetailVM", "onResponse2: $response")
-                Log.d("DetailVM", "onResponse2: ${response.body()}")
-                if (response.isSuccessful) {
-                    val newInviteCode = response.body()?.data
-                    Log.d("DetailVM", "onResponse2: $newInviteCode")
-                    inviteCode.value=newInviteCode
+    fun getNewInviteCode() {
+        apiService.getInviteCode(uuid.value!!)
+            .enqueue(object : retrofit2.Callback<ApiResponse<String>> {
+                override fun onResponse(
+                    call: Call<ApiResponse<String>>,
+                    response: Response<ApiResponse<String>>
+                ) {
+                    Log.d("DetailVM", "onResponse_getInviteCode: $response")
+                    Log.d("DetailVM", "onResponse_getInviteCode: ${response.body()}")
+                    if (response.isSuccessful) {
+                        val newInviteCode = response.body()?.data
+                        Log.d("DetailVM", "onResponse_getInviteCode: $newInviteCode")
+                        inviteCode.value = newInviteCode
+                    }
                 }
-            }
 
-            override fun onFailure(call: Call<ApiResponse<String>>, t: Throwable) {
-                Log.d("DetailVM", "onFailure: $t")
-            }
-        })
+                override fun onFailure(call: Call<ApiResponse<String>>, t: Throwable) {
+                    Log.d("DetailVM", "onFailure: $t")
+                }
+            })
     }
+
     // 复制邀请码到剪切板
     fun copyInviteCode(context: Context) {
         val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
@@ -106,11 +113,47 @@ private val apiService=ServiceCreator.create(MyApiService::class.java)
         Toast.makeText(context, "Webhook已复制到剪切板", Toast.LENGTH_SHORT).show()
     }
 
+    //复制projectId到剪切板
+    fun copyProjId(context: Context) {
+        val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val clip = ClipData.newPlainText("Project Id", uuid.value)
+        clipboard.setPrimaryClip(clip)
+        Toast.makeText(context, "Project Id已复制到剪切板", Toast.LENGTH_SHORT).show()
+    }
 
 
+    //更新项目信息
+    fun updateProject(projectDetail: ProjectDetail, context: Context) {
+        apiService.updateProject(projectDetail)
+            .enqueue(object : retrofit2.Callback<ApiResponse<Any>> {
+                override fun onResponse(
+                    call: Call<ApiResponse<Any>>,
+                    response: Response<ApiResponse<Any>>
+                ) {
+                    Log.d("DetailVM", "onResponse_update: $response")
+                    Log.d("DetailVM", "onResponse_update: ${response.body()}")
+                    if (response.isSuccessful) {
+                        Toast.makeText(context, "项目信息更新成功", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<ApiResponse<Any>>, t: Throwable) {
+                    Log.d("DetailVM", "onFailure_update: $t")
+                    Toast.makeText(context, "项目信息更新失败", Toast.LENGTH_SHORT).show()
+                }
+            })
+    }
 
 
+    //跳转成员列表页面
+    fun showMemberList(context: Context) {
+        val intent=Intent(context, MemberListDetail::class.java)
+        intent.putExtra("projectId", uuid.value)
+        context.startActivity(intent)
 
-
+    }
 
 }
+
+
+

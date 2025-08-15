@@ -237,11 +237,14 @@ class PersonalProjectUI : Fragment(), RapidFloatingActionContentLabelList.OnRapi
                             Toast.makeText(context, "加入项目成功", Toast.LENGTH_SHORT).show()
                             dialog.dismiss() // 根据需要关闭对话框
                         }
+                        else{
+                            Toast.makeText(context, "加入项目失败", Toast.LENGTH_SHORT).show()
+                        }
                     }
 
                     override fun onFailure(call: Call<ApiResponse<Any>>, t: Throwable) {
                         Log.d("PersonalProjectUI", "onFailure: $t")
-                        Toast.makeText(context, "加入项目失败", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "请输入正确的邀请码", Toast.LENGTH_SHORT).show()
                     }
 
                 })
