@@ -1,7 +1,5 @@
 package com.example.pmp.viewModel
 
-import android.app.Activity
-import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -13,8 +11,6 @@ import com.example.pmp.data.model.CreateProjectData
 import com.example.pmp.data.model.GlobalData
 import retrofit2.Call
 import retrofit2.Response
-import retrofit2.http.Body
-import java.net.IDN
 
 class CreateProjectVM: ViewModel() {
     private val apiService=ServiceCreator.create(MyApiService::class.java)
@@ -33,7 +29,7 @@ private  var userId:Long= GlobalData.userInfo?.id?:27
         val isPublic: Boolean = if (projectPermission.value == "公开") true else false
         Log.d("CreateProjectVM", "createProject: 项目名称：$projectName ，项目描述：$projectDescription ，项目权限：$isPublic")
         val createProjectData= CreateProjectData(name=projectName!!,description=projectDescription!!,isPublic=isPublic,userId=userId)
-        apiService.createProject(createProjectData).enqueue(object : retrofit2.Callback<ApiResponse<Any>>{
+        apiService.createProject("Bearer ${GlobalData.token}", GlobalData.Rsakey,createProjectData).enqueue(object : retrofit2.Callback<ApiResponse<Any>>{
             override fun onResponse(
                 call: Call<ApiResponse<Any>>,
                 response: Response<ApiResponse<Any>>

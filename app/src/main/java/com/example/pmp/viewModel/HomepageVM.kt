@@ -21,7 +21,7 @@ class HomepageVM : ViewModel() {
                 val userId = GlobalData.userInfo?.id ?: return@launch
                 val requestFile = file.asRequestBody("image/*".toMediaTypeOrNull())
                 val body = MultipartBody.Part.createFormData("avatar", file.name, requestFile)
-                val response = RetrofitClient.instance.modifyAvatar(userId, body)
+                val response = RetrofitClient.instance.modifyAvatar("Bearer ${GlobalData.token}", GlobalData.Rsakey, userId, body)
                 if (response.code == 200) {
                     val newAvatarUrl = response.data as? String ?: ""
                     GlobalData.userInfo = GlobalData.userInfo?.copy(avatar = newAvatarUrl)

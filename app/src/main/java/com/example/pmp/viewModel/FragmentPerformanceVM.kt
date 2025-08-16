@@ -9,15 +9,14 @@ import androidx.lifecycle.ViewModel
 import com.example.pmp.R
 import com.example.pmp.data.apiService.MyApiService
 import com.example.pmp.data.apiService.ServiceCreator
-import com.example.pmp.data.model.ApiResponse
 import com.example.pmp.data.model.AverageTime
 import com.example.pmp.data.model.AverageTimeResponse
+import com.example.pmp.data.model.GlobalData
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.formatter.ValueFormatter
 import retrofit2.Call
 import retrofit2.Response
@@ -41,7 +40,7 @@ class FragmentPerformanceVM : ViewModel() {
         progressBar.visibility= View.VISIBLE
         Log.d("FragmentPerformanceVM", "Preparing to send request: projectId=$projectId, platform=$platform, timeType=$timeType")
         Log.d("FragmentPerformanceVM", "sendRequest: $projectId $platform $timeType")
-        apiService.getAverageTime(projectId, platform, timeType)
+        apiService.getAverageTime("Bearer ${GlobalData.token}", GlobalData.Rsakey, projectId, platform, timeType)
             .enqueue(object : retrofit2.Callback<AverageTimeResponse> {
                 override fun onResponse(
                     call: Call<AverageTimeResponse>,

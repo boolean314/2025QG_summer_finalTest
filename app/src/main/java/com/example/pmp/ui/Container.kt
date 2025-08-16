@@ -14,13 +14,13 @@ class Container : AppCompatActivity(){
 
     private lateinit var coolMenuFrameLayout: CoolMenuFrameLayout
     private val fragments = listOf(
-        PublicEventUI(),
         AIChat(),
-        PersonalProjectUI(),
         HomepageFragment(),
+        PublicEventUI(),
+        PersonalProjectUI(),
 
     )
-    private val titles = listOf("公开项目", "AI聊天", "所有项目", "个人主页")
+    private val titles = listOf("AI聊天" , "个人主页","公开项目","所有项目")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

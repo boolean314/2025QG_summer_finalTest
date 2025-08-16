@@ -16,7 +16,6 @@ import android.widget.Toast
 
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pmp.R
@@ -27,7 +26,6 @@ import com.example.pmp.data.model.GlobalData
 import com.example.pmp.data.model.JoinProjectData
 import com.example.pmp.databinding.DialogJoinProjectBinding
 import com.example.pmp.ui.adapter.PersonalProjectAdapter
-import com.example.pmp.viewModel.JoinProjectVM
 import com.example.pmp.viewModel.PersonalProjectVM
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
@@ -40,13 +38,15 @@ import com.wangjie.rapidfloatingactionbutton.util.RFABShape
 import com.wangjie.rapidfloatingactionbutton.util.RFABTextUtil
 
 import androidx.lifecycle.lifecycleScope
-import com.example.pmp.ui.adapter.PublicProjectAdapter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Response
+import kotlin.collections.addAll
+import kotlin.text.clear
+
 class PersonalProjectUI : Fragment(), RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener<Int> {
 
     private lateinit var rfaLayout: RapidFloatingActionLayout
@@ -122,6 +122,11 @@ class PersonalProjectUI : Fragment(), RapidFloatingActionContentLabelList.OnRapi
                 }
             }
             recyclerView.adapter = adapter
+            viewModel.projects.observe(viewLifecycleOwner) { projects ->
+                adapter.dataList.clear()
+                adapter.dataList.addAll(projects)
+                adapter.notifyDataSetChanged()
+            }
         }
 
         val searchEditText = view.findViewById<TextInputLayout>(R.id.search_bar).editText
@@ -234,7 +239,7 @@ class PersonalProjectUI : Fragment(), RapidFloatingActionContentLabelList.OnRapi
             if (invitedCode.isNotEmpty() && userId != null) {
                 val apiService=ServiceCreator.create(MyApiService::class.java)
                 val joinProjectData= JoinProjectData(userId,invitedCode)
-                apiService.joinProject(joinProjectData).enqueue(object:retrofit2.Callback<ApiResponse<Any>>{
+                apiService.joinProject("Bearer ${GlobalData.token}", GlobalData.Rsakey, joinProjectData).enqueue(object:retrofit2.Callback<ApiResponse<Any>>{
                     override fun onResponse(
                         call: Call<ApiResponse<Any>>,
                         response: Response<ApiResponse<Any>>

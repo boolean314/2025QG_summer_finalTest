@@ -13,7 +13,6 @@ import com.example.pmp.data.model.EncryptModify
 import com.example.pmp.data.model.GlobalData
 import com.example.pmp.data.retrofit.RetrofitClient
 import com.example.pmp.util.Encryption.ModifyPasswordEncryption
-import com.example.pmp.util.Encryption.ModifyUsernameEncryption
 import com.example.pmp.util.Encryption.VerifyCodeEncryption
 import kotlinx.coroutines.launch
 
@@ -64,7 +63,7 @@ class DialogPasswordVM : ViewModel() {
                     serverPublicKey
                 )
                 val user = EncryptModify(encryptedData, encryptedKey)
-                val response = RetrofitClient.instance.modifyP(user)
+                val response = RetrofitClient.instance.modifyP("Bearer ${GlobalData.token}", GlobalData.Rsakey, user)
                 if (response.code == 200) {
                     Log.d("DialogPasswordVM", "修改后的信息：password = ${newPassword.value}")
                     Toast.makeText(context, response.msg, Toast.LENGTH_SHORT).show()

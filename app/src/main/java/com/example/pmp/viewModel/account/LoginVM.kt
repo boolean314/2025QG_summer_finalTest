@@ -80,9 +80,8 @@ class LoginVM : ViewModel() {
                             GlobalData.userInfo?.token,
                             serverPublicKey
                         )
-                        val tokenData = EncryptedToken(encryptedDataT, encryptedKeyT)
-                        GlobalData.token = tokenData
-                        Log.d("LoginVM", "Token encryptedData: ${GlobalData.token?.encryptedData}")
+                        GlobalData.token = encryptedDataT
+                        Log.d("LoginVM", "Token encryptedData: ${GlobalData.token}")
                     } else {
                         button.progress = CircularProgressButton.ERROR_STATE_PROGRESS
                         Toast.makeText(context, response.msg, Toast.LENGTH_SHORT).show()

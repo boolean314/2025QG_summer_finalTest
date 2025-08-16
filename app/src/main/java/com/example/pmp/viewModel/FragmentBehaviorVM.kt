@@ -3,10 +3,7 @@ package com.example.pmp.viewModel
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
-import android.os.Build
 import android.util.Log
-import android.widget.DatePicker
-import android.widget.TimePicker
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
@@ -15,6 +12,7 @@ import com.example.pmp.R
 import com.example.pmp.data.apiService.MyApiService
 import com.example.pmp.data.apiService.ServiceCreator
 import com.example.pmp.data.model.ApiResponse
+import com.example.pmp.data.model.GlobalData
 import com.example.pmp.data.model.ManualTrackingStats
 import com.github.mikephil.charting.charts.BarChart
 import retrofit2.Call
@@ -92,7 +90,7 @@ fun chooseEndTime(){
             return
         }
         Log.d("FragmentBehaviorVM", "sendRequest: $projectId ${startTime.value} ${endTime.value}")
-        apiService.getManualTrackingStats(projectId!!,startTime.value!!,endTime.value!!).enqueue(object:retrofit2.Callback<ApiResponse<List<ManualTrackingStats>>>{
+        apiService.getManualTrackingStats("Bearer ${GlobalData.token}", GlobalData.Rsakey, projectId!!,startTime.value!!,endTime.value!!).enqueue(object:retrofit2.Callback<ApiResponse<List<ManualTrackingStats>>>{
             override fun onResponse(
                 call: Call<ApiResponse<List<ManualTrackingStats>>>,
                 response: Response<ApiResponse<List<ManualTrackingStats>>>

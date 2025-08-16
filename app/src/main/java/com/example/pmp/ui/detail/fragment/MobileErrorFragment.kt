@@ -16,6 +16,7 @@ import com.example.pmp.data.apiService.ServiceCreator
 import com.example.pmp.data.model.ApiResponse
 import com.example.pmp.data.model.ErrorStat
 import com.example.pmp.data.model.ErrorTimes
+import com.example.pmp.data.model.GlobalData
 import com.example.pmp.databinding.FragmentMobileErrorBinding
 import com.github.mikephil.charting.charts.CombinedChart
 import com.github.mikephil.charting.charts.LineChart
@@ -24,8 +25,6 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
-import retrofit2.Call
-import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -83,7 +82,7 @@ class MobileErrorFragment:Fragment(R.layout.fragment_mobile_error) {
 
         // 发送网络请求
         val apiService= ServiceCreator.create(MyApiService::class.java)
-        apiService.getErrorTimes(projectId!!, startTimeStr, endTimeStr).enqueue(object : retrofit2.Callback<ApiResponse<List<ErrorTimes>>>{
+        apiService.getErrorTimes("Bearer ${GlobalData.token}", GlobalData.Rsakey, projectId!!, startTimeStr, endTimeStr).enqueue(object : retrofit2.Callback<ApiResponse<List<ErrorTimes>>>{
             override fun onResponse(
                 call: retrofit2.Call<ApiResponse<List<ErrorTimes>>>,
                 response: retrofit2.Response<ApiResponse<List<ErrorTimes>>>
@@ -153,7 +152,7 @@ class MobileErrorFragment:Fragment(R.layout.fragment_mobile_error) {
 
 
         // 发送网络请求获取错误类型统计数据
-        apiService.getMobileErrorStatsPro(projectId!!).enqueue(object : retrofit2.Callback<ApiResponse<List<List<ErrorStat>>>>{
+        apiService.getMobileErrorStatsPro("Bearer ${GlobalData.token}", GlobalData.Rsakey, projectId!!).enqueue(object : retrofit2.Callback<ApiResponse<List<List<ErrorStat>>>>{
             override fun onResponse(
                 call: retrofit2.Call<ApiResponse<List<List<ErrorStat>>>>,
                 response: retrofit2.Response<ApiResponse<List<List<ErrorStat>>>>

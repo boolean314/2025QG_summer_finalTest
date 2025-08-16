@@ -16,8 +16,8 @@ import com.example.pmp.data.apiService.ServiceCreator
 import com.example.pmp.data.model.ApiResponse
 import com.example.pmp.data.model.ErrorStat
 import com.example.pmp.data.model.ErrorTimes
+import com.example.pmp.data.model.GlobalData
 import com.example.pmp.databinding.FragmentBackendErrorBinding
-import com.example.pmp.databinding.FragmentMobileErrorBinding
 import com.example.pmp.viewModel.FragmentErrorVM
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.charts.CombinedChart
@@ -89,7 +89,7 @@ class BackendErrorFragment:Fragment(R.layout.fragment_backend_error) {  private 
 
         // 发送网络请求
         val apiService= ServiceCreator.create(MyApiService::class.java)
-        apiService.getErrorTimes(projectId!!, startTimeStr, endTimeStr).enqueue(object : retrofit2.Callback<ApiResponse<List<ErrorTimes>>>{
+        apiService.getErrorTimes("Bearer ${GlobalData.token}", GlobalData.Rsakey, projectId!!, startTimeStr, endTimeStr).enqueue(object : retrofit2.Callback<ApiResponse<List<ErrorTimes>>>{
             override fun onResponse(
                 call: retrofit2.Call<ApiResponse<List<ErrorTimes>>>,
                 response: retrofit2.Response<ApiResponse<List<ErrorTimes>>>
@@ -159,7 +159,7 @@ class BackendErrorFragment:Fragment(R.layout.fragment_backend_error) {  private 
 
 
         // 发送网络请求获取错误类型统计数据
-        apiService.getBackendErrorStatsPro(projectId!!).enqueue(object : retrofit2.Callback<ApiResponse<List<List<ErrorStat>>>>{
+        apiService.getBackendErrorStatsPro("Bearer ${GlobalData.token}", GlobalData.Rsakey, projectId!!).enqueue(object : retrofit2.Callback<ApiResponse<List<List<ErrorStat>>>>{
             override fun onResponse(
                 call: retrofit2.Call<ApiResponse<List<List<ErrorStat>>>>,
                 response: retrofit2.Response<ApiResponse<List<List<ErrorStat>>>>

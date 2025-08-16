@@ -1,21 +1,31 @@
 package com.example.pmp.data.retrofit
 
 import com.example.pmp.data.apiService.MyApiService
+import com.example.pmp.data.apiService.ServiceCreator
 import com.example.pmp.util.LocalDataTimeDeserializer
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.time.LocalDateTime
+import java.util.concurrent.TimeUnit
 
 object RetrofitClient {
     val instance: MyApiService by lazy {
+        val okHttpClient = OkHttpClient.Builder()
+            .connectTimeout(300, TimeUnit.SECONDS)
+            .readTimeout(300, TimeUnit.SECONDS)
+            .writeTimeout(300, TimeUnit.SECONDS)
+            .build()
+
         val gson: Gson = GsonBuilder()
             .registerTypeAdapter(LocalDateTime::class.java, LocalDataTimeDeserializer()) // 注册自定义解析器
             .create()
 
         Retrofit.Builder()
-            .baseUrl("http://47.113.224.195:32409/")    //lrt：http://47.113.224.195:32406
+            .baseUrl("http://47.113.224.195:30422/api/")    //lrt：http://47.113.224.195:32406 //dyy：http://192.168.1.109:8080/
+            .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(MyApiService::class.java)

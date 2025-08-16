@@ -12,6 +12,7 @@ import com.example.pmp.R
 import com.example.pmp.data.apiService.MyApiService
 import com.example.pmp.data.apiService.ServiceCreator
 import com.example.pmp.data.model.ApiResponse
+import com.example.pmp.data.model.GlobalData
 import com.example.pmp.data.model.IpInterceptionCount
 
 import com.github.mikephil.charting.charts.BarChart
@@ -100,7 +101,7 @@ class FragmentErrorVM:ViewModel() {
             return
         }
         // 使用正确的API方法和数据模型
-        apiService.getIpInterceptionCount(projectId!!,startTime.value!!,endTime.value!!).enqueue(object:retrofit2.Callback<ApiResponse<List<IpInterceptionCount>>>{
+        apiService.getIpInterceptionCount("Bearer ${GlobalData.token}", GlobalData.Rsakey, projectId!!,startTime.value!!,endTime.value!!).enqueue(object:retrofit2.Callback<ApiResponse<List<IpInterceptionCount>>>{
             override fun onResponse(
                 call: Call<ApiResponse<List<IpInterceptionCount>>>,
                 response: Response<ApiResponse<List<IpInterceptionCount>>>
