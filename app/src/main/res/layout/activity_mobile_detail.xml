@@ -269,6 +269,20 @@
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp" />
-
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/mobile_float_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginRight="20dp"
+            android:src="@drawable/problem"
+            app:elevation="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:backgroundTint="@color/orange"
+            app:shapeAppearance="@style/Widget.Material3.CircularProgressIndicator"
+            android:visibility="@{viewModel.userRole &lt;=1 ? View.VISIBLE : View.GONE}"
+            android:onClick="@{()->viewModel.showMobileErrorList(context)}"
+            />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

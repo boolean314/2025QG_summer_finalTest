@@ -15,7 +15,7 @@ object RetrofitClient {
             .create()
 
         Retrofit.Builder()
-            .baseUrl("http://47.113.224.195:32406/")    //lrt：http://47.113.224.195:32406
+            .baseUrl("http://47.113.224.195:32409/")    //lrt：http://47.113.224.195:32406
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(MyApiService::class.java)

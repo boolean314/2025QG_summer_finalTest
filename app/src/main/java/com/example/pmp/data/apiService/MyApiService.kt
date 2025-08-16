@@ -8,6 +8,7 @@ import com.example.pmp.data.model.EncryptModify
 import com.example.pmp.data.model.EncryptRegister
 import com.example.pmp.data.model.ErrorStat
 import com.example.pmp.data.model.ErrorTimes
+import com.example.pmp.data.model.FrontErrorData
 import com.example.pmp.data.model.IpInterceptionCount
 import com.example.pmp.data.model.JoinProjectData
 import com.example.pmp.data.model.ManualTrackingStats
@@ -93,6 +94,22 @@ fun getMobileErrorStatsPro(@Query("projectId")projectId: String):Call<ApiRespons
 //获取后端非法攻击统计
     @GET("graph/getIpInterceptionCount")
     fun getIpInterceptionCount(@Query("projectId")projectId: String,@Query("startTime")startTime: String,@Query("endTime")endTime: String):Call<ApiResponse<List<IpInterceptionCount>>>
+
+// 获取错误列表
+    @GET("errors/selectByCondition")
+    fun <T>getErrorList(@Query("projectId")projectId: String,@Query("platform")platform: String):Call<ApiResponse<List<T>>>
+
+    // 获取前端错误列表
+    @GET("errors/selectByCondition")
+    fun getFrontendErrorList(@Query("projectId") projectId: String, @Query("platform") platform: String): Call<ApiResponse<List<FrontErrorData>>>
+
+    // 获取后端错误列表
+    @GET("errors/selectByCondition")
+    fun getBackendErrorList(@Query("projectId") projectId: String, @Query("platform") platform: String): Call<ApiResponse<List<FrontErrorData>>>
+
+    // 获取移动端错误列表
+    @GET("errors/selectByCondition")
+    fun getMobileErrorList(@Query("projectId") projectId: String, @Query("platform") platform: String): Call<ApiResponse<List<FrontErrorData>>>
 
 
 

@@ -1,5 +1,6 @@
 package com.example.pmp.viewModel
 
+import ErrorListDetail
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -152,6 +153,26 @@ class DetailVM: ViewModel() {
         context.startActivity(intent)
 
     }
+
+    fun showFrontendErrorList(context: Context){
+        val intent=Intent(context,ErrorListDetail::class.java)
+        intent.putExtra("projectId",uuid.value)
+        intent.putExtra("platform","frontend")
+        context.startActivity(intent)
+    }
+    fun showBackendErrorList(context: Context){
+        val intent=Intent(context,ErrorListDetail::class.java)
+        intent.putExtra("projectId",uuid.value)
+        intent.putExtra("platform","backend")
+        context.startActivity(intent)
+    }
+    fun showMobileErrorList(context: Context){
+        val intent=Intent(context,ErrorListDetail::class.java)
+        intent.putExtra("projectId",uuid.value)
+        intent.putExtra("platform","mobile")
+        context.startActivity(intent)
+    }
+
 
 }
 
