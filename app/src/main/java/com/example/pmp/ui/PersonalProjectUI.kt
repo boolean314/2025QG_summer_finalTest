@@ -226,8 +226,6 @@ class PersonalProjectUI : Fragment(), RapidFloatingActionContentLabelList.OnRapi
 
 
 
-
-        //加入项目未测试
         // 在这里设置点击监听器
         binding.joinProjectButton.setOnClickListener {
             val invitedCode = binding.joinProjectId.text.toString()

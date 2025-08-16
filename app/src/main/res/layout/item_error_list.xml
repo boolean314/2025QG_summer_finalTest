@@ -1,76 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <data>
-        <variable
-            name="errorItem"
-            type="com.example.pmp.data.model.FrontErrorData" />
-    </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/error_type"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="8dp">
+        android:text="null_pointer_exception"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="10dp"
+        android:maxEms="10"
+        android:maxLines="1"
+        android:ellipsize="end"
 
-        <TextView
-            android:id="@+id/error_type"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@{errorItem.errorType}"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/error_responsible_layout"
-            android:padding="8dp"
-            android:maxLines="1"
-            android:ellipsize="end" />
+        />
+    <TextView
+        android:id="@+id/error_timestamp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2025-08-13 11:35"
+        app:layout_constraintTop_toBottomOf="@id/error_type"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="10dp"
+        android:textSize="16sp"
+        />
 
-        <TextView
-            android:id="@+id/error_timestamp"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@{errorItem.timestamp}"
-            app:layout_constraintTop_toBottomOf="@id/error_type"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/error_responsible_layout"
-            android:padding="8dp"
-            android:textSize="12sp" />
+    <TextView
+        android:id="@+id/error_responsible_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="啊啊啊啊啊啊啊啊"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="20sp"
+        android:maxLines="1"
+        android:maxEms="5"
+        android:ellipsize="end"
+        />
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/error_responsible_avatar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/error_responsible_name"
+        android:layout_marginEnd="10dp"
+        />
 
-        <TextView
-            android:id="@+id/error_environment"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@{errorItem.environment}"
-            app:layout_constraintTop_toBottomOf="@id/error_timestamp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/error_responsible_layout"
-            android:padding="8dp"
-            android:textSize="12sp" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/error_responsible_layout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="委派负责人"
-            app:boxCornerRadiusBottomEnd="15dp"
-            app:boxCornerRadiusBottomStart="15dp"
-            app:boxCornerRadiusTopEnd="15dp"
-            app:boxCornerRadiusTopStart="15dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_margin="8dp">
 
-            <AutoCompleteTextView
-                android:id="@+id/error_responsible_autocomplete"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="none" />
 
-        </com.google.android.material.textfield.TextInputLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#E0E0E0"
+        app:layout_constraintStart_toStartOf="@+id/error_timestamp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/error_timestamp"
+android:layout_marginTop="10dp"
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</layout>
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>
