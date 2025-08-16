@@ -1,16 +1,13 @@
 package com.example.pmp.viewModel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.pmp.data.model.PersonalProject
+import com.example.pmp.data.model.GlobalData
 import com.example.pmp.data.model.PublicProject
 import com.example.pmp.data.retrofit.RetrofitClient
 import kotlinx.coroutines.launch
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 class PublicProjectVM : ViewModel() {
     private val _projects = MutableLiveData<List<PublicProject>>()
@@ -19,7 +16,7 @@ class PublicProjectVM : ViewModel() {
 
     fun loadProjects(userId: Long) {
         viewModelScope.launch {
-            val response = RetrofitClient.instance.getPublicProject()
+            val response = RetrofitClient.instance.getPublicProject(GlobalData.token, GlobalData.Rsakey, )
             if (response.code == 200) {
                 val data = response.data as? List<Map<String, Any>>
                 allProjects = data?.map { map ->

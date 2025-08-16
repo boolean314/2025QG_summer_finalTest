@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.example.pmp.data.apiService.MyApiService
 import com.example.pmp.data.apiService.ServiceCreator
 import com.example.pmp.data.model.ApiResponse
+import com.example.pmp.data.model.GlobalData
 import com.example.pmp.data.model.MemberListData
 
 class MemberListDetailVM : ViewModel() {
@@ -22,7 +23,7 @@ class MemberListDetailVM : ViewModel() {
     }
 
     fun getMemberList() {
-        apiService.getMemberList(projectId).enqueue(object : retrofit2.Callback<ApiResponse<List<MemberListData>>> {
+        apiService.getMemberList("Bearer ${GlobalData.token}", GlobalData.Rsakey, projectId).enqueue(object : retrofit2.Callback<ApiResponse<List<MemberListData>>> {
             override fun onResponse(
                 call: retrofit2.Call<ApiResponse<List<MemberListData>>>,
                 response: retrofit2.Response<ApiResponse<List<MemberListData>>>

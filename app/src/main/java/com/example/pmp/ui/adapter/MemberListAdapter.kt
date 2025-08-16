@@ -243,7 +243,7 @@ class MemberListAdapter(private val memberList: List<MemberListData>) : Recycler
             }
 
             val apiService = ServiceCreator.create(MyApiService::class.java)
-            apiService.updateRoles(updateRoles(userId=userId, projectId=projectId, userRole=newRole)).enqueue(object: retrofit2.Callback<ApiResponse<Any>>{
+            apiService.updateRoles("Bearer ${GlobalData.token}", GlobalData.Rsakey, updateRoles(userId=userId, projectId=projectId, userRole=newRole)).enqueue(object: retrofit2.Callback<ApiResponse<Any>>{
                 override fun onResponse(
                     call: Call<ApiResponse<Any>>,
                     response: Response<ApiResponse<Any>>
@@ -282,7 +282,8 @@ class MemberListAdapter(private val memberList: List<MemberListData>) : Recycler
             }
 
             val apiService = ServiceCreator.create(MyApiService::class.java)
-            apiService.deleteMember(projectId, userId).enqueue(object : retrofit2.Callback<ApiResponse<Any>> {
+            apiService.deleteMember("Bearer ${GlobalData.token}",
+                GlobalData.Rsakey, projectId, userId).enqueue(object : retrofit2.Callback<ApiResponse<Any>> {
                 override fun onResponse(
                     call: Call<ApiResponse<Any>>,
                     response: Response<ApiResponse<Any>>

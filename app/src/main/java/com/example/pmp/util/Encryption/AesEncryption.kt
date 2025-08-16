@@ -1,6 +1,7 @@
 package com.example.pmp.util.Encryption
 
 import android.util.Log
+import com.example.pmp.data.model.AesKey
 import com.example.pmp.data.model.GlobalData
 import org.json.JSONObject
 import java.security.KeyFactory
@@ -15,7 +16,7 @@ import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.OAEPParameterSpec
 import javax.crypto.spec.PSource
 
-object TokenEncryption {
+object AesEncryption {
     private const val AES_TRANSFORMATION = "AES/CBC/PKCS5Padding"
     private const val AES_KEY_SIZE = 256 // 服务端指定的密钥长度
     private const val IV_LENGTH = 16 // AES-CBC固定16字节IV
@@ -23,17 +24,19 @@ object TokenEncryption {
 
     /**
      * 加密包含两个字段的JSON数据
-     * @param token token
+     * @param aesKey AES密钥（Base64编码）
      * @param serverPublicKey 服务端提供的RSA公钥（Base64编码，支持PEM格式带头部）
      * @return Pair(encryptedData, encryptedKey) 对应服务端接口的两个字段
      */
     fun encryptWithServerKey(
-        token: String?,
+        aesKey: String,
         serverPublicKey: String
     ): Pair<String, String> {
         try {
             // 1. 构造JSON
-            val json = token ?: ""
+            val json = JSONObject().apply {
+                put("aesKey" , aesKey)
+            }.toString()
 
             // 2. 生成32字节AES密钥
             val aesKey = generateAESKey().also {
@@ -60,9 +63,8 @@ object TokenEncryption {
                 println("RSA加密后的密钥Base64: $it")
             }
 
-            //把加密后的AesKey存入全局数据
-            GlobalData.Rsakey= encryptedKey
-            Log.d("TokenEncryption", "RSA加密后的密钥: ${GlobalData.Rsakey}\n" +"加密后的token: ${GlobalData.token}")
+            GlobalData.Rsakey = encryptedKey
+            Log.d("LoginEncryption", "RSA加密后的密钥: ${GlobalData.Rsakey}")
 
             return Pair(encryptedData, encryptedKey)
         } catch (e: Exception) {

@@ -1,6 +1,7 @@
 package com.example.pmp.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,8 +44,13 @@ class AIChat : Fragment(){
         binding.aiChatRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         chatAdapter = ChatAdapter(chatList)
         binding.aiChatRecyclerView.adapter = chatAdapter
-        val userId = GlobalData.userInfo?.id!!
+        val userId = GlobalData.userInfo?.id
+        if (userId != null) {
             projectVM.loadProjects(userId)
+        } else {
+            // 处理 userInfo 为 null 的情况，可以显示一个错误信息或者跳转到登录页面
+            Log.e("AIChat", "User info is null")
+        }
             projectVM.projects.observe(viewLifecycleOwner, Observer { projects ->
             val names = projects.map { it.name }
             val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, names)

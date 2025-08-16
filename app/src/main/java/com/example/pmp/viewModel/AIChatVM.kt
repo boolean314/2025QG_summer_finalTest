@@ -18,7 +18,7 @@ class AIChatVM : ViewModel() {
         viewModelScope.launch {
             try {
                 val content = chatItem(message, projectId)
-                val response = AIRetrofitClient.instance.chat(GlobalData.token?.encryptedData, GlobalData.RSAKey, content)
+                val response = AIRetrofitClient.instance.chat(content)
                 if (response.code == 200) {
                     val dataMap = response.data as Map<*, *>
                     val responseMsg = dataMap["reply"] as? String

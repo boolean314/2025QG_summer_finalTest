@@ -30,7 +30,7 @@ import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 
 class PersonalProjectAdapter(
-    private val dataList: MutableList<PersonalProject>,
+    val dataList: MutableList<PersonalProject>,
     private val onDelete: (String) -> Unit,
     private val onExit: (String, Long) -> Unit,
     private val viewModel: PersonalProjectVM,
@@ -242,7 +242,7 @@ class PersonalProjectAdapter(
             val date = LocalDateTime.parse(dateString, inputFormatter)
             date.format(outputFormatter)
         } catch (e: Exception) {
-            dateString // 解析失败时直接返回原字符串，防止闪退
+            dateString
         }
     }
 }

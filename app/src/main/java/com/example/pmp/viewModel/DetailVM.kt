@@ -40,7 +40,7 @@ class DetailVM: ViewModel() {
 
     //发送网络请求获取详细信息
     fun getProjectDetail() {
-        apiService.getProjectDetail(uuid.value!!)
+        apiService.getProjectDetail("Bearer ${GlobalData.token}", GlobalData.Rsakey,uuid.value!!)
             .enqueue(object : retrofit2.Callback<ApiResponse<ProjectDetail>> {
                 override fun onResponse(
                     call: Call<ApiResponse<ProjectDetail>>,
@@ -76,7 +76,7 @@ class DetailVM: ViewModel() {
 
     //刷新获得最新邀请码
     fun getNewInviteCode() {
-        apiService.getInviteCode(uuid.value!!)
+        apiService.getInviteCode("Bearer ${GlobalData.token}", GlobalData.Rsakey,uuid.value!!)
             .enqueue(object : retrofit2.Callback<ApiResponse<String>> {
                 override fun onResponse(
                     call: Call<ApiResponse<String>>,
@@ -124,7 +124,7 @@ class DetailVM: ViewModel() {
 
     //更新项目信息
     fun updateProject(projectDetail: ProjectDetail, context: Context) {
-        apiService.updateProject(projectDetail)
+        apiService.updateProject("Bearer ${GlobalData.token}", GlobalData.Rsakey, projectDetail)
             .enqueue(object : retrofit2.Callback<ApiResponse<Any>> {
                 override fun onResponse(
                     call: Call<ApiResponse<Any>>,

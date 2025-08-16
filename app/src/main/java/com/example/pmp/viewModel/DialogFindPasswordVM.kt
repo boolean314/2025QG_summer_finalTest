@@ -63,7 +63,7 @@ class DialogFindPasswordVM : ViewModel(){
                     serverPublicKey
                 )
                 val user = EncryptModify(encryptedData, encryptedKey)
-                val response = RetrofitClient.instance.modifyP(user)
+                val response = RetrofitClient.instance.findP(user)
                 if (response.code == 200) {
                     Log.d("DialogPasswordVM", "修改后的信息：password = ${newPassword.value}")
                     Toast.makeText(context, response.msg, Toast.LENGTH_SHORT).show()
