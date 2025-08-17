@@ -68,4 +68,5 @@ dependencies {
     implementation("androidx.databinding:databinding-runtime:7.2.0")
     implementation("androidx.databinding:databinding-runtime:7.2.0")                                //kapt
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+    implementation("com.github.mittsu333:MarkedView-for-Android:1.0.7")
 }

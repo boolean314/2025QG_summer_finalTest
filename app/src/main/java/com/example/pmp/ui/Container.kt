@@ -9,6 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
 import com.dxtt.coolmenu.CoolMenuFrameLayout
 import com.example.pmp.R
+import com.example.pmp.data.model.WebSocketModel
+import okhttp3.WebSocketListener
 
 class Container : AppCompatActivity(){
 
@@ -31,6 +33,8 @@ class Container : AppCompatActivity(){
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        val listener = object : WebSocketListener() {}
+        WebSocketModel().connect(listener,this)
         coolMenuFrameLayout = findViewById(R.id.rl_container)
         coolMenuFrameLayout.setTitles(titles) // 设置标题
         // 可选：设置菜单图标

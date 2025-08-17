@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="错误类型："
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_gravity="center_vertical"/>
+
+        <TextView
+            android:id="@+id/error_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="NullPointerException"
+            android:textSize="24sp"
+            android:layout_gravity="center_vertical"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="错误信息："
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_gravity="center_vertical"/>
+
+        <TextView
+            android:id="@+id/error_message"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="出错类: org.springframework.web.servlet.resource.ResourceHttpRequestHandler\n异常类型: NoResourceFoundException\n出错方法: handleRequest\n出错行号: 585\n异常信息: No static resource favicon.ico."
+            android:textSize="20sp"
+            android:gravity="center_vertical"
+            android:scrollbars="vertical"
+            android:maxLines="20"
+            android:focusable="true"
+            android:focusableInTouchMode="true"/>
+
+    </LinearLayout>
+
+</LinearLayout>

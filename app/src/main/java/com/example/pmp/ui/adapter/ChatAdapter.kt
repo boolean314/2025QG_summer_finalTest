@@ -9,8 +9,11 @@ import com.example.pmp.data.model.ChatMessage
 import com.example.pmp.data.model.GlobalData
 import com.example.pmp.databinding.LeftChatMsgItemBinding
 import com.example.pmp.databinding.RightChatMsgItemBinding
+import com.example.pmp.viewModel.MissionsVM
 
-class ChatAdapter(private val chatList: List<ChatMessage>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ChatAdapter(
+    private val chatList: List<ChatMessage>,
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
         const val TYPE_LEFT = 0
@@ -44,7 +47,9 @@ class ChatAdapter(private val chatList: List<ChatMessage>) : RecyclerView.Adapte
                 .error(R.drawable.coach)
                 .into(holder.binding.userAvatarImage)
         } else if (holder is LeftViewHolder) {
-            holder.binding.receiveMsg.text = msg.content
+            val markDownText = msg.content.trimIndent()
+            holder.binding.receiveMsg.setMDText(markDownText)
+
         }
     }
 

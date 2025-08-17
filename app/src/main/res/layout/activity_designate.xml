@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_action_mission_dark"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="委派信息"
+            android:textSize="30sp"
+            android:fontFamily="@font/alibaba_sans_heavy_italic"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="10dp"/>
+
+        <Button
+            android:id="@+id/mission_delete_all_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="清空所有消息"
+            android:textColor="#000"
+            android:textSize="16sp"
+            android:background="@drawable/clear_all_button"/>
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/mission_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"/>
+
+</LinearLayout>

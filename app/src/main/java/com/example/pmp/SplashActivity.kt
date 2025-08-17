@@ -6,6 +6,7 @@ import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
@@ -14,6 +15,7 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.animation.doOnEnd
 import com.example.pmp.databinding.ActivitySplashBinding
+import com.example.pmp.ui.Container
 import com.example.pmp.ui.LR.Login
 
 @SuppressLint("CustomSplashScreen")
@@ -23,6 +25,13 @@ class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val sharedPref = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        val token = sharedPref.getString("token", null)
+        if (token != null) {
+            startActivity(Intent(this, Container::class.java))
+            finish()
+            return
+        }
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
         //等待布局测量完成后再开始动画，以获取正确的视图尺寸

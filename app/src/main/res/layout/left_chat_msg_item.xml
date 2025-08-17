@@ -32,15 +32,24 @@
             app:cardCornerRadius="30dp"
             app:cardElevation="8dp">
 
-            <TextView
-                android:id="@+id/receiveMsg"
+            <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:layout_marginStart="10dp"
-                android:text=""/>
+                android:fillViewport="true">
+
+                <com.mittsu.markedview.MarkedView
+                    android:id="@+id/receiveMsg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="10dp"
+                    android:text=""
+                    />
+
+            </ScrollView>
 
         </com.google.android.material.card.MaterialCardView>
 

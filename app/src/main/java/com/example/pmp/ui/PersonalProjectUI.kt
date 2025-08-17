@@ -155,6 +155,30 @@ class PersonalProjectUI : Fragment(), RapidFloatingActionContentLabelList.OnRapi
 
         val items = listOf(
             RFACLabelItem<Int>()
+                .setLabel("委派信息")
+                .setResId(R.drawable.ic_action_mission)
+                .setIconNormalColor(0xff9933ff.toInt())
+                .setIconPressedColor(0xff9900ff.toInt())
+                .setLabelSizeSp(16)
+                .setLabelBackgroundDrawable(
+                    RFABShape.generateCornerShapeDrawable(
+                        0xffffffff.toInt(),
+                        RFABTextUtil.dip2px(context, 4f)
+                    )
+                ),
+            RFACLabelItem<Int>()
+                .setLabel("系统通知")
+                .setResId(R.drawable.ic_action_system_mail)
+                .setIconNormalColor(0xff993399.toInt())
+                .setIconPressedColor(0xff990099.toInt())
+                .setLabelSizeSp(16)
+                .setLabelBackgroundDrawable(
+                    RFABShape.generateCornerShapeDrawable(
+                        0xffffffff.toInt(),
+                        RFABTextUtil.dip2px(context, 4f)
+                    )
+                ),
+            RFACLabelItem<Int>()
                 .setLabel("创建项目")
                 .setResId(R.drawable.ic_action_add_circle_outline)
                 .setLabelSizeSp(16)
@@ -195,9 +219,15 @@ class PersonalProjectUI : Fragment(), RapidFloatingActionContentLabelList.OnRapi
     override fun onRFACItemLabelClick(position: Int, item: RFACLabelItem<Int>) {
         when(position) {
             0 -> {
+                startActivity(Intent(context, MissionActivity::class.java))
+            }
+            1 -> {
+                startActivity(Intent(context, SystemMail::class.java))
+            }
+            2 -> {
                 startActivity(Intent(context, CreateProject::class.java))
             }
-            1 ->  showJoinProjectDialog()
+            3 ->  showJoinProjectDialog()
         }
         rfabHelper.collapseContent()
     }
@@ -205,9 +235,15 @@ class PersonalProjectUI : Fragment(), RapidFloatingActionContentLabelList.OnRapi
     override fun onRFACItemIconClick(position: Int, item: RFACLabelItem<Int>) {
         when(position) {
             0 -> {
+                startActivity(Intent(context, MissionActivity::class.java))
+            }
+            1 -> {
+                startActivity(Intent(context, SystemMail::class.java))
+            }
+            2 -> {
                 startActivity(Intent(context, CreateProject::class.java))
             }
-            1 ->  showJoinProjectDialog()
+            3 ->  showJoinProjectDialog()
         }
         rfabHelper.collapseContent()
     }

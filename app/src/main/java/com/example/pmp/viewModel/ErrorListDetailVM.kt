@@ -9,6 +9,7 @@ import com.example.pmp.data.apiService.MyApiService
 import com.example.pmp.data.apiService.ServiceCreator
 import com.example.pmp.data.model.ApiResponse
 import com.example.pmp.data.model.FrontErrorData
+import com.example.pmp.data.model.GlobalData
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
@@ -39,7 +40,7 @@ class ErrorListDetailVM : ViewModel() {
     fun getFrontendError() {
 
         // 调用API获取前端错误列表
-        apiService.getFrontendErrorList(projectId, platform).enqueue(object : Callback<ApiResponse<List<FrontErrorData>>> {
+        apiService.getFrontendErrorList("Bearer ${GlobalData.token}", GlobalData.Rsakey, projectId, platform).enqueue(object : Callback<ApiResponse<List<FrontErrorData>>> {
 
             override fun onResponse(
                 call: Call<ApiResponse<List<FrontErrorData>>>,
