@@ -9,8 +9,10 @@ import com.example.pmp.data.model.ApiResponse
 import com.example.pmp.data.model.BackendErrorData
 import com.example.pmp.data.model.FrontendErrorData
 import com.example.pmp.data.model.GlobalData
+import com.example.pmp.data.model.HandleStatusData
 import com.example.pmp.data.model.MobileErrorData
 import com.example.pmp.data.model.ThresholdData
+import com.example.pmp.data.model.UpdateHandleStatusData
 import retrofit2.Call
 import retrofit2.Response
 
@@ -31,6 +33,8 @@ class ErrorDetailVM : ViewModel() {
     var environment = MutableLiveData<String?>()
     val projectId = MutableLiveData<String?>()
     var oldThreshold = MutableLiveData<Int?>()
+    var handleStatus = MutableLiveData<Int?>()
+    var platform = MutableLiveData<String?>()
     private val apiService = ServiceCreator.create(MyApiService::class.java)
 
 
@@ -195,13 +199,12 @@ class ErrorDetailVM : ViewModel() {
         Log.d("ErrorDetailVM", "updateThreshold: ${errorType.value}")
         Log.d("ErrorDetailVM", "updateThreshold: ${projectId.value}")
         Log.d("ErrorDetailVM", "updateThreshold: $platform")
+        Log.d("ErrorDetailVM", "updateThreshold: ${environment.value}")
         apiService.updateThreshold(
             "Bearer ${GlobalData.token}",
             GlobalData.Rsakey,
-            errorType.value!!,
-            threshold,
-            projectId.value!!,
-            platform
+            ThresholdData(errorType.value!!, environment.value!!, projectId.value!!, platform,threshold,),
+
         ).enqueue(object : retrofit2.Callback<ApiResponse<Any>> {
             override fun onResponse(
                 call: Call<ApiResponse<Any>>,
@@ -221,5 +224,61 @@ class ErrorDetailVM : ViewModel() {
         })
 
         }
+    //获取错误的解决状态
+    fun getHandleStatus(platform1: String) {
+        platform.value = platform1
+        apiService.getHandleStatus(
+            "Bearer ${GlobalData.token}",
+            GlobalData.Rsakey,
+            projectId.value!!,
+            errorType.value!!,
+            platform1
+        ).enqueue(object : retrofit2.Callback<ApiResponse<HandleStatusData>> {
+            override fun onResponse(
+                call: Call<ApiResponse<HandleStatusData>>,
+                response: Response<ApiResponse<HandleStatusData>>
+            ) {
+                Log.d("ErrorDetailVM", "HandleStatus_onResponse: $response")
+                Log.d("ErrorDetailVM", "HandleStatus_onResponse: ${response.body()}")
+                if (response.isSuccessful) {
+                    Log.d("ErrorDetailVM", "HandleStatus_onResponse: ${response.body()?.data}")
+                    Log.d("ErrorDetailVM", "HandleStatus_onResponse: ${response.body()?.data?.isHandle}")
+                    handleStatus.value = response.body()?.data?.isHandle ?: 0
+                }
+            }
+
+            override fun onFailure(call: Call<ApiResponse<HandleStatusData>>, t: Throwable) {
+                Log.d("ErrorDetailVM", "HandleStatus_onFailure: $t")
+            }
+        })
     }
 
+    fun updateHandleStatus() {
+        apiService.updateHandleStatus(
+            "Bearer ${GlobalData.token}",
+            GlobalData.Rsakey,
+            UpdateHandleStatusData(errorType.value!!, platform.value!!, projectId.value!!),
+        ).enqueue(object : retrofit2.Callback<ApiResponse<Any>> {
+            override fun onResponse(
+                call: Call<ApiResponse<Any>>,
+                response: Response<ApiResponse<Any>>
+            ) {
+
+                Log.d("ErrorDetailVM", "updateHandleStatus onResponse: $response")
+                Log.d("ErrorDetailVM", "updateHandleStatus onResponse: ${response.body()}")
+                if (response.isSuccessful) {
+                    Log.d("ErrorDetailVM", "updateHandleStatus onResponse: ${response.body()?.msg}")
+                        if (handleStatus.value==1){
+                            handleStatus.value = 0
+                        }else{
+                            handleStatus.value = 1
+                        }
+                }
+            }
+
+            override fun onFailure(call: Call<ApiResponse<Any>>, t: Throwable) {
+                Log.d("ErrorDetailVM", "updateHandleStatus onFailure: $t")
+            }
+        })
+    }
+}

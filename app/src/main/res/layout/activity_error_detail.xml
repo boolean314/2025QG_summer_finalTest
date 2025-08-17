@@ -57,7 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            app:cardBackgroundColor="@color/qq_blue"
+            app:cardBackgroundColor="@{errorDetailVM.handleStatus == 1 ? @color/qq_blue : @color/red}"
             app:layout_constraintStart_toEndOf="@id/error_threshold_layout"
             app:layout_constraintTop_toTopOf="@id/error_threshold_layout">
 
@@ -65,11 +65,14 @@
                 android:id="@+id/error_solve"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="已解决"
+                android:text='@{errorDetailVM.handleStatus == 1 ? "已解决" : "未解决"}'
                 android:textSize="15sp"
                 android:padding="8dp"
                 android:clickable="true"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:onClick="@{() -> errorDetailVM.updateHandleStatus()}"
+
+                />
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView

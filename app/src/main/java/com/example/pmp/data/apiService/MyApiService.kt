@@ -10,6 +10,7 @@ import com.example.pmp.data.model.EncryptRegister
 import com.example.pmp.data.model.ErrorStat
 import com.example.pmp.data.model.ErrorTimes
 import com.example.pmp.data.model.FrontendErrorData
+import com.example.pmp.data.model.HandleStatusData
 import com.example.pmp.data.model.IpInterceptionCount
 import com.example.pmp.data.model.JoinProjectData
 import com.example.pmp.data.model.ManualTrackingStats
@@ -18,6 +19,7 @@ import com.example.pmp.data.model.MobileErrorData
 import com.example.pmp.data.model.ProjectDetail
 import com.example.pmp.data.model.ResultResponse
 import com.example.pmp.data.model.ThresholdData
+import com.example.pmp.data.model.UpdateHandleStatusData
 import com.example.pmp.data.model.chatItem
 import com.example.pmp.data.model.updateRoles
 import okhttp3.MultipartBody
@@ -236,14 +238,28 @@ interface MyApiService {
     fun updateThreshold(
         @Header("Authorization") token: String?,
         @Header("Rsakey") RsaKey: String?,
-        @Query("errorType") errorType: String,
-        @Query("threshold") threshold: Int,
-        @Query("projectId") projectId: String,
-        @Query("platform") platform: String
+       @Body updateThreshold: ThresholdData
 
     ): Call<ApiResponse<Any>>
 
+    //获取错误的解决状态
+    @GET("responsibilities/selectHandleStatus")
+    fun getHandleStatus(
+        @Header("Authorization") token: String?,
+        @Header("Rsakey") RsaKey: String?,
+        @Query("projectId") projectId: String,
+        @Query("errorType") errorType: String,
+        @Query("platform") platform: String
+    ): Call<ApiResponse<HandleStatusData>>
 
+    //更新错误的解决状态
+    @PUT("responsibilities/updateHandleStatus")
+    fun updateHandleStatus(
+        @Header("Authorization") token: String?,
+        @Header("Rsakey") RsaKey: String?,
+        @Body handleStatus: UpdateHandleStatusData,
+
+        ): Call<ApiResponse<Any>>
 
     @POST("users/password")
     suspend fun login(

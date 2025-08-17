@@ -18,6 +18,7 @@ import com.example.pmp.data.model.ApiResponse
 import com.example.pmp.data.model.GlobalData
 import com.example.pmp.data.model.JoinProjectData
 import com.example.pmp.databinding.ActivityErrorDetailBinding
+import com.example.pmp.databinding.DialogAssignMemberBinding
 import com.example.pmp.databinding.DialogJoinProjectBinding
 import com.example.pmp.databinding.DialogUpdateThresholdBinding
 import com.example.pmp.viewModel.ErrorDetailVM
@@ -31,6 +32,7 @@ class ErrorDetail : AppCompatActivity() {
     private lateinit var errorViewModel: ErrorDetailVM
     private lateinit var binding: ActivityErrorDetailBinding
     private lateinit var setThreshold: TextView
+    private lateinit var assignMemberText:TextView
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -49,6 +51,7 @@ class ErrorDetail : AppCompatActivity() {
         binding.errorDetailVM=errorViewModel
         binding.lifecycleOwner=this
         setThreshold=binding.errorThreshold
+        assignMemberText=binding.errorAssign
         when(platform){
             "frontend"->errorViewModel.getFrontendErrorDetail(errorId,platform)
             "backend"->errorViewModel.getBackendErrorDetail(errorId,platform)
@@ -58,18 +61,22 @@ class ErrorDetail : AppCompatActivity() {
         errorViewModel.errorType.observe(this) { errorType ->
             if (!errorType.isNullOrEmpty() && !errorViewModel.projectId.value.isNullOrEmpty()) {
                 errorViewModel.getThreshold(platform)
+                errorViewModel.getHandleStatus(platform)
             }
         }
 
         errorViewModel.projectId.observe(this) { projectId ->
             if (!projectId.isNullOrEmpty() && !errorViewModel.errorType.value.isNullOrEmpty()) {
                 errorViewModel.getThreshold(platform)
+                errorViewModel.getHandleStatus(platform)
             }
         }
         setThreshold.setOnClickListener {
-
             showUpdateThresholdDialog()
     }
+        assignMemberText.setOnClickListener {
+            showAssignMemberDialog()
+        }
 }
 
     private fun showUpdateThresholdDialog() {
@@ -94,9 +101,24 @@ binding.oldThreshold.text="当前阈值为:${errorViewModel.oldThreshold.value}"
             errorViewModel.updateThreshold(platform,threshold)
             dialog.dismiss()
             Toast.makeText(this, "阈值更新成功", Toast.LENGTH_SHORT).show()
+            errorViewModel.getThreshold(platform)
     }
         dialog.show()
 
 
 }
+
+    private fun showAssignMemberDialog() {
+        // 使用 DataBinding 创建视图
+        val binding: DialogAssignMemberBinding = DataBindingUtil.inflate(
+            layoutInflater,
+            R.layout.dialog_assign_member,
+            null,
+            false
+        )
+        val dialog = MaterialAlertDialogBuilder(this)
+            .setView(binding.root)  // 使用 binding.root 作为对话框视图
+            .create()
+        dialog.show()
+    }
 }
