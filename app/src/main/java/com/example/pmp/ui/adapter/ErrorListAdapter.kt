@@ -1,30 +1,26 @@
+// ErrorListAdapter.kt
 package com.example.pmp.ui.adapter
 
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.startActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.pmp.R
-import com.example.pmp.R.color.red
-import com.example.pmp.data.model.FrontendErrorData
+import com.example.pmp.data.model.BaseErrorData
 import com.example.pmp.databinding.ItemErrorListBinding
 import com.example.pmp.ui.detail.ErrorDetail
-import com.example.pmp.viewModel.ErrorListDetailVM
 
-class ErrorListAdapter : ListAdapter<FrontendErrorData, ErrorListAdapter.ErrorViewHolder>(ErrorDiffCallback()) {
-
+class ErrorListAdapter : ListAdapter<BaseErrorData, ErrorListAdapter.ErrorViewHolder>(ErrorDiffCallback()) {
 
     // 添加platform变量
     var platform: String = "frontend"
 
     class ErrorViewHolder(private val binding: ItemErrorListBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(error: FrontendErrorData) {
+        fun bind(error: BaseErrorData) {
             binding.errorType.text = error.errorType
             binding.errorTimestamp.text = formatTimestamp(error.timestamp)
             binding.errorResponsibleName.text = error.name ?: "未指派"
@@ -65,13 +61,18 @@ class ErrorListAdapter : ListAdapter<FrontendErrorData, ErrorListAdapter.ErrorVi
         }
     }
 
-    class ErrorDiffCallback : DiffUtil.ItemCallback<FrontendErrorData>() {
-        override fun areItemsTheSame(oldItem: FrontendErrorData, newItem: FrontendErrorData): Boolean {
+    // ErrorListAdapter.kt 中的 ErrorDiffCallback 类
+    class ErrorDiffCallback : DiffUtil.ItemCallback<BaseErrorData>() {
+        override fun areItemsTheSame(oldItem: BaseErrorData, newItem: BaseErrorData): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: FrontendErrorData, newItem: FrontendErrorData): Boolean {
-            return oldItem == newItem
+        override fun areContentsTheSame(oldItem: BaseErrorData, newItem: BaseErrorData): Boolean {
+            return oldItem.id == newItem.id &&
+                    oldItem.errorType == newItem.errorType &&
+                    oldItem.timestamp == newItem.timestamp &&
+                    oldItem.name == newItem.name &&
+                    oldItem.avatarUrl == newItem.avatarUrl
         }
     }
 }

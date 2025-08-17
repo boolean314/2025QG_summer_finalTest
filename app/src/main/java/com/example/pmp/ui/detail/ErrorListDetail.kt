@@ -1,3 +1,4 @@
+// ErrorListDetail.kt
 package com.example.pmp.ui.detail
 
 import android.os.Bundle
@@ -25,7 +26,6 @@ class ErrorListDetail : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        // 使用DataBinding
         binding = DataBindingUtil.setContentView(this, R.layout.activity_error_list_detail)
         binding.lifecycleOwner = this
 
@@ -37,29 +37,42 @@ class ErrorListDetail : AppCompatActivity() {
 
         projectId = intent.getStringExtra("projectId").toString()
         platform = intent.getStringExtra("platform").toString()
-        Log.d("ErrorListDetail", "projectId: ${projectId} , platform: ${platform}")
+        Log.d("ErrorListDetail", "projectId: $projectId , platform: $platform")
 
-        // 初始化ViewModel
         viewModel = ViewModelProvider(this)[ErrorListDetailVM::class.java]
         binding.viewModel = viewModel
 
-        // 初始化RecyclerView和Adapter
         setupRecyclerView()
 
-        // 设置数据
         viewModel.setData(projectId, platform)
+
+        // 根据平台类型观察不同的 LiveData
+        when (platform) {
+            "frontend" -> {
+                viewModel.errorList.observe(this) { errorList ->
+                    errorAdapter.submitList(errorList)
+                }
+            }
+            "backend" -> {
+                viewModel.errorListBackend.observe(this) { errorListBackend ->
+                    errorAdapter.submitList(errorListBackend)
+                }
+            }
+            "mobile" -> {
+                viewModel.errorListMobile.observe(this) { errorListMobile ->
+                    errorAdapter.submitList(errorListMobile)
+                }
+            }
+        }
     }
 
     private fun setupRecyclerView() {
         errorAdapter = ErrorListAdapter()
-        errorAdapter.platform = platform  // 将Activity中的platform传递给Adapter
-        binding.errorRecyclerView.adapter = errorAdapter
+        errorAdapter.platform = platform
 
-        // 观察错误列表数据变化
-        viewModel.errorList.observe(this) { errorList ->
-            errorAdapter.submitList(errorList)
+        binding.errorRecyclerView.apply {
+            adapter = errorAdapter
+            layoutManager = LinearLayoutManager(this@ErrorListDetail)
         }
     }
-
-
 }

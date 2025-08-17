@@ -1,6 +1,7 @@
 package com.example.pmp.data.apiService
 
 import com.example.pmp.data.model.ApiResponse
+import com.example.pmp.data.model.AssignMemberData
 import com.example.pmp.data.model.AverageTimeResponse
 import com.example.pmp.data.model.BackendErrorData
 import com.example.pmp.data.model.CreateProjectData
@@ -15,6 +16,7 @@ import com.example.pmp.data.model.IpInterceptionCount
 import com.example.pmp.data.model.JoinProjectData
 import com.example.pmp.data.model.ManualTrackingStats
 import com.example.pmp.data.model.MemberListData
+import com.example.pmp.data.model.MethodInvocationStats
 import com.example.pmp.data.model.MobileErrorData
 import com.example.pmp.data.model.MissionYes
 import com.example.pmp.data.model.ProjectDetail
@@ -170,6 +172,16 @@ interface MyApiService {
         @Query("endTime") endTime: String
     ): Call<ApiResponse<List<IpInterceptionCount>>>
 
+    //获取后端方法统计
+    @GET("graph/getMethodInvocationStats")
+    fun getMethodInvocationStats(
+        @Header("Authorization") token: String?,
+        @Header("Rsakey") RsaKey: String?,
+        @Query("projectId") projectId: String,
+        @Query("startTime") startTime: String,
+        @Query("endTime") endTime: String
+    ): Call<ApiResponse<List<MethodInvocationStats>>>
+
 
     // 获取前端错误列表
     @GET("errors/selectByCondition")
@@ -198,13 +210,12 @@ interface MyApiService {
         @Query("platform") platform: String
     ): Call<ApiResponse<List<List<MobileErrorData>>>>
 
-//获取前端错误的具体信息
+    //获取前端错误的具体信息
     @GET("errors/selectErrorDetail")
     fun getFrontendErrorDetail(
         @Header("Authorization") token: String?,
         @Header("Rsakey") RsaKey: String?,
-        @Query("errorId") errorId: Int
-        ,@Query("platform") platform: String
+        @Query("errorId") errorId: Int, @Query("platform") platform: String
     ): Call<ApiResponse<FrontendErrorData>>
 
     //获取后端错误的具体信息
@@ -212,8 +223,7 @@ interface MyApiService {
     fun getBackendErrorDetail(
         @Header("Authorization") token: String?,
         @Header("Rsakey") RsaKey: String?,
-        @Query("errorId") errorId: Int
-        ,@Query("platform") platform: String
+        @Query("errorId") errorId: Int, @Query("platform") platform: String
     ): Call<ApiResponse<BackendErrorData>>
 
     //获取移动端错误的具体信息
@@ -221,8 +231,7 @@ interface MyApiService {
     fun getMobileErrorDetail(
         @Header("Authorization") token: String?,
         @Header("Rsakey") RsaKey: String?,
-        @Query("errorId") errorId: Int
-        ,@Query("platform") platform: String
+        @Query("errorId") errorId: Int, @Query("platform") platform: String
     ): Call<ApiResponse<MobileErrorData>>
 
     //获取当前错误的阈值
@@ -240,7 +249,7 @@ interface MyApiService {
     fun updateThreshold(
         @Header("Authorization") token: String?,
         @Header("Rsakey") RsaKey: String?,
-       @Body updateThreshold: ThresholdData
+        @Body updateThreshold: ThresholdData
 
     ): Call<ApiResponse<Any>>
 
@@ -262,6 +271,14 @@ interface MyApiService {
         @Body handleStatus: UpdateHandleStatusData,
 
         ): Call<ApiResponse<Any>>
+
+    //修改错误的指派成员
+    @POST("responsibilities")
+    fun assignMember(
+        @Header("Authorization") token: String?,
+        @Header("Rsakey") RsaKey: String?,
+        @Body assignMember: AssignMemberData
+    ): Call<ApiResponse<Any>>
 
     @POST("users/password")
     suspend fun login(

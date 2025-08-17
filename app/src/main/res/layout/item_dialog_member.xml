@@ -8,11 +8,10 @@
         android:id="@+id/member_dialog_image"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginTop="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.387"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="10dp"
 
+        app:layout_constraintStart_toStartOf="parent"
+android:layout_marginLeft="50dp"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -21,12 +20,23 @@
         android:layout_height="wrap_content"
         android:text="张三"
         android:textSize="22sp"
-        android:maxEms="5"
+        android:maxEms="6"
         android:ellipsize="end"
         android:maxLines="1"
         app:layout_constraintLeft_toRightOf="@+id/member_dialog_image"
         app:layout_constraintTop_toTopOf="@id/member_dialog_image"
         app:layout_constraintBottom_toBottomOf="@id/member_dialog_image"
         android:layout_marginLeft="30dp"
+        />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#E0E0E0"
+        app:layout_constraintStart_toStartOf="@id/member_dialog_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/member_dialog_image"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>

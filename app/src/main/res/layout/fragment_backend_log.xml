@@ -1,18 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<layout
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.pmp.viewModel.FragmentErrorVM"
+            />
+    </data>
+<androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    >
+
     <TextView
+        android:id="@+id/backend_log_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="后端日志"
+        android:text="方法调用统计："
         android:textSize="20sp"
-        android:padding="10dp"
-       app:layout_constraintEnd_toEndOf="parent"
+        android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_margin="20dp"
         />
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/backend_log_startTime_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/backend_log_text"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="10dp"
 
+        >
+        <TextView
+            android:id="@+id/backend_log_startTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{viewModel.startTime != null ? viewModel.startTime : `选择开始时间`}"
+            android:textSize="15sp"
+            android:padding="8dp"
+            android:clickable="true"
+            android:onClick="@{()->viewModel.chooseStartTime()}"
+
+            />
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/backend_log_endTime_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/backend_log_startTime_layout"
+        app:layout_constraintTop_toBottomOf="@id/backend_log_text"
+        android:layout_margin="10dp"
+
+        >
+        <TextView
+            android:id="@+id/backend_log_endTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{viewModel.endTime != null ? viewModel.endTime : `选择结束时间`}"
+            android:textSize="15sp"
+            android:padding="8dp"
+            android:clickable="true"
+            android:onClick="@{()->viewModel.chooseEndTime()}"
+
+            />
+    </com.google.android.material.card.MaterialCardView>
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/backend_log_query_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/backend_log_text"
+        app:layout_constraintTop_toTopOf="@id/backend_log_text"
+        android:layout_marginLeft="20dp"
+
+        >
+        <TextView
+            android:id="@+id/backend_log_query"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="查询"
+            android:textSize="15sp"
+            android:padding="8dp"
+            android:clickable="true"
+            android:onClick="@{()->viewModel.sendRequest2()}"
+            />
+
+
+    </com.google.android.material.card.MaterialCardView>
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/backend_log_bar_chart"
+        android:layout_width="match_parent"
+        android:layout_height="450dp"
+        app:layout_constraintTop_toBottomOf="@id/backend_log_endTime_layout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_gravity="start"
+
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

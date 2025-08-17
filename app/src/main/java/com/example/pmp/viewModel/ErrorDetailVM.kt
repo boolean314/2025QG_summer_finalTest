@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.example.pmp.data.apiService.MyApiService
 import com.example.pmp.data.apiService.ServiceCreator
 import com.example.pmp.data.model.ApiResponse
+import com.example.pmp.data.model.AssignMemberData
 import com.example.pmp.data.model.BackendErrorData
 import com.example.pmp.data.model.FrontendErrorData
 import com.example.pmp.data.model.GlobalData
@@ -180,7 +181,7 @@ class ErrorDetailVM : ViewModel() {
                 Log.d("ErrorDetailVM", "onResponse: ${response.body()}")
                 if (response.isSuccessful) {
                     Log.d("ErrorDetailVM", "onResponse: ${response.body()?.data}")
-                    val threshold = response.body()?.data?.threshold ?: 0
+                    val threshold = response.body()?.data?.threshold ?: 1
                     oldThreshold.value = threshold
                     Log.d("ErrorDetailVM", "onResponse: $threshold")
                     Log.d("ErrorDetailVM", "onResponse: ${oldThreshold.value}")
@@ -215,7 +216,7 @@ class ErrorDetailVM : ViewModel() {
                 Log.d("ErrorDetailVM", "updateThreshold onResponse: ${response.body()}")
                 if (response.isSuccessful) {
                     Log.d("ErrorDetailVM", "updateThreshold onResponse: ${response.body()?.msg}")
-
+                    oldThreshold.value = threshold
                 }
             }
             override fun onFailure(call: Call<ApiResponse<Any>>, t: Throwable) {
@@ -253,6 +254,8 @@ class ErrorDetailVM : ViewModel() {
         })
     }
 
+
+    //更新错误的解决状态
     fun updateHandleStatus() {
         apiService.updateHandleStatus(
             "Bearer ${GlobalData.token}",
@@ -278,6 +281,43 @@ class ErrorDetailVM : ViewModel() {
 
             override fun onFailure(call: Call<ApiResponse<Any>>, t: Throwable) {
                 Log.d("ErrorDetailVM", "updateHandleStatus onFailure: $t")
+            }
+        })
+    }
+
+
+    //把错误指派给成员
+    fun assignMember(responsibleId:Long){
+
+        Log.d("ErrorDetailVM", "delegatorId: ${GlobalData.userInfo?.id}")
+        Log.d("ErrorDetailVM", "errorId: ${errorId.value}")
+        Log.d("ErrorDetailVM", "platform: ${platform.value}")
+        Log.d("ErrorDetailVM", "projectId: ${projectId.value}")
+        Log.d("ErrorDetailVM", "responsibleId: $responsibleId")
+
+        apiService.assignMember(
+            "Bearer ${GlobalData.token}",
+            GlobalData.Rsakey,
+            AssignMemberData(
+                GlobalData.userInfo?.id?:0,
+                errorId.value!!,
+                platform.value!!,
+                projectId.value!!,
+                responsibleId
+            )
+        ).enqueue(object : retrofit2.Callback<ApiResponse<Any>> {
+            override fun onResponse(
+                call: Call<ApiResponse<Any>>,
+                response: Response<ApiResponse<Any>>
+            ) {
+                Log.d("ErrorDetailVM", "assignMember onResponse: ${response.body()}")
+                if (response.isSuccessful) {
+                    Log.d("ErrorDetailVM", "assignMember onResponse: ${response.body()?.msg}")
+                }
+            }
+
+            override fun onFailure(call: Call<ApiResponse<Any>>, t: Throwable) {
+                Log.d("ErrorDetailVM", "assignMember onFailure: $t")
             }
         })
     }

@@ -6,7 +6,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.databinding.DataBindingUtil
@@ -21,8 +20,12 @@ import com.example.pmp.databinding.ActivityErrorDetailBinding
 import com.example.pmp.databinding.DialogAssignMemberBinding
 import com.example.pmp.databinding.DialogJoinProjectBinding
 import com.example.pmp.databinding.DialogUpdateThresholdBinding
+import com.example.pmp.ui.adapter.AssignMemberAdapter
 import com.example.pmp.viewModel.ErrorDetailVM
+import com.example.pmp.viewModel.MemberListDetailVM
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory
+import androidx.recyclerview.widget.LinearLayoutManager
 import retrofit2.Call
 import retrofit2.Response
 
@@ -33,6 +36,8 @@ class ErrorDetail : AppCompatActivity() {
     private lateinit var binding: ActivityErrorDetailBinding
     private lateinit var setThreshold: TextView
     private lateinit var assignMemberText:TextView
+    private lateinit var memberListViewModel: MemberListDetailVM
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -52,6 +57,10 @@ class ErrorDetail : AppCompatActivity() {
         binding.lifecycleOwner=this
         setThreshold=binding.errorThreshold
         assignMemberText=binding.errorAssign
+
+        // 初始化 MemberListDetailVM
+        memberListViewModel = ViewModelProvider(this).get(MemberListDetailVM::class.java)
+
         when(platform){
             "frontend"->errorViewModel.getFrontendErrorDetail(errorId,platform)
             "backend"->errorViewModel.getBackendErrorDetail(errorId,platform)
@@ -62,6 +71,8 @@ class ErrorDetail : AppCompatActivity() {
             if (!errorType.isNullOrEmpty() && !errorViewModel.projectId.value.isNullOrEmpty()) {
                 errorViewModel.getThreshold(platform)
                 errorViewModel.getHandleStatus(platform)
+                // 设置项目ID到memberListViewModel
+                memberListViewModel.setData(errorViewModel.projectId.value!!)
             }
         }
 
@@ -69,15 +80,17 @@ class ErrorDetail : AppCompatActivity() {
             if (!projectId.isNullOrEmpty() && !errorViewModel.errorType.value.isNullOrEmpty()) {
                 errorViewModel.getThreshold(platform)
                 errorViewModel.getHandleStatus(platform)
+                // 设置项目ID到memberListViewModel
+                memberListViewModel.setData(projectId)
             }
         }
         setThreshold.setOnClickListener {
             showUpdateThresholdDialog()
-    }
+        }
         assignMemberText.setOnClickListener {
             showAssignMemberDialog()
         }
-}
+    }
 
     private fun showUpdateThresholdDialog() {
         // 使用 DataBinding 创建视图
@@ -90,7 +103,7 @@ class ErrorDetail : AppCompatActivity() {
         val dialog = MaterialAlertDialogBuilder(this)
             .setView(binding.root)  // 使用 binding.root 作为对话框视图
             .create()
-binding.oldThreshold.text="当前阈值为:${errorViewModel.oldThreshold.value}"
+        binding.oldThreshold.text="当前阈值为:${errorViewModel.oldThreshold.value}"
         // 在这里设置点击监听器
         binding.updateThresholdButton.setOnClickListener {
             if(binding.updateThresholdEditText.text.toString().isEmpty()){
@@ -101,24 +114,54 @@ binding.oldThreshold.text="当前阈值为:${errorViewModel.oldThreshold.value}"
             errorViewModel.updateThreshold(platform,threshold)
             dialog.dismiss()
             Toast.makeText(this, "阈值更新成功", Toast.LENGTH_SHORT).show()
-            errorViewModel.getThreshold(platform)
-    }
+
+        }
         dialog.show()
-
-
-}
+    }
 
     private fun showAssignMemberDialog() {
         // 使用 DataBinding 创建视图
-        val binding: DialogAssignMemberBinding = DataBindingUtil.inflate(
+        val dialogBinding: DialogAssignMemberBinding = DataBindingUtil.inflate(
             layoutInflater,
             R.layout.dialog_assign_member,
             null,
             false
         )
+
         val dialog = MaterialAlertDialogBuilder(this)
-            .setView(binding.root)  // 使用 binding.root 作为对话框视图
+            .setView(dialogBinding.root)
             .create()
+
+        // 创建并设置适配器
+        val assignMemberAdapter = AssignMemberAdapter(emptyList()) { member ->
+            // 在这里实现指派成员的逻辑
+            assignErrorToMember(member)
+            dialog.dismiss()
+        }
+
+        // 设置RecyclerView
+        dialogBinding.assignMemberRecyclerview.apply {
+            adapter = assignMemberAdapter
+            layoutManager = LinearLayoutManager(this@ErrorDetail)
+        }
+
+        // 获取成员列表
+        memberListViewModel.getMemberList()
+
+        // 观察成员列表变化
+        memberListViewModel.memberList.observe(this) { memberList ->
+            // 只传递 userRole 为 2 的成员给适配器
+            val filteredList = memberList.filter { it.userRole == 2 }
+            assignMemberAdapter.updateMemberList(filteredList)
+        }
+
         dialog.show()
+    }
+
+    private fun assignErrorToMember(member: com.example.pmp.data.model.MemberListData) {
+        // 实现指派错误给成员的逻辑
+        errorViewModel.assignMember(member.userId)
+        Toast.makeText(this, "已将错误指派给: ${member.username}", Toast.LENGTH_LONG).show()
+
     }
 }
