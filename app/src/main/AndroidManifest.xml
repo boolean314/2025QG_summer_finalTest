@@ -21,6 +21,12 @@
             android:name=".ui.detail.ErrorDetail"
             android:exported="false" />
         <activity
+            android:name=".ui.MissionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.SystemMail"
+            android:exported="false" />
+        <activity
             android:name=".ui.detail.ErrorListDetail"
             android:exported="false" />
         <activity
@@ -28,16 +34,20 @@
             android:exported="false" />
         <activity
             android:name=".ui.detail.MobileDetail"
-            android:exported="true"></activity>
+            android:exported="true">
+        </activity>
         <activity
             android:name=".ui.detail.FrontendDetail"
-            android:exported="true"></activity>
+            android:exported="true">
+        </activity>
         <activity
             android:name=".ui.detail.BackendDetail"
-            android:exported="true"></activity>
+            android:exported="true">
+        </activity>
         <activity
             android:name=".ui.CreateProject"
-            android:exported="true"></activity>
+            android:exported="true">
+        </activity>
         <activity
             android:name=".ui.LR.Login"
             android:exported="false" />
@@ -47,7 +57,8 @@
         <activity
             android:name=".ui.Container"
             android:exported="true"
-            android:windowSoftInputMode="adjustPan"></activity>
+            android:windowSoftInputMode="adjustPan">
+        </activity>
         <activity
             android:name=".SplashActivity"
             android:exported="true">

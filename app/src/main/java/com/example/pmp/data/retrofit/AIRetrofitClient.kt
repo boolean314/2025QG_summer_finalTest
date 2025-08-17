@@ -23,7 +23,7 @@ object AIRetrofitClient {
             .create()
 
         Retrofit.Builder()
-            .baseUrl("http://192.168.1.100:8000/")    //lrt：http://47.113.224.195:32406
+            .baseUrl("http://47.113.224.195:32408/")    //lrt：http://47.113.224.195:32406
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()

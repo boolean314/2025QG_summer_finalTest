@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        app:cardCornerRadius="30dp"
+        app:cardElevation="8dp"
+        app:cardBackgroundColor="@color/white"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/mission_avatar_image"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/blue_dog"
+                android:layout_marginStart="25dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <TextView
+                android:id="@+id/mission_name_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="linrunxinnn"
+                android:textStyle="bold"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="5dp"
+                android:textSize="16sp"
+                app:layout_constraintStart_toEndOf="@+id/mission_avatar_image"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <TextView
+                android:id="@+id/a"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="指派你去解决："
+                android:layout_marginStart="20dp"
+                app:layout_constraintTop_toBottomOf="@+id/mission_name_text"
+                app:layout_constraintStart_toEndOf="@+id/mission_avatar_image"/>
+
+            <TextView
+                android:id="@+id/b"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="错误未解决："
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/red"
+                android:layout_marginStart="20dp"
+                app:layout_constraintTop_toBottomOf="@id/a"
+                app:layout_constraintStart_toEndOf="@+id/mission_avatar_image"/>
+
+            <TextView
+                android:id="@+id/mission_error_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="NullPointerException"
+                android:layout_marginStart="12dp"
+                app:layout_constraintStart_toEndOf="@+id/mission_avatar_image"
+                app:layout_constraintTop_toBottomOf="@id/b"/>
+
+            <TextView
+                android:id="@+id/mission_project_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="前端项目测试"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="30dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/mission_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="已处理"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="30dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/mission_project_text"/>
+
+            <ImageButton
+                android:id="@+id/mission_finish_Btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/mission_finish"
+                android:background="#00ffffff"
+                android:layout_marginEnd="30dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/mission_status"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</LinearLayout>

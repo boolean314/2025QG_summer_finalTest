@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        app:cardCornerRadius="30dp"
+        app:cardElevation="8dp"
+        app:cardBackgroundColor="@color/white"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/mail_avatar_image"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/mail_title"
+                android:layout_marginStart="25dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <TextView
+                android:id="@+id/mail_project_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="前端项目测试"
+                android:textStyle="bold"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="5dp"
+                android:textSize="16sp"
+                app:layout_constraintStart_toEndOf="@+id/mail_avatar_image"
+                app:layout_constraintBottom_toTopOf="@+id/b"/>
+
+            <TextView
+                android:id="@+id/b"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="错误未解决："
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/red"
+                android:layout_marginStart="20dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/mail_avatar_image"/>
+
+            <TextView
+                android:id="@+id/mail_error_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="NullPointerException"
+                android:layout_marginStart="12dp"
+                app:layout_constraintStart_toEndOf="@+id/mail_avatar_image"
+                app:layout_constraintTop_toBottomOf="@id/b"/>
+
+
+
+            <ImageButton
+                android:id="@+id/mail_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/delete_mail"
+                android:background="#00ffffff"
+                android:layout_marginEnd="30dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</LinearLayout>

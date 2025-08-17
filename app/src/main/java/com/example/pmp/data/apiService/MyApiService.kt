@@ -16,6 +16,7 @@ import com.example.pmp.data.model.JoinProjectData
 import com.example.pmp.data.model.ManualTrackingStats
 import com.example.pmp.data.model.MemberListData
 import com.example.pmp.data.model.MobileErrorData
+import com.example.pmp.data.model.MissionYes
 import com.example.pmp.data.model.ProjectDetail
 import com.example.pmp.data.model.ResultResponse
 import com.example.pmp.data.model.ThresholdData
@@ -32,6 +33,7 @@ import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Part
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 
@@ -351,5 +353,45 @@ interface MyApiService {
     @POST("messages/chat")
     suspend fun chat(
         @Body chatItem: chatItem
+    ): ResultResponse
+
+    @PUT("responsibilities/updateHandleStatus")
+    suspend fun missionPassed(
+        //mission passed  respect+
+        @Header("Authorization") token: String?,
+        @Header("Rsakey") RsaKey: String?,
+        @Body missionFinish: MissionYes
+    ): ResultResponse
+
+    @DELETE("notifications/deleteById/{id}")
+    suspend fun deleteMailById(
+        @Header("Authorization") token: String?,
+        @Header("Rsakey") RsaKey: String?,
+        @Path("id") id: Int?
+    ): ResultResponse
+
+    @DELETE("notifications/deleteByReceiverId")
+    suspend fun deleteAll(
+        @Header("Authorization") token: String?,
+        @Header("Rsakey") RsaKey: String?,
+        @Query("receiverId") receiverId: Long?,
+        @Query("isSenderExist") isSenderExist: Int
+    ): ResultResponse
+
+    @GET("notifications/selectByReceiverId")
+    suspend fun loadMailsAndMissions(
+        @Header("Authorization") token: String?,
+        @Header("Rsakey") RsaKey: String?,
+        @Query("receiverId") receiverId: Long?,
+        @Query("isSenderExist") isSenderExist: Int
+    ): ResultResponse
+
+    @GET("responsibilities/selectHandleStatus")
+    suspend fun updateStatus(
+        @Header("Authorization") token: String?,
+        @Header("Rsakey") RsaKey: String?,
+        @Query("projectId") projectId: String,
+        @Query("errorType") errorType: String,
+        @Query("platform") platform: String
     ): ResultResponse
 }

@@ -13,6 +13,7 @@ import com.dd.CircularProgressButton
 import com.example.pmp.data.model.EncryptLogin
 import com.example.pmp.data.model.EncryptedToken
 import com.example.pmp.data.model.GlobalData
+import com.example.pmp.data.model.GlobalData.token
 import com.example.pmp.data.model.UserInfo
 import com.example.pmp.ui.Container
 import kotlinx.coroutines.launch
@@ -20,6 +21,7 @@ import com.example.pmp.data.retrofit.RetrofitClient
 import com.example.pmp.util.Decryption.Decryption
 import com.example.pmp.util.Encryption.LoginEncryption
 import com.example.pmp.util.Encryption.TokenEncryption
+import androidx.core.content.edit
 
 class LoginVM : ViewModel() {
     val account = MutableLiveData<String>()
@@ -48,7 +50,10 @@ class LoginVM : ViewModel() {
                         Toast.makeText(context, response.msg, Toast.LENGTH_SHORT).show()
                         Handler(Looper.getMainLooper()).postDelayed({
                             context.startActivity(Intent(context, Container::class.java))
+                            (context as? android.app.Activity)?.finish()
                         },1000)
+                        val sharedPref = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+                        sharedPref.edit { putString("token", token) }
                         val dataMap = response.data as Map<*, *>
                         val encryptedData = dataMap["encryptedData"]
                         val encryptedKey = dataMap["encryptedKey"]
