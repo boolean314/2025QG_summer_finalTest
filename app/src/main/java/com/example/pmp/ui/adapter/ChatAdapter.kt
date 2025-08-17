@@ -1,6 +1,7 @@
 package com.example.pmp.ui.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -47,8 +48,14 @@ class ChatAdapter(
                 .error(R.drawable.coach)
                 .into(holder.binding.userAvatarImage)
         } else if (holder is LeftViewHolder) {
-            val markDownText = msg.content.trimIndent()
-            holder.binding.receiveMsg.setMDText(markDownText)
+            if (msg.isLoading) {
+                holder.binding.receiveMsg.visibility = View.GONE
+                holder.binding.aiLoading.visibility = View.VISIBLE
+            } else {
+                holder.binding.receiveMsg.visibility = View.VISIBLE
+                holder.binding.aiLoading.visibility = View.GONE
+                holder.binding.receiveMsg.setMDText(msg.content.trimIndent())
+            }
 
         }
     }

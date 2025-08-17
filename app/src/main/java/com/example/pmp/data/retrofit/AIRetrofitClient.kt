@@ -14,9 +14,9 @@ object AIRetrofitClient {
     val instance: MyApiService by lazy {
 
         val okHttpClient = OkHttpClient.Builder()
-            .connectTimeout(300, TimeUnit.SECONDS)
-            .readTimeout(300, TimeUnit.SECONDS)
-            .writeTimeout(300, TimeUnit.SECONDS)
+            .connectTimeout(3000, TimeUnit.SECONDS)
+            .readTimeout(3000, TimeUnit.SECONDS)
+            .writeTimeout(3000, TimeUnit.SECONDS)
             .build()
         val gson: Gson = GsonBuilder()
             .registerTypeAdapter(LocalDateTime::class.java, LocalDataTimeDeserializer()) // 注册自定义解析器
