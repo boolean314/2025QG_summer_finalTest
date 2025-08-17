@@ -27,23 +27,22 @@
             app:layout_constraintStart_toStartOf="parent"
             />
         <ProgressBar
-            android:id="@+id/error_progress_bar"
+            android:id="@+id/error_List_progressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
+            android:visibility="@{viewModel.loading ? android.view.View.VISIBLE : android.view.View.GONE}"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/error_list_recycler_view"
+            android:id="@+id/errorRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
+            android:visibility="@{viewModel.loading ? android.view.View.GONE : android.view.View.VISIBLE}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintTop_toBottomOf="@+id/error_list_title"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             android:layout_margin="20dp"
             />
 

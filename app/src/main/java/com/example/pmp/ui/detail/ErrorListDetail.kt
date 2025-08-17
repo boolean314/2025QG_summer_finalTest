@@ -1,7 +1,7 @@
+package com.example.pmp.ui.detail
+
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pmp.R
 import com.example.pmp.databinding.ActivityErrorListDetailBinding
+import com.example.pmp.ui.adapter.ErrorListAdapter
 import com.example.pmp.viewModel.ErrorListDetailVM
 
 class ErrorListDetail : AppCompatActivity() {
@@ -18,6 +19,7 @@ class ErrorListDetail : AppCompatActivity() {
     private lateinit var platform: String
     private lateinit var viewModel: ErrorListDetailVM
     private lateinit var binding: ActivityErrorListDetailBinding
+    private lateinit var errorAdapter: ErrorListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,9 +43,22 @@ class ErrorListDetail : AppCompatActivity() {
         viewModel = ViewModelProvider(this)[ErrorListDetailVM::class.java]
         binding.viewModel = viewModel
 
+        // 初始化RecyclerView和Adapter
+        setupRecyclerView()
+
         // 设置数据
         viewModel.setData(projectId, platform)
+    }
 
+    private fun setupRecyclerView() {
+        errorAdapter = ErrorListAdapter()
+        errorAdapter.platform = platform  // 将Activity中的platform传递给Adapter
+        binding.errorRecyclerView.adapter = errorAdapter
+
+        // 观察错误列表数据变化
+        viewModel.errorList.observe(this) { errorList ->
+            errorAdapter.submitList(errorList)
+        }
     }
 
 

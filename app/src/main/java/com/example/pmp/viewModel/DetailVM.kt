@@ -1,6 +1,5 @@
 package com.example.pmp.viewModel
 
-import ErrorListDetail
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -14,6 +13,7 @@ import com.example.pmp.data.apiService.ServiceCreator
 import com.example.pmp.data.model.ApiResponse
 import com.example.pmp.data.model.GlobalData
 import com.example.pmp.data.model.ProjectDetail
+import com.example.pmp.ui.detail.ErrorListDetail
 import com.example.pmp.ui.detail.MemberListDetail
 import retrofit2.Call
 import retrofit2.Response
@@ -161,13 +161,13 @@ class DetailVM: ViewModel() {
         context.startActivity(intent)
     }
     fun showBackendErrorList(context: Context){
-        val intent=Intent(context,ErrorListDetail::class.java)
+        val intent=Intent(context, ErrorListDetail::class.java)
         intent.putExtra("projectId",uuid.value)
         intent.putExtra("platform","backend")
         context.startActivity(intent)
     }
     fun showMobileErrorList(context: Context){
-        val intent=Intent(context,ErrorListDetail::class.java)
+        val intent=Intent(context, ErrorListDetail::class.java)
         intent.putExtra("projectId",uuid.value)
         intent.putExtra("platform","mobile")
         context.startActivity(intent)

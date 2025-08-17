@@ -2,20 +2,23 @@ package com.example.pmp.data.apiService
 
 import com.example.pmp.data.model.ApiResponse
 import com.example.pmp.data.model.AverageTimeResponse
+import com.example.pmp.data.model.BackendErrorData
 import com.example.pmp.data.model.CreateProjectData
 import com.example.pmp.data.model.EncryptLogin
 import com.example.pmp.data.model.EncryptModify
 import com.example.pmp.data.model.EncryptRegister
 import com.example.pmp.data.model.ErrorStat
 import com.example.pmp.data.model.ErrorTimes
-import com.example.pmp.data.model.FrontErrorData
+import com.example.pmp.data.model.FrontendErrorData
 import com.example.pmp.data.model.IpInterceptionCount
 import com.example.pmp.data.model.JoinProjectData
 import com.example.pmp.data.model.ManualTrackingStats
 import com.example.pmp.data.model.MemberListData
+import com.example.pmp.data.model.MobileErrorData
 import com.example.pmp.data.model.MissionYes
 import com.example.pmp.data.model.ProjectDetail
 import com.example.pmp.data.model.ResultResponse
+import com.example.pmp.data.model.ThresholdData
 import com.example.pmp.data.model.chatItem
 import com.example.pmp.data.model.updateRoles
 import okhttp3.MultipartBody
@@ -165,14 +168,6 @@ interface MyApiService {
         @Query("endTime") endTime: String
     ): Call<ApiResponse<List<IpInterceptionCount>>>
 
-    // 获取错误列表
-    @GET("errors/selectByCondition")
-    fun <T> getErrorList(
-        @Header("Authorization") token: String?,
-        @Header("Rsakey") RsaKey: String?,
-        @Query("projectId") projectId: String,
-        @Query("platform") platform: String
-    ): Call<ApiResponse<List<T>>>
 
     // 获取前端错误列表
     @GET("errors/selectByCondition")
@@ -181,7 +176,7 @@ interface MyApiService {
         @Header("Rsakey") RsaKey: String?,
         @Query("projectId") projectId: String,
         @Query("platform") platform: String
-    ): Call<ApiResponse<List<FrontErrorData>>>
+    ): Call<ApiResponse<List<List<FrontendErrorData>>>>
 
     // 获取后端错误列表
     @GET("errors/selectByCondition")
@@ -190,7 +185,7 @@ interface MyApiService {
         @Header("Rsakey") RsaKey: String?,
         @Query("projectId") projectId: String,
         @Query("platform") platform: String
-    ): Call<ApiResponse<List<FrontErrorData>>>
+    ): Call<ApiResponse<List<List<BackendErrorData>>>>
 
     // 获取移动端错误列表
     @GET("errors/selectByCondition")
@@ -199,7 +194,57 @@ interface MyApiService {
         @Header("Rsakey") RsaKey: String?,
         @Query("projectId") projectId: String,
         @Query("platform") platform: String
-    ): Call<ApiResponse<List<FrontErrorData>>>
+    ): Call<ApiResponse<List<List<MobileErrorData>>>>
+
+//获取前端错误的具体信息
+    @GET("errors/selectErrorDetail")
+    fun getFrontendErrorDetail(
+        @Header("Authorization") token: String?,
+        @Header("Rsakey") RsaKey: String?,
+        @Query("errorId") errorId: Int
+        ,@Query("platform") platform: String
+    ): Call<ApiResponse<FrontendErrorData>>
+
+    //获取后端错误的具体信息
+    @GET("errors/selectErrorDetail")
+    fun getBackendErrorDetail(
+        @Header("Authorization") token: String?,
+        @Header("Rsakey") RsaKey: String?,
+        @Query("errorId") errorId: Int
+        ,@Query("platform") platform: String
+    ): Call<ApiResponse<BackendErrorData>>
+
+    //获取移动端错误的具体信息
+    @GET("errors/selectErrorDetail")
+    fun getMobileErrorDetail(
+        @Header("Authorization") token: String?,
+        @Header("Rsakey") RsaKey: String?,
+        @Query("errorId") errorId: Int
+        ,@Query("platform") platform: String
+    ): Call<ApiResponse<MobileErrorData>>
+
+    //获取当前错误的阈值
+    @GET("alertRules/selectByTypeEnvProjectId")
+    fun getThreshold(
+        @Header("Authorization") token: String?,
+        @Header("Rsakey") RsaKey: String?,
+        @Query("errorType") errorType: String,
+        @Query("projectId") projectId: String,
+        @Query("platform") platform: String
+    ): Call<ApiResponse<ThresholdData>>
+
+    //修改当前错误的阈值
+    @PUT("alertRules/updateThreshold")
+    fun updateThreshold(
+        @Header("Authorization") token: String?,
+        @Header("Rsakey") RsaKey: String?,
+        @Query("errorType") errorType: String,
+        @Query("threshold") threshold: Int,
+        @Query("projectId") projectId: String,
+        @Query("platform") platform: String
+
+    ): Call<ApiResponse<Any>>
+
 
     @POST("users/password")
     suspend fun login(

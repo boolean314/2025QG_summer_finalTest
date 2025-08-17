@@ -1,0 +1,587 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="errorDetailVM"
+            type="com.example.pmp.viewModel.ErrorDetailVM" />
+    </data>
+<ScrollView
+    android:id="@+id/error_scroll_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.detail.ErrorDetail">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/error_detail_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:text="错误详情"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/error_threshold_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            app:layout_constraintStart_toEndOf="@id/error_detail_title"
+            app:layout_constraintTop_toTopOf="@id/error_detail_title">
+
+            <TextView
+                android:id="@+id/error_threshold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="设置阈值"
+                android:textSize="15sp"
+                android:padding="8dp"
+                android:clickable="true"
+                />
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/error_solve_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            app:cardBackgroundColor="@color/qq_blue"
+            app:layout_constraintStart_toEndOf="@id/error_threshold_layout"
+            app:layout_constraintTop_toTopOf="@id/error_threshold_layout">
+
+            <TextView
+                android:id="@+id/error_solve"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="已解决"
+                android:textSize="15sp"
+                android:padding="8dp"
+                android:clickable="true"
+                android:textColor="@color/white" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/error_assign_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+
+            app:layout_constraintStart_toEndOf="@id/error_solve_layout"
+            app:layout_constraintTop_toTopOf="@id/error_solve_layout">
+
+            <TextView
+                android:id="@+id/error_assign"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="指派成员"
+                android:textSize="15sp"
+                android:padding="8dp"
+                android:clickable="true"
+              />
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- 时间行 -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/error_timestamp_row"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toBottomOf="@+id/error_detail_title"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:id="@+id/error_timestamp_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:text="时间"
+                android:textSize="20sp"
+                android:padding="5dp"
+                android:background="#EEEEEE"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <TextView
+                android:id="@+id/error_timestamp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:textSize="18sp"
+                android:text="@{errorDetailVM.timestamp}"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/error_timestamp_title"
+                app:layout_constraintEnd_toEndOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- 环境行 -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/error_environment_row"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            app:layout_constraintTop_toBottomOf="@+id/error_timestamp_row"
+            app:layout_constraintStart_toStartOf="parent"
+            android:visibility="@{errorDetailVM.environment.isEmpty()? View.GONE: View.VISIBLE}"
+            >
+
+            <TextView
+                android:id="@+id/error_environment_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:text="环境"
+                android:textSize="20sp"
+                android:padding="5dp"
+                android:background="#EEEEEE"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <TextView
+                android:id="@+id/error_environment"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:textSize="18sp"
+                android:text="@{errorDetailVM.environment}"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/error_environment_title"
+                app:layout_constraintEnd_toEndOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- 错误ID行 -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/error_id_row"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            app:layout_constraintTop_toBottomOf="@+id/error_environment_row"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:id="@+id/error_id_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:text="错误ID"
+                android:textSize="20sp"
+                android:padding="5dp"
+                android:background="#EEEEEE"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <TextView
+                android:id="@+id/error_id"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:textSize="18sp"
+                android:text="@{String.valueOf(errorDetailVM.errorId)}"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/error_id_title"
+                app:layout_constraintEnd_toEndOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- 错误类型行 -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/error_type_row"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/error_id_row"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:id="@+id/error_type_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:text="错误类型"
+                android:textSize="20sp"
+                android:padding="5dp"
+                android:background="#EEEEEE"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <TextView
+                android:id="@+id/error_type"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:textSize="18sp"
+                android:text="@{errorDetailVM.errorType}"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/error_type_title"
+                app:layout_constraintEnd_toEndOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- 错误信息行 -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/error_message_row"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/error_type_row"
+            app:layout_constraintStart_toStartOf="parent"
+            android:visibility="@{errorDetailVM.message.isEmpty()? View.GONE: View.VISIBLE}"
+            >
+
+            <TextView
+                android:id="@+id/error_message_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:text="错误信息"
+                android:textSize="20sp"
+                android:padding="5dp"
+                android:background="#EEEEEE"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <TextView
+                android:id="@+id/error_message"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:textSize="18sp"
+                android:text="@{errorDetailVM.message}"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/error_message_title"
+                app:layout_constraintEnd_toEndOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- 浏览器信息行 -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/error_userAgent_row"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/error_message_row"
+            app:layout_constraintStart_toStartOf="parent"
+            android:visibility="@{errorDetailVM.userAgent.isEmpty()? View.GONE: View.VISIBLE}"
+            >
+
+            <TextView
+                android:id="@+id/error_userAgent_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:text="浏览器信息"
+                android:textSize="20sp"
+                android:padding="5dp"
+                android:background="#EEEEEE"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <TextView
+                android:id="@+id/error_userAgent"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:textSize="18sp"
+                android:text="@{errorDetailVM.userAgent}"
+                android:maxLines="100"
+                android:ellipsize="end"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/error_userAgent_title"
+                app:layout_constraintEnd_toEndOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- JS文件名行 -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/error_file_row"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/error_userAgent_row"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:id="@+id/error_file_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:text="JS文件名"
+                android:textSize="20sp"
+                android:padding="5dp"
+                android:background="#EEEEEE"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:visibility="@{errorDetailVM.fileName.isEmpty()? View.GONE: View.VISIBLE}"
+/>
+            <TextView
+                android:id="@+id/error_file"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:textSize="18sp"
+                android:text="@{errorDetailVM.fileName}"
+                android:maxLines="10"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/error_file_title"
+                app:layout_constraintEnd_toEndOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- 行号行 -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/error_line_row"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/error_file_row"
+            app:layout_constraintStart_toStartOf="parent"
+            android:visibility="@{errorDetailVM.lineNumber==0? View.GONE: View.VISIBLE}"
+            >
+
+            <TextView
+                android:id="@+id/error_line_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:text="行号"
+                android:textSize="20sp"
+                android:padding="5dp"
+                android:background="#EEEEEE"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <TextView
+                android:id="@+id/error_line"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:textSize="18sp"
+                android:text="@{String.valueOf(errorDetailVM.lineNumber)}"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/error_line_title"
+                app:layout_constraintEnd_toEndOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- 列号行 -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/error_col_row"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/error_line_row"
+            app:layout_constraintStart_toStartOf="parent"
+            android:visibility="@{errorDetailVM.colNumber==0? View.GONE: View.VISIBLE}"
+            >
+
+            <TextView
+                android:id="@+id/error_col_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:text="列号"
+                android:textSize="20sp"
+                android:padding="5dp"
+                android:background="#EEEEEE"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                />
+
+            <TextView
+                android:id="@+id/error_col"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:textSize="18sp"
+                android:text="@{String.valueOf(errorDetailVM.colNumber)}"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/error_col_title"
+                app:layout_constraintEnd_toEndOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- 请求URL行 -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/error_request_url_row"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/error_col_row"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginBottom="20dp"
+            android:visibility="@{errorDetailVM.requestUrl.isEmpty()? View.GONE: View.VISIBLE}"
+            >
+
+            <TextView
+                android:id="@+id/error_request_url_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:text="请求URL"
+                android:textSize="20sp"
+                android:padding="5dp"
+                android:background="#EEEEEE"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <TextView
+                android:id="@+id/error_request_url"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:textSize="18sp"
+                android:text="@{errorDetailVM.requestUrl}"
+                android:maxLines="100"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/error_request_url_title"
+                app:layout_constraintEnd_toEndOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- 请求方法行 -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/error_request_method_row"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/error_request_url_row"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginBottom="20dp"
+            android:visibility="@{errorDetailVM.requestMethod.isEmpty()? View.GONE: View.VISIBLE}"
+            >
+
+            <TextView
+                android:id="@+id/error_request_method_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:text="请求方法"
+                android:textSize="20sp"
+                android:padding="5dp"
+                android:background="#EEEEEE"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <TextView
+                android:id="@+id/error_request_method"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:textSize="18sp"
+                android:text="@{errorDetailVM.requestMethod}"
+                android:maxLines="100"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/error_request_method_title"
+                app:layout_constraintEnd_toEndOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- 响应状态码行 -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/error_response_status_code_row"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/error_request_method_row"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginBottom="20dp"
+            android:visibility="@{errorDetailVM.requestStatusCode==0? View.GONE: View.VISIBLE}"
+            >
+
+            <TextView
+                android:id="@+id/error_response_status_code_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:text="响应状态码"
+                android:textSize="20sp"
+                android:padding="5dp"
+                android:background="#EEEEEE"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <TextView
+                android:id="@+id/error_response_status_code"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:textSize="18sp"
+                android:text="@{String.valueOf(errorDetailVM.requestStatusCode)}"
+                android:maxLines="100"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/error_response_status_code_title"
+                app:layout_constraintEnd_toEndOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- 错误堆栈行 -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/error_stack_row"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/error_response_status_code_row"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginBottom="20dp"
+            android:visibility="@{errorDetailVM.requestStackText.isEmpty()? View.GONE: View.VISIBLE}"
+            >
+
+            <TextView
+                android:id="@+id/error_stack_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:text="错误堆栈"
+                android:textSize="20sp"
+                android:padding="5dp"
+                android:background="#EEEEEE"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <TextView
+                android:id="@+id/error_stack"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:textSize="18sp"
+                android:text="@{errorDetailVM.requestStackText}"
+                android:maxLines="100"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/error_stack_title"
+                app:layout_constraintEnd_toEndOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
+</layout>
