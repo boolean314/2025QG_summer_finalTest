@@ -16,7 +16,7 @@ class PublicProjectVM : ViewModel() {
 
     fun loadProjects(userId: Long) {
         viewModelScope.launch {
-            val response = RetrofitClient.instance.getPublicProject(GlobalData.token, GlobalData.Rsakey, )
+            val response = RetrofitClient.instance.getPublicProject("Bearer ${GlobalData.token}", "${GlobalData.Rsakey}")
             if (response.code == 200) {
                 val data = response.data as? List<Map<String, Any>>
                 allProjects = data?.map { map ->
