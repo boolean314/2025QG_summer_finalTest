@@ -75,6 +75,7 @@ class MissionAdapter(
             errorType.text = mission.errorType
             errorMessage.text = mission.errorMessage
             errorMessage.movementMethod = android.text.method.ScrollingMovementMethod()
+            errorType.movementMethod = android.text.method.ScrollingMovementMethod()
             adaptUI(dialog)
             dialog.show()
         }

@@ -48,6 +48,7 @@ class MailAdapter (
             errorType.text = mail.errorType
             errorMessage.text = mail.errorMessage
             errorMessage.movementMethod = android.text.method.ScrollingMovementMethod()
+            errorType.movementMethod = android.text.method.ScrollingMovementMethod()
             adaptUI(dialog)
             dialog.show()
         }

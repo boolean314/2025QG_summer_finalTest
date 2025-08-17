@@ -334,7 +334,7 @@ interface MyApiService {
     @GET("projects/getPublicProjectList")
     suspend fun getPublicProject(
         @Header("Authorization") token: String?,
-        @Header("Rsakey") RsaKey: String?,
+        @Header("Rsakey") RsaKey: String?
     ): ResultResponse
 
     @DELETE("projects")
