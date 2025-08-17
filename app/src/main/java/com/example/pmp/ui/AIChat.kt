@@ -19,6 +19,7 @@ import com.example.pmp.viewModel.HomepageVM
 import com.example.pmp.viewModel.PersonalProjectVM
 import kotlin.getValue
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlin.text.set
 
 
 class AIChat : Fragment(){
@@ -69,6 +70,7 @@ class AIChat : Fragment(){
             val projectId = selectedProjectId ?: return@setOnClickListener
             if (msg.isNotBlank()) {
                 chatList.add(ChatMessage(msg, true))
+                chatList.add(ChatMessage("", false, true))
                 chatAdapter.notifyItemInserted(chatList.size - 1)
                 binding.aiChatRecyclerView.scrollToPosition(chatList.size - 1)
                 viewModel.sendMsg(msg, projectId)
@@ -78,9 +80,12 @@ class AIChat : Fragment(){
 
         //监听AI回复
         viewModel.receiveMsg.observe(viewLifecycleOwner) { aiMsg ->
-            chatList.add(ChatMessage(aiMsg, false))
-            chatAdapter.notifyItemInserted(chatList.size - 1)
-            binding.aiChatRecyclerView.scrollToPosition(chatList.size - 1)
+            val aiMsgIndex = chatList.indexOfLast { !it.isUser && it.isLoading }
+            if (aiMsgIndex != -1) {
+                chatList[aiMsgIndex] = ChatMessage(aiMsg, false, false)
+                chatAdapter.notifyItemChanged(aiMsgIndex)
+                binding.aiChatRecyclerView.scrollToPosition(aiMsgIndex)
+            }
         }
     }
 }
