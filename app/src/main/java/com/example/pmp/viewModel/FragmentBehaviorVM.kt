@@ -12,6 +12,7 @@ import com.example.pmp.R
 import com.example.pmp.data.apiService.MyApiService
 import com.example.pmp.data.apiService.ServiceCreator
 import com.example.pmp.data.model.ApiResponse
+import com.example.pmp.data.model.FrontendButtonData
 import com.example.pmp.data.model.GlobalData
 import com.example.pmp.data.model.ManualTrackingStats
 import com.github.mikephil.charting.charts.BarChart
@@ -28,11 +29,13 @@ class FragmentBehaviorVM: ViewModel() {
     private lateinit var context: Context
     private val apiService=ServiceCreator.create(MyApiService::class.java)
     private lateinit var barChart: BarChart
+    private lateinit var barChart1: BarChart
 
-    fun setData(projectId: String,context: Context,barChart: BarChart) {
+    fun setData(projectId: String,context: Context,barChart: BarChart,barChart1: BarChart) {
         this.projectId = projectId
         this.context=context
         this.barChart=barChart
+        this.barChart1=barChart1
     }
    fun chooseStartTime(){
         showDateTimePicker(context,true)
@@ -157,6 +160,20 @@ fun chooseEndTime(){
             description.isEnabled = false
             setFitBars(true)
             invalidate()
+            setOnTouchListener { _, event ->
+                when (event.action) {
+                    android.view.MotionEvent.ACTION_DOWN -> {
+                        // 请求父视图不要拦截触摸事件
+                        parent.requestDisallowInterceptTouchEvent(true)
+                    }
+                    android.view.MotionEvent.ACTION_UP, android.view.MotionEvent.ACTION_CANCEL -> {
+                        // 恢复父视图对触摸事件的拦截
+                        parent.requestDisallowInterceptTouchEvent(false)
+                    }
+                }
+                // 调用图表自身的onTouchEvent方法
+                onTouchEvent(event)
+            }
         }
 
         // 配置X轴
@@ -193,4 +210,122 @@ fun chooseEndTime(){
         // 刷新图表
         barChart.invalidate()
     }
+
+    fun getFrontendButtonData(){
+        apiService.getFrontendButton("Bearer ${GlobalData.token}", GlobalData.Rsakey, projectId!!).enqueue(object:retrofit2.Callback<ApiResponse<List<FrontendButtonData>>>{
+            override fun onResponse(
+                call: Call<ApiResponse<List<FrontendButtonData>>>,
+                response: Response<ApiResponse<List<FrontendButtonData>>>
+            ) {
+                Log.d("FragmentBehaviorVM", "onResponse: $response")
+                Log.d("FragmentBehaviorVM", "onResponse: ${response.body()}")
+                if (response.isSuccessful) {
+                    val apiResponse = response.body()
+                    if (apiResponse != null) {
+                        Log.d("FragmentBehaviorVM", "onResponse: ${apiResponse.data}")
+                        // 处理成功响应并更新图表
+                        updateBarChart1(apiResponse.data)
+
+                    }
+                } else {
+
+    }
+}
+
+            override fun onFailure(
+                call: Call<ApiResponse<List<FrontendButtonData>>>,
+                t: Throwable
+            ) {
+                    Log.e("FragmentBehaviorVM", "onFailure: $t")
+            }
+            })
+    }
+    fun updateBarChart1(frontendButtonDataList: List<FrontendButtonData>?) {
+        if (frontendButtonDataList.isNullOrEmpty()) {
+            // 如果没有数据，清除图表
+            barChart1.clear()
+            return
+        }
+
+        // 准备数据
+        val entries = ArrayList<com.github.mikephil.charting.data.BarEntry>()
+        val labels = ArrayList<String>()
+
+        // 遍历数据列表，创建图表数据
+        for ((index, stat) in frontendButtonDataList.withIndex()) {
+            entries.add(com.github.mikephil.charting.data.BarEntry(index.toFloat(), stat.eventCount.toFloat()))
+
+            // 处理标签名称，避免过长
+            var label = stat.buttonId ?: "Unknown" // 添加默认值防止 null
+            if (label.length > 50) {
+                label = label.substring(0, 50) + "..."
+            }
+            labels.add(label)
+        }
+
+        // 创建数据集
+        val dataSet = com.github.mikephil.charting.data.BarDataSet(entries, "点击次数")
+        dataSet.color = ContextCompat.getColor(context, R.color.qq_blue)
+        dataSet.valueTextSize = 10f
+
+        // 创建图表数据
+        val data = com.github.mikephil.charting.data.BarData(dataSet)
+
+        // 配置图表
+        barChart1.apply {
+            this.data = data
+            description.isEnabled = false
+            setFitBars(true)
+            invalidate()
+            setOnTouchListener { _, event ->
+                when (event.action) {
+                    android.view.MotionEvent.ACTION_DOWN -> {
+                        // 请求父视图不要拦截触摸事件
+                        parent.requestDisallowInterceptTouchEvent(true)
+                    }
+                    android.view.MotionEvent.ACTION_UP, android.view.MotionEvent.ACTION_CANCEL -> {
+                        // 恢复父视图对触摸事件的拦截
+                        parent.requestDisallowInterceptTouchEvent(false)
+                    }
+                }
+                // 调用图表自身的onTouchEvent方法
+                onTouchEvent(event)
+            }
+        }
+
+        // 配置X轴
+        val xAxis = barChart1.xAxis
+        xAxis.apply {
+            position = com.github.mikephil.charting.components.XAxis.XAxisPosition.BOTTOM
+            valueFormatter = object : com.github.mikephil.charting.formatter.ValueFormatter() {
+                override fun getAxisLabel(value: Float, axis: com.github.mikephil.charting.components.AxisBase?): String {
+                    val index = value.toInt()
+                    return if (index >= 0 && index < labels.size) {
+                        labels[index] ?: "" // 添加空值检查
+                    } else {
+                        ""
+                    }
+                }
+            }
+            granularity = 1f
+            labelRotationAngle = -45f
+            textSize = 8f
+        }
+
+        // 配置左侧Y轴
+        val leftAxis = barChart1.axisLeft
+        leftAxis.apply {
+            textSize = 10f
+            spaceBottom = 0f
+            spaceTop = 0f
+            axisMinimum = 0f // 确保Y轴从0开始
+        }
+
+        // 隐藏右侧Y轴
+        barChart1.axisRight.isEnabled = false
+
+        // 刷新图表
+        barChart1.invalidate()
+    }
+
 }

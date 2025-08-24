@@ -107,6 +107,75 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 >
+                <TextView
+                    android:id="@+id/mobile_performance2_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="埋点性能统计："
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_margin="20dp"
+                    />
+
+                <RadioGroup
+                    android:id="@+id/mobile_performance2_radioGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="50dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintTop_toBottomOf="@id/mobile_performance2_text"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <RadioButton
+                        android:id="@+id/mobile_performance2_radio_day"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="近一天"
+                        android:onClick="@{()->clickHandler.onClickDay1()}"
+                        android:checked="true"
+                        />
+
+                    <RadioButton
+                        android:id="@+id/mobile_performance2_radio_week"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="近一周"
+                        android:onClick="@{()->clickHandler.onClickWeek1()}"
+                        />
+
+                    <RadioButton
+                        android:id="@+id/mobile_performance2_radio_month"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="近一月"
+                        android:onClick="@{()->clickHandler.onClickMonth1()}"
+                        />
+                </RadioGroup>
+                <com.github.mikephil.charting.charts.CombinedChart
+                    android:id="@+id/mobile_performance2_bar_chart"
+                    android:layout_width="match_parent"
+                    android:layout_height="450dp"
+                    app:layout_constraintTop_toBottomOf="@id/mobile_performance2_radioGroup"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_gravity="start" />
+                <ProgressBar
+                    android:id="@+id/mobile_performance2_progressBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    />
 
 
 

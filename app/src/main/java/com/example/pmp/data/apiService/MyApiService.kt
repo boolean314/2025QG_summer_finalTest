@@ -10,6 +10,7 @@ import com.example.pmp.data.model.EncryptModify
 import com.example.pmp.data.model.EncryptRegister
 import com.example.pmp.data.model.ErrorStat
 import com.example.pmp.data.model.ErrorTimes
+import com.example.pmp.data.model.FrontendButtonData
 import com.example.pmp.data.model.FrontendErrorData
 import com.example.pmp.data.model.HandleStatusData
 import com.example.pmp.data.model.IpInterceptionCount
@@ -19,6 +20,7 @@ import com.example.pmp.data.model.MemberListData
 import com.example.pmp.data.model.MethodInvocationStats
 import com.example.pmp.data.model.MobileErrorData
 import com.example.pmp.data.model.MissionYes
+import com.example.pmp.data.model.PerformanceData
 import com.example.pmp.data.model.ProjectDetail
 import com.example.pmp.data.model.ResultResponse
 import com.example.pmp.data.model.ThresholdData
@@ -162,6 +164,14 @@ interface MyApiService {
         @Query("endTime") endTime: String
     ): Call<ApiResponse<List<ManualTrackingStats>>>
 
+    //获取前端按钮的id和点击次数
+    @GET("graph/getFrontendButton")
+    fun getFrontendButton(
+        @Header("Authorization") token: String?,
+        @Header("Rsakey") RsaKey: String?,
+        @Query("projectId") projectId: String):Call<ApiResponse<List<FrontendButtonData>>>
+
+
     //获取后端非法攻击统计
     @GET("graph/getIpInterceptionCount")
     fun getIpInterceptionCount(
@@ -233,6 +243,15 @@ interface MyApiService {
         @Header("Rsakey") RsaKey: String?,
         @Query("errorId") errorId: Int, @Query("platform") platform: String
     ): Call<ApiResponse<MobileErrorData>>
+
+    //获取移动端埋点性能信息
+    @GET("graph/MobileOperationalPerformance")
+    fun getMobileOperationalPerformance(
+        @Header("Authorization") token: String?,
+        @Header("Rsakey") RsaKey: String?,
+        @Query("projectId") projectId: String,
+        @Query("timeType") timeType: String,
+    ): Call<ApiResponse<List<PerformanceData>>>
 
     //获取当前错误的阈值
     @GET("alertRules/selectByTypeEnvProjectId")

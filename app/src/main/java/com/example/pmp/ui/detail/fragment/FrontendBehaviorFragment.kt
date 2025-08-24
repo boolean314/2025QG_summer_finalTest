@@ -17,6 +17,7 @@ class FrontendBehaviorFragment: Fragment(R.layout.fragment_frontend_behavior) {
     private lateinit var viewModel: FragmentBehaviorVM
     private var projectId: String? = null
     private lateinit var barChart: BarChart
+    private lateinit var barChart1:BarChart
 
 
     override fun onCreateView(
@@ -42,9 +43,11 @@ class FrontendBehaviorFragment: Fragment(R.layout.fragment_frontend_behavior) {
         super.onViewCreated(view, savedInstanceState)
         viewModel= ViewModelProvider(this).get(FragmentBehaviorVM::class.java)
         barChart=binding.frontendBehavior1BarChart
+        barChart1=binding.frontendBehavior2BarChart
         binding.viewModel=viewModel
         binding.lifecycleOwner=this
-        viewModel.setData(projectId!!,requireContext(),barChart)
+        viewModel.setData(projectId!!,requireContext(),barChart,barChart1)
+        viewModel.getFrontendButtonData()
 
     }
 
